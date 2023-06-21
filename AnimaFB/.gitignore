@@ -7,7 +7,7 @@
 /client/.pnp.js
 /node_modules
 /server/nodemon.json
-
+/server/src/app.ts
 # testing
 /client/coverage
 
