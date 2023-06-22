@@ -22,25 +22,23 @@ const getWeb = async (_req: Request, res: Response): Promise<void> => {
 
 const updateUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
-    const body = req.body as Pick<
-      IUser,
-      'age' | 'gender' | 'sayYesNo' | 'animationType' | 'status'
-    >;
-
+    const {
+      params: {id}, body,} = req;
+    
+ 
     const updatedUser: IUser | null = await User.findByIdAndUpdate(
-      id,
-      body,
-      { new: true }
+
+      { _id: id},
+      body
     );
 
-    if (!updatedUser) {
-      throw new Error('User not found');
-    }
-
-    const allUsers: IUser[] = await User.find();
-    res.status(200).json({ message: 'User updated', user: updatedUser, users: allUsers });
-  } catch (error) {
+    const allUsers: IUser[] = await User.find()
+    res.status(200).json({
+        message: 'User updated',
+        user: updatedUser,
+        users: allUsers,
+    })
+    } catch (error) {
     res.status(500).json({ error: 'Failed to update user' });
   }
 };

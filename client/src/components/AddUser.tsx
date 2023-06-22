@@ -3,6 +3,7 @@ import { ChoiceGroup, Form, LabelChoice } from '../constants/style';
 import AnimationList from './AnimationList';
 import { generateRandomAnimation } from '../utils/functions';
 import { gender, answerYesNo, animationWhich } from '../constants';
+import { addUser } from '../API';
 
 type Props = {
   saveUser: (formData: IUser) => void;
@@ -12,8 +13,13 @@ type State = {
   formData: IUser,
   isSubmitted: boolean,
   showCards: boolean,
-  selectedGender: string | undefined,
+  chosenNumber: number,
+  selectedGender: string,
+  selectedAns: string,
   randomAnimation: number,
+  selectedFewAns: {
+    id: string;
+  }
   validationErrors: {
     age?: string,
     gender?: string,
@@ -27,16 +33,21 @@ class AddUser extends React.Component<Props, State> {
     super(props);
     this.state = {
       formData: {
-        _id: '',
+        _id: this.generateUniqueId(), 
         age: 0,
-        gender: '',
+        gender: '' ,
         sayYesNo: '',
         animationType: [],
         status: false
       },
       isSubmitted: false,
       showCards: true,
-      selectedGender: undefined,
+      chosenNumber: 0,
+      selectedGender: '',
+      selectedAns: '',
+      selectedFewAns:{
+        id: ''
+      },
       randomAnimation: generateRandomAnimation(1, 16),
       validationErrors: {
         age: '',
@@ -46,43 +57,8 @@ class AddUser extends React.Component<Props, State> {
       },
 
     };
-  }
 
-  handleForm = (e: React.FormEvent<HTMLInputElement>): void => {
-    const { formData } = this.state;
-    if (e.currentTarget.name === 'sayYesNo') {
-      this.setState({
-        formData: {
-          ...formData,
-          sayYesNo: e.currentTarget.value
-        }
-      });
-    } else if (e.currentTarget.name === 'animationType') {
-      const checked = e.currentTarget.checked;
-      const option = e.currentTarget.value;
-      let animationTypes = formData.animationType.slice();
-  
-      if (checked) {
-        animationTypes.push(option);
-      } else {
-        animationTypes = animationTypes.filter((type: string) => type !== option);
-      }
-  
-      this.setState({
-        formData: {
-          ...formData,
-          animationType: animationTypes
-        }
-      });
-    } else {
-      this.setState({
-        formData: {
-          ...formData,
-          [e.currentTarget.name]: e.currentTarget.value
-        }
-      });
-    }
-  };
+  }
 
   validateForm = (): boolean => {
     const { formData } = this.state;
@@ -111,23 +87,98 @@ class AddUser extends React.Component<Props, State> {
   
     return Object.keys(errors).length === 0;
   };
+  generateUniqueId = (): string => {
+    const timestamp = new Date().getTime();
+    const random = Math.floor(Math.random() * 10000);
+    const uniqueId = `${timestamp}_${random}`;
+    return uniqueId;
+  };
+  handleAge  = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { formData } = this.state;
+    const chosenNumber = Number(event.target.value);
 
-  radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      selectedGender: event.target.value
+      chosenNumber,
+      formData: {
+        ...formData,
+        age: chosenNumber
+      }
     });
   }
 
-  handleClick = (): void => {
-    this.setState({
-      showCards: false,
-      isSubmitted: true
-    });
-  }
+    radioHandlerG = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { formData } = this.state;
+      const selectedGender = event.target.value;
+    
+      this.setState({
+        selectedGender,
+        formData: {
+          ...formData,
+          gender: selectedGender
+        }
+      });
+    };
+    radioHandlerY = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { formData } = this.state;
+      const selectedAns = event.target.value;
+    
+      this.setState({
+        selectedAns,
+        formData: {
+          ...formData,
+          sayYesNo: selectedAns
+        }
+      });
+    };
+    choiceHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { formData } = this.state;
+      const selectedAnimation = event.target.value;
+    
+      let updatedAnimationType;
+      if (formData.animationType.includes(selectedAnimation)) {
+        updatedAnimationType = formData.animationType.filter(
+          (animation: string) => animation !== selectedAnimation
+        );
+      } else {
+        updatedAnimationType = [...formData.animationType, selectedAnimation];
+      }
+    
+      this.setState({
+        formData: {
+          ...formData,
+          animationType: updatedAnimationType
+        }
+      });
+    };
+    
+
+     handleClick = async () => {
+      try {
+        this.setState({
+          showCards: false,
+          isSubmitted: true
+        });
+        console.log(this.state.formData)
+          const response = await addUser(this.state.formData);
+      
+          if (response.status === 200 || response.status === 201) {
+            console.log('Form data submitted successfully');
+            // Perform any additional actions after successful submission
+          } else {
+            console.error('Failed to submit form data');
+            // Handle the error condition appropriately
+          }
+        } catch (error) {
+          console.error('Error submitting form data:', error);
+          // Handle the error condition appropriately
+        }
+      };
+        
+
   handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
     const { formData } = this.state;
-  
+  console.log("DATA", formData)
     if (this.validateForm()) {
       console.log("please select f", formData)
 
@@ -144,7 +195,7 @@ class AddUser extends React.Component<Props, State> {
         {showCards === true && (
           <Form onSubmit={this.handleSubmit} style={{ display: showCards ? "grid" : "none" }}>
             <label htmlFor='age'>Podaj wiek</label>
-            <input onChange={this.handleForm} type='number' max="100" min="0" id='age' placeholder="0" />
+            <input onChange={this.handleAge} type='number' max="100" min="0" id='age' placeholder="0" />
             {validationErrors.age && <span className='error'>{validationErrors.age}</span>}
 
             <fieldset>
@@ -158,7 +209,7 @@ class AddUser extends React.Component<Props, State> {
                     name="gender"
                     value={option.toLowerCase()}
                     id={`gender-${index}`}
-                    onChange={this.radioHandler}
+                    onChange={this.radioHandlerG}
                   />
                   <label htmlFor={`gender-${index}`}>{option}</label>
                 </LabelChoice>
@@ -178,9 +229,8 @@ class AddUser extends React.Component<Props, State> {
                     name="sayYesNo"
                     value={option.toLowerCase()}
                     id={`sayYesNo-${index}`}
-                    onChange={this.radioHandler}
+                    onChange={this.radioHandlerY}
                   />
-                  {`sayYesNo-${index}`}
                   
                   <label htmlFor={`sayYesNo-${index}`}>{option}</label>
                 </LabelChoice>
@@ -199,7 +249,7 @@ class AddUser extends React.Component<Props, State> {
                     name="animationType"
                     value={option.toLowerCase()}
                     id={`animationType-${index}`}
-                    onChange={this.radioHandler}
+                    onChange={this.choiceHandler}
                   />
                   <label htmlFor={`animationType-${index}`}>{option}</label>
                 </LabelChoice>
@@ -208,6 +258,7 @@ class AddUser extends React.Component<Props, State> {
 
             </fieldset>
             <input disabled={!formData.age || !formData.gender || !formData.sayYesNo || formData.animationType.length === 0} onClick={this.handleClick} type="submit" value="Zatwierdź" />
+
           </Form>
         )}
 

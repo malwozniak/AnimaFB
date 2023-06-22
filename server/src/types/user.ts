@@ -5,5 +5,6 @@ export interface IUser extends Document {
     gender: string
     sayYesNo: string
     animationType: Array<string>
+    numberOfBalls: number
     status: boolean
 }

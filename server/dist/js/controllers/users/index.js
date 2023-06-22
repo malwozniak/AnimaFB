@@ -36,14 +36,14 @@ const getWeb = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getWeb = getWeb;
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
-        const body = req.body;
-        const updatedUser = yield models_1.default.findByIdAndUpdate(id, body, { new: true });
-        if (!updatedUser) {
-            throw new Error('User not found');
-        }
+        const { params: { id }, body, } = req;
+        const updatedUser = yield models_1.default.findByIdAndUpdate({ _id: id }, body);
         const allUsers = yield models_1.default.find();
-        res.status(200).json({ message: 'User updated', user: updatedUser, users: allUsers });
+        res.status(200).json({
+            message: 'User updated',
+            user: updatedUser,
+            users: allUsers,
+        });
     }
     catch (error) {
         res.status(500).json({ error: 'Failed to update user' });

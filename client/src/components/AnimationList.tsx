@@ -92,7 +92,7 @@ class AnimationList extends React.Component<
       if (this.state.timeElapsed >= 1) {
       clearInterval(this.interval);
       this.setState({                     showLabelEmpty: true,
-        showChangeAcceptQuestion: true }); // Update the state to show the ChangeAcceptQuestions component
+        showChangeAcceptQuestion: true }); 
 
 }
     else{
@@ -152,7 +152,7 @@ class AnimationList extends React.Component<
                   console.log(AnimationData)
 
                   // AnimationDBModel.create(AnimationData);
-                  }, 1000);
+                  }, 5000);
                 
                 }
               });

@@ -18,6 +18,26 @@ const userSchema = new mongoose_1.Schema({
         type: Array,
         required: true
     },
+    model: {
+        type: String,
+        required: true
+    },
+    movement: {
+        type: String,
+        required: true
+    },
+    section: {
+        type: String,
+        required: true
+    },
+    image: {
+        type: String,
+        required: true
+    },
+    numberOfBalls: {
+        type: Number,
+        required: true
+    },
     status: {
         type: Boolean,
         required: true
