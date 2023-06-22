@@ -38,6 +38,17 @@ class AddUser extends React.Component<Props, State> {
         gender: '' ,
         sayYesNo: '',
         animationType: [],
+        model: '',
+        object: '',
+        positionX: 0,
+        positionY: 0,
+        positionZ: 0,
+        image: '',
+        section: '',
+        movement: '',
+        speed: 0,
+        distance: 0,
+        numberOfBalls: 0,
         status: false
       },
       isSubmitted: false,
@@ -163,14 +174,11 @@ class AddUser extends React.Component<Props, State> {
       
           if (response.status === 200 || response.status === 201) {
             console.log('Form data submitted successfully');
-            // Perform any additional actions after successful submission
           } else {
             console.error('Failed to submit form data');
-            // Handle the error condition appropriately
           }
         } catch (error) {
           console.error('Error submitting form data:', error);
-          // Handle the error condition appropriately
         }
       };
         

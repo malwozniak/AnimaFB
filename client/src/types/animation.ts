@@ -23,7 +23,6 @@ export interface AnimationDB extends Document {
   moving: string;
   speed: number;
   distance: number;
-  acceleration: number;
 }
 
 export const AnimationDBSchema = new Schema<AnimationDB>({
@@ -91,10 +90,7 @@ export const AnimationDBSchema = new Schema<AnimationDB>({
   { 
     type: Number,
   },
-  acceleration:
-   {
-    type: Number,
-  },
+  
 });
 export interface AnimationType {
   name: string;

@@ -4,6 +4,17 @@ interface IUser {
     gender: string
     sayYesNo: string
     animationType: array
+    model: string;
+    object: string;
+    positionX: number
+    positionY: number
+    positionZ: number
+    image: string
+    section: string
+    movement: string
+    speed: number
+    distance: number
+    numberOfBalls: number
     status: boolean
     createdAt?: string
     updatedAt?: string

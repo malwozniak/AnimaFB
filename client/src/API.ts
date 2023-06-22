@@ -17,13 +17,27 @@ export const addUser = async (
   formData: IUser
 ): Promise<AxiosResponse<ApiDataType>> => {
   try {
+    console.log('Response:', formData); // Log the response object
+
     const info: Omit<IUser, '_id'> = {
       age: formData.age,
       gender: formData.gender,
       sayYesNo: formData.sayYesNo,
       animationType: formData.animationType,
+      model: formData.model,
+      object: formData.object,
+      positionX: formData.positionX,
+      positionY: formData.positionY,
+      positionZ: formData.positionZ,
+      image: formData.image,
+      section: formData.section,
+      movement: formData.movement,
+      speed: formData.speed,
+      distance: formData.distance,
+      numberOfBalls: formData.numberOfBalls,
       status: false,
     }
+    console.log("INFO", info)
     const saveUser: AxiosResponse<ApiDataType> = await axios.post(
         `${baseUrl}/users`,
       info
