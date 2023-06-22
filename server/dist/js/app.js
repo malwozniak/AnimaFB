@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 3000;
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(routes_1.default);
-const uri = `mongodb+srv://admin:Badyslaw15@cluster0.mkpbn.mongodb.net/animations?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.mkpbn.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
 function connect(url) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
