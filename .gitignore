@@ -8,6 +8,7 @@
 /node_modules
 /server/nodemon.json
 /server/src/app.ts
+/server/src/.env
 # testing
 /client/coverage
 
@@ -20,7 +21,6 @@
 /client/.env.development.local
 /client/.env.test.local
 /client/.env.production.local
-
 /client/npm-debug.log*
 /client/yarn-debug.log*
 /client/yarn-error.log*
