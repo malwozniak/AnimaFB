@@ -33,22 +33,22 @@ class AddUser extends React.Component<Props, State> {
     super(props);
     this.state = {
       formData: {
-        _id: this.generateUniqueId(), 
+        _id: this.generateUniqueID(), 
         age: 0,
         gender: '' ,
         sayYesNo: '',
-        animationType: [],
+        animationType: '',
         model: '',
-        object: '',
-        positionX: 0,
-        positionY: 0,
-        positionZ: 0,
-        image: '',
-        section: '',
-        movement: '',
-        speed: 0,
-        distance: 0,
-        numberOfBalls: 0,
+        object: [],
+        positionX: [],
+        positionY: [],
+        positionZ: [],
+        image: [],
+        section: [],
+        movement: [],
+        speed: [],
+        distance: [],
+        numberOfBalls: [],
         status: false
       },
       isSubmitted: false,
@@ -98,12 +98,15 @@ class AddUser extends React.Component<Props, State> {
   
     return Object.keys(errors).length === 0;
   };
-  generateUniqueId = (): string => {
-    const timestamp = new Date().getTime();
-    const random = Math.floor(Math.random() * 10000);
-    const uniqueId = `${timestamp}_${random}`;
-    return uniqueId;
+
+  generateUniqueID = (): string => {
+    const timestamp = Date.now();
+    const random = Math.floor(Math.random() * 1000000);
+    const uniqueID = timestamp.toString() + random.toString();
+    return uniqueID;
   };
+
+
   handleAge  = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { formData } = this.state;
     const chosenNumber = Number(event.target.value);
@@ -186,7 +189,7 @@ class AddUser extends React.Component<Props, State> {
   handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
     const { formData } = this.state;
-  console.log("DATA", formData)
+    
     if (this.validateForm()) {
       console.log("please select f", formData)
 
@@ -228,7 +231,7 @@ class AddUser extends React.Component<Props, State> {
 
             </fieldset>
 
-            <fieldset>
+            <fieldset style={{ display: "flex" }}>
               <legend>Czy wcześniej zwróciłaś/zwróciłeś uwagę na animację będące na stronie:</legend>
               {answerYesNo.map((option, index) => (
                 <LabelChoice key={index}>
@@ -272,7 +275,7 @@ class AddUser extends React.Component<Props, State> {
 
         <div style={{ display: showCards ? "none" : "grid" }}>
           {showCards === false && isSubmitted === true && (
-            <AnimationList num={randomAnimation} showCards={true} showContainer={true}/>
+            <AnimationList num={randomAnimation} showCards={true} showContainer={true} user={formData}/>
           )}
         </div>
       </>

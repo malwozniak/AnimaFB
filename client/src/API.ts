@@ -5,7 +5,7 @@ const baseUrl: string = 'http://localhost:3000'
 export const getUser = async (): Promise<AxiosResponse<IUser>> => {
   try {
     const users = await axios.get(
-      baseUrl + '/users'
+      baseUrl + '/users' 
     )
     return users
   } catch (error) {
@@ -13,13 +13,24 @@ export const getUser = async (): Promise<AxiosResponse<IUser>> => {
   }
 }
 
+
+export const getUserId = async (userId: string): Promise<AxiosResponse<IUser>> => {
+  try {
+    const user = await axios.get(`${baseUrl}/users/${userId}`);
+    return user;
+  } catch (error) {
+    throw new Error(String(error));
+  }
+};
+
 export const addUser = async (
   formData: IUser
 ): Promise<AxiosResponse<ApiDataType>> => {
   try {
     console.log('Response:', formData); // Log the response object
 
-    const info: Omit<IUser, '_id'> = {
+    const info: Omit<IUser, 'key'> = {
+      _id: formData._id,
       age: formData.age,
       gender: formData.gender,
       sayYesNo: formData.sayYesNo,
@@ -53,14 +64,24 @@ export const addUser = async (
 
 export const updateUser = async (user :IUser) : Promise<AxiosResponse<ApiDataType>> => {
   try{
-      const bodyUpdate: Pick<IUser, 'status'> = {
-        status: true,
-      }
+    const bodyUpdate: Pick<IUser, 'numberOfBalls'> = {
+      numberOfBalls: user.numberOfBalls
+    };
+      console.log("BU",bodyUpdate)
+      console.log(`${baseUrl}/users/${user._id}`,user._id)
+try{
       const updatedUser: AxiosResponse<ApiDataType> = await axios.put(
 
         `${baseUrl}/users/${user._id}`, bodyUpdate
       )
+    
+      console.log("NONO", updatedUser)
       return updatedUser
+    }catch(error){
+        throw new Error(String(error))
+
+      }
+     
   } catch (error){
         throw new Error(String(error))
       }

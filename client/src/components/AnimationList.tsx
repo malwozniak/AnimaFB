@@ -21,7 +21,7 @@ type AnimationListProps = {
 num: number;
 showCards: boolean;
 showContainer: boolean;
-
+user: IUser;
 };
 
 type AnimationListState = {
@@ -164,7 +164,7 @@ class AnimationList extends React.Component<
   }
 
   render() {
-    const { showCards, showContainer } = this.props;
+    const { showCards, showContainer, user} = this.props;
     const {showLabel, loading, showLabelEmpty, showChangeAcceptQuestion} = this.state;
     const cardsToShow = showCards ? this.getAnimationDataList(): [];
     return (
@@ -245,9 +245,13 @@ class AnimationList extends React.Component<
           </div>
           </div>
           {showChangeAcceptQuestion &&  (
+
          <ChangeAcceptQuestions 
-         question={''} showCard={false} showContainer={true} />
-       
+            question={''} showCard={false} showContainer={true} sendAnswer={function (): void {
+              throw new Error('Function not implemented.');
+            } } user={user}/>
+        
+          
        )}
           </>
     );

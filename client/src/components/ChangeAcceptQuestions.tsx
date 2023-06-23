@@ -3,10 +3,15 @@ import {  AnimationListContainer, AnimationListRowFirst, Form } from '../constan
 
 import { generateRandomAnimation } from '../utils/functions';
 import AnimationList from './AnimationList';
+import { updateUser } from '../API';
+
+
 type QuestionProps = {
   question: string;
   showCard: boolean;
   showContainer: boolean;
+  sendAnswer: (user: IUser) => void;
+  user:IUser;
   };
 interface QuestionListState {
   answer: number;
@@ -40,24 +45,12 @@ class ChangeAcceptQuestions extends Component<QuestionProps,QuestionListState> {
   handleAnswerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ answer: Math.max(this.state.min, Math.min(this.state.max,Number(e.target.value))) });
   };
-  handleButtonClick = () => {
-    const answer = this.state;
-    fetch('/api/question',{
-      method:'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({numberBalls: answer})
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-
-
+  handleButtonClick = async () => {
+    try {
+      this.setState({ showCards: true,  showAnimationList: true});
+      console.log("Idę")
+      const { sendAnswer } = this.props;
+      const { answer } = this.state;
     this.setState((prevState) => ({
       clickCount: prevState.clickCount + 1
     }), () => {
@@ -66,12 +59,44 @@ class ChangeAcceptQuestions extends Component<QuestionProps,QuestionListState> {
         console.log(this.state.clickCount)
       }
     });
+
+    const updatedAnswer: IUser = {
+      ...sendAnswer,
+      _id: this.props.user._id,
+      age:  this.props.user.age,
+      gender:  this.props.user.gender,
+      sayYesNo:  this.props.user.sayYesNo,
+      animationType:  this.props.user.animationType,
+      model:  this.props.user.model,
+      object:  this.props.user.object,
+      positionX:  this.props.user.positionX,
+      positionY:  this.props.user.positionY,
+      positionZ:  this.props.user.positionZ,
+      image:  this.props.user.image,
+      section:  this.props.user.section,
+      movement:  this.props.user.movement,
+      speed:  this.props.user.speed,
+      distance:  this.props.user.distance,
+      numberOfBalls: [answer],
+      status: false
+    };
+    console.log('LALALALALALLA', updatedAnswer)
+
+    updateUser(updatedAnswer)
+     
+
+  
+  }catch (error) {
+    console.error('Błąd przesyłania danych formularza:', error);
+  }
+
+
   };
   
  
   render() {
     const { showCards, showThankYouMessage, showAnimationList} = this.state;
-    const {question, showCard, showContainer} = this.props;
+    const {question, showCard, showContainer, user } = this.props;
 
     return (
       <AnimationListContainer style={{display: showContainer? "grid": "none"}} >
@@ -92,12 +117,7 @@ class ChangeAcceptQuestions extends Component<QuestionProps,QuestionListState> {
           max="100"
           onChange={this.handleAnswerChange}
         />
-        <input type="submit" value="Zatwierdź" onClick={() => {
-                          this.handleButtonClick 
-          
-          this.setState({ showCards: true,  showAnimationList: true})
-        }
-      }
+        <input type="submit" value="Zatwierdź" onClick={this.handleButtonClick}
  />
 
        </Form>
@@ -106,7 +126,7 @@ class ChangeAcceptQuestions extends Component<QuestionProps,QuestionListState> {
           </AnimationListRowFirst>
             {showAnimationList &&  (
          <AnimationList  
-         num={generateRandomAnimation(0,15)} showCards={true} showContainer={true}/>
+            num={generateRandomAnimation(0, 15)} showCards={true} showContainer={true} user={user}/>
        
        )}
         {showCards && !showThankYouMessage }
@@ -118,3 +138,5 @@ class ChangeAcceptQuestions extends Component<QuestionProps,QuestionListState> {
 
 
 export default ChangeAcceptQuestions;
+
+
