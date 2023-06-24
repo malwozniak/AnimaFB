@@ -6,14 +6,9 @@ interface IUser {
     animationType: array
     model: array;
     object: array;
-    positionX: array
-    positionY: array
-    positionZ: array
     image: array
     section: array
     movement: array
-    speed: array
-    distance: array
     numberOfBalls: array
     status: boolean
     createdAt?: string
@@ -30,3 +25,6 @@ type ApiDataType = {
     users: IUser[]
     user?: IUser
   }
+
+
+  

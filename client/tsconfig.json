@@ -28,7 +28,7 @@
   },
   "include": [
     "src/**/*"
-  ],
+, "../server/src/types/animation.ts"  ],
   "exclude": [
     "node_modules",
     "build"

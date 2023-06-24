@@ -302,7 +302,41 @@ display:flex;
 align-items:center;
 width: fit-content;
 margin-right: auto;
+margin-left: auto;
 padding: 1vw;
+
+
+`
+const Fieldset = styled.fieldset`
+display: flex;
+text-align:center;
+justify-content: center;
+
+`;
+const FieldsetIN = styled.fieldset`
+display: flex;
+text-align:center;
+justify-content: center;
+margin: 5rem;
+
+`;
+
+const FieldsetQ = styled.fieldset`
+display: grid;
+text-align:center;
+grid-template-columns: repeat(3, 1fr);
+justify-content: center;
+margin: 5rem;
+
+`;
+const FieldsetNum = styled.fieldset`
+
+display: grid;
+text-align: center;
+grid-gap: 30px;
+-webkit-box-pack: center;
+justify-content: center;
+margin: 5rem;
 
 
 `
@@ -319,9 +353,15 @@ left: 3.5vw;
 margin-top: 3rem;
 `;
 
+const TextArea = styled.textarea`
+padding: 0 1rem;
+margin: 10px;
+width: 40%;
+`
 
    export{GlobalStyle,AnimationListBox,AnimationListContainer,AnimationListRow,
     AnimationListRowFirst, Form, Input, CardContainer,
-  AnimationCardContainer,AnimationCardTitle,AnimationDescription, DoubleColumnCard,
+  AnimationCardContainer,AnimationCardTitle,AnimationDescription, DoubleColumnCard, TextArea,
   Card, Ball, BallBouncing, BallBouncingDown,BallBouncingLeft ,BallBouncingRight,
-    BallMovement, MainApp, CardBorder, LabelChoice, ChoiceGroup, BallShow}
+    BallMovement, MainApp, CardBorder, LabelChoice, ChoiceGroup, BallShow, Fieldset,
+    FieldsetQ, FieldsetNum, FieldsetIN}

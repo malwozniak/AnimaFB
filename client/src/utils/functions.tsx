@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { Point } from '../types/animation';
 
@@ -62,4 +60,15 @@ export function getDistance(p1: Point, p2: Point): number {
   return Math.sqrt(dx * dx + dy * dy);
 }
 
-/**Random Move 3D functions */
+
+
+
+/**Generuje losowe id */
+
+
+export function generateUniqueID (): string {
+  const timestamp = Date.now();
+  const random = Math.floor(Math.random() * 1000000);
+  const uniqueID = timestamp.toString() + random.toString();
+  return uniqueID;
+};

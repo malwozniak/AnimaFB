@@ -12,19 +12,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getWeb = exports.updateUser = exports.addUser = exports.getUser = void 0;
-const models_1 = __importDefault(require("../../models"));
+exports.updateAnimation = exports.addAnimation = exports.getAnimationById = exports.getAnimation = exports.updateUser = exports.addUser = exports.getUserById = exports.getUser = exports.getWeb = void 0;
 const path_1 = __importDefault(require("path"));
-const getUser = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const users = yield models_1.default.find();
-        res.status(200).json({ users });
-    }
-    catch (error) {
-        res.status(500).json({ error: 'Failed to fetch users' });
-    }
-});
-exports.getUser = getUser;
+const users_1 = require("./users");
+Object.defineProperty(exports, "getUser", { enumerable: true, get: function () { return users_1.getUser; } });
+Object.defineProperty(exports, "getUserById", { enumerable: true, get: function () { return users_1.getUserById; } });
+Object.defineProperty(exports, "addUser", { enumerable: true, get: function () { return users_1.addUser; } });
+Object.defineProperty(exports, "updateUser", { enumerable: true, get: function () { return users_1.updateUser; } });
+const animations_1 = require("./animations");
+Object.defineProperty(exports, "getAnimation", { enumerable: true, get: function () { return animations_1.getAnimation; } });
+Object.defineProperty(exports, "getAnimationById", { enumerable: true, get: function () { return animations_1.getAnimationById; } });
+Object.defineProperty(exports, "addAnimation", { enumerable: true, get: function () { return animations_1.addAnimation; } });
+Object.defineProperty(exports, "updateAnimation", { enumerable: true, get: function () { return animations_1.updateAnimation; } });
 const getWeb = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         res.sendFile(path_1.default.join(__dirname, '../../../../../client/build/index.html'));
@@ -34,55 +33,3 @@ const getWeb = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getWeb = getWeb;
-const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { params: { id }, body, } = req;
-        const updatedUser = yield models_1.default.findByIdAndUpdate({ _id: id }, body);
-        const allUsers = yield models_1.default.find();
-        res.status(200).json({
-            message: 'User updated',
-            user: updatedUser,
-            users: allUsers,
-        });
-    }
-    catch (error) {
-        res.status(500).json({ error: 'Failed to update user' });
-    }
-});
-exports.updateUser = updateUser;
-const addUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const body = req.body;
-        // Validation
-        if (body.age <= 0 || body.age > 100) {
-            res.status(400).json({ error: 'Age must be between 1 and 100' });
-            return;
-        }
-        if (!body.gender) {
-            res.status(400).json({ error: 'Please provide a gender' });
-            return;
-        }
-        if (!body.sayYesNo) {
-            res.status(400).json({ error: 'Please select an option' });
-            return;
-        }
-        if (!body.animationType || body.animationType.length === 0) {
-            res.status(400).json({ error: 'Please select at least one animation type' });
-            return;
-        }
-        const user = new models_1.default({
-            age: body.age,
-            gender: body.gender,
-            sayYesNo: body.sayYesNo,
-            animationType: body.animationType,
-            status: false,
-        });
-        const newUser = yield user.save();
-        const allUsers = yield models_1.default.find();
-        res.status(201).json({ message: 'User added', user: newUser, users: allUsers });
-    }
-    catch (error) {
-        res.status(500).json({ error: 'Failed to add user' });
-    }
-});
-exports.addUser = addUser;

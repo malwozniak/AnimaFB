@@ -2,6 +2,9 @@ import { IUser } from  '../types/user'
 import { model, Schema } from 'mongoose'
 
 const userSchema: Schema = new Schema({
+    _id: {
+        type:String,
+    },
     age: {
         type: Number,
         required: true
@@ -19,29 +22,44 @@ const userSchema: Schema = new Schema({
         required: true
     },
     model: {
-        type: String,
-        required: true
+        type: Array,
     },
-    movement: {
-        type: String,
-        required: true
+    object: {
+        type: Array,
     },
-    section: {
-        type: String,
-        required: true
+    positionX: {
+        type: Array,
+    },
+    positionY: {
+        type: Array,
+    },
+    positionZ: {
+        type: Array,
     },
     image: {
-        type: String,
-        required: true
+        type: Array,
     },
+    section: {
+        type: Array,
+    },
+    movement: {
+        type: Array,
+    },
+    speed: {
+        type: Array,
+    },
+    distance: {
+        type: Array,
+    },
+   
     numberOfBalls: {
-        type: Number,
-        required: true
+        type: Array,
     },
     status: {
         type: Boolean,
         required: true
-    }
+    },
+   
 
 }, { timestamps: true })
 

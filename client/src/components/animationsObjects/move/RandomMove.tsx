@@ -8,7 +8,13 @@ import {
   RandomImage} from '../../../utils/functions';
 import { BallMovement, Ball, Card } from '../../../constants/style';
 import { Point } from '../../../types/animation';
-function RandomMove(): JSX.Element {
+
+interface AnimationRandomProps {
+  updatePositions: (x: number, y: number, z: number) => void;
+}
+
+
+function RandomMove({updatePositions}: AnimationRandomProps): JSX.Element {
   const [styles] = useState([{ transform: 'translate(0, 0)' }]);
 
   useEffect(() => {
@@ -28,7 +34,7 @@ function RandomMove(): JSX.Element {
       for (let i: number = 0; i < 50; i++) {
         const x: number = getRandomNumber(-3, 3);
         const y: number = getRandomNumber(-3, 3);
-
+        updatePositions(x,y,0)
         keyframes.push({ transform: `translate(${x}vw, ${y}vw)` });
       }
 

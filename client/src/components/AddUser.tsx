@@ -1,7 +1,7 @@
 import React from 'react';
-import { ChoiceGroup, Form, LabelChoice } from '../constants/style';
+import { ChoiceGroup, Fieldset, Form, LabelChoice } from '../constants/style';
 import AnimationList from './AnimationList';
-import { generateRandomAnimation } from '../utils/functions';
+import { generateRandomAnimation, generateUniqueID } from '../utils/functions';
 import { gender, answerYesNo, animationWhich } from '../constants';
 import { addUser } from '../API';
 
@@ -33,21 +33,16 @@ class AddUser extends React.Component<Props, State> {
     super(props);
     this.state = {
       formData: {
-        _id: this.generateUniqueID(), 
+        _id: generateUniqueID(), 
         age: 0,
         gender: '' ,
         sayYesNo: '',
         animationType: '',
         model: '',
         object: [],
-        positionX: [],
-        positionY: [],
-        positionZ: [],
         image: [],
         section: [],
         movement: [],
-        speed: [],
-        distance: [],
         numberOfBalls: [],
         status: false
       },
@@ -70,28 +65,29 @@ class AddUser extends React.Component<Props, State> {
     };
 
   }
+  
 
   validateForm = (): boolean => {
     const { formData } = this.state;
     const errors: any = {};
   
     if (formData.age <= 0 || formData.age > 100) {
-      errors.age = 'Age must be between 1 and 100';
+      errors.age = 'Wiek musi być pomiędzy 1 a 100';
     }
   
     if (formData.gender === '') {
-      console.log("please select")
-      errors.gender = 'Please select a gender';
+      console.log("Proszę zaznaczyć.")
+      errors.gender = 'Proszę zaznaczyć płeć';
     }
   
     if (formData.sayYesNo === '') {
-      console.log("please select")
+      console.log("Proszę zaznaczyć.")
 
-      errors.sayYesNo = 'Please select an option';
+      errors.sayYesNo = 'Proszę zaznaczyć opcję.';
     }
   
     if (formData.animationType.length === 0) {
-      errors.animationType = 'Please select at least one option';
+      errors.animationType = 'Proszę zaznaczyć przynajmniej jedną z opcji.';
     }
   
     this.setState({ validationErrors: errors });
@@ -99,12 +95,7 @@ class AddUser extends React.Component<Props, State> {
     return Object.keys(errors).length === 0;
   };
 
-  generateUniqueID = (): string => {
-    const timestamp = Date.now();
-    const random = Math.floor(Math.random() * 1000000);
-    const uniqueID = timestamp.toString() + random.toString();
-    return uniqueID;
-  };
+  
 
 
   handleAge  = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -176,12 +167,12 @@ class AddUser extends React.Component<Props, State> {
           const response = await addUser(this.state.formData);
       
           if (response.status === 200 || response.status === 201) {
-            console.log('Form data submitted successfully');
+            console.log('Dane formularza przesłane pomyślnie');
           } else {
-            console.error('Failed to submit form data');
+            console.error('Nie udało się przesłać danych formularza');
           }
         } catch (error) {
-          console.error('Error submitting form data:', error);
+          console.error('Błąd przesyłania danych formularza:', error);
         }
       };
         
@@ -191,15 +182,13 @@ class AddUser extends React.Component<Props, State> {
     const { formData } = this.state;
     
     if (this.validateForm()) {
-      console.log("please select f", formData)
-
       this.props.saveUser(formData);
       this.setState({ isSubmitted: true });
     }
   };
 
   render() {
-    const { formData, isSubmitted, showCards, randomAnimation, validationErrors } = this.state;
+    const { formData, isSubmitted, showCards, validationErrors } = this.state;
 
     return (
       <>
@@ -209,7 +198,7 @@ class AddUser extends React.Component<Props, State> {
             <input onChange={this.handleAge} type='number' max="100" min="0" id='age' placeholder="0" />
             {validationErrors.age && <span className='error'>{validationErrors.age}</span>}
 
-            <fieldset>
+            <Fieldset>
               <legend>Zaznacz swoją płeć:</legend>
               {gender.map((option, index) => (
               <ChoiceGroup key={index}>
@@ -229,9 +218,9 @@ class AddUser extends React.Component<Props, State> {
               ))}
                {validationErrors.gender && <span className='error'>{validationErrors.gender}</span>}
 
-            </fieldset>
+            </Fieldset>
 
-            <fieldset style={{ display: "flex" }}>
+            <Fieldset>
               <legend>Czy wcześniej zwróciłaś/zwróciłeś uwagę na animację będące na stronie:</legend>
               {answerYesNo.map((option, index) => (
                 <LabelChoice key={index}>
@@ -249,9 +238,9 @@ class AddUser extends React.Component<Props, State> {
               ))}
               {validationErrors.sayYesNo && <span className='error'>{validationErrors.sayYesNo}</span>}
 
-            </fieldset>
+            </Fieldset>
 
-            <fieldset style={{ display: "flex" }}>
+            <Fieldset>
               <legend>Jakie animacje najbardziej zwróciły twoją uwagę?</legend>
               {animationWhich.map((option, index) => (
                 <LabelChoice key={index}>
@@ -267,15 +256,16 @@ class AddUser extends React.Component<Props, State> {
               ))}
               {validationErrors.animationType && <span className='error'>{validationErrors.animationType}</span>}
 
-            </fieldset>
-            <input disabled={!formData.age || !formData.gender || !formData.sayYesNo || formData.animationType.length === 0} onClick={this.handleClick} type="submit" value="Zatwierdź" />
+            </Fieldset>
+            {/* <input disabled={!formData.age || !formData.gender || !formData.sayYesNo || formData.animationType.length === 0} onClick={this.handleClick} type="submit" value="Zatwierdź" /> */}
+            <input onClick={this.handleClick} type="submit" value="Zatwierdź" />
 
           </Form>
         )}
 
         <div style={{ display: showCards ? "none" : "grid" }}>
           {showCards === false && isSubmitted === true && (
-            <AnimationList num={randomAnimation} showCards={true} showContainer={true} user={formData}/>
+            <AnimationList indexBoard={0} showCards={true} showContainer={true} user={formData} />
           )}
         </div>
       </>

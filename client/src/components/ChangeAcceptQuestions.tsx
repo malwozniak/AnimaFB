@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import {  AnimationListContainer, AnimationListRowFirst, Form } from '../constants/style';
+import {  AnimationListContainer, AnimationListRowFirst, FieldsetIN, FieldsetNum, FieldsetQ, Form, LabelChoice, TextArea } from '../constants/style';
 
 import { generateRandomAnimation } from '../utils/functions';
 import AnimationList from './AnimationList';
 import { updateUser } from '../API';
+import { chosenBallType, chosenMoving, sectionType } from '../constants';
 
 
 type QuestionProps = {
@@ -12,6 +13,7 @@ type QuestionProps = {
   showContainer: boolean;
   sendAnswer: (user: IUser) => void;
   user:IUser;
+  indexBoard: number;
   };
 interface QuestionListState {
   answer: number;
@@ -23,6 +25,10 @@ interface QuestionListState {
   clickCount: number;
   showThankYouMessage: boolean;
   showAnimationList: boolean;
+  selectedAns: string,
+  textArea: string,
+  chosenSection: Array<String>,
+  indexBoard: number,
   
 };
 
@@ -39,24 +45,35 @@ class ChangeAcceptQuestions extends Component<QuestionProps,QuestionListState> {
       showCards: false,
       min: 0,
       max: 150,
+      selectedAns: '',
+      textArea: '',
+      chosenSection: [],
+      indexBoard: this.props.indexBoard,
+
     };
   }
+  handleTextAreaAnswer = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+   this.setState({ textArea: e.target.value }) ;
+  };
+
 
   handleAnswerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ answer: Math.max(this.state.min, Math.min(this.state.max,Number(e.target.value))) });
   };
+
+
   handleButtonClick = async () => {
     try {
       this.setState({ showCards: true,  showAnimationList: true});
-      console.log("Idę")
+     
       const { sendAnswer } = this.props;
       const { answer } = this.state;
     this.setState((prevState) => ({
-      clickCount: prevState.clickCount + 1
+      indexBoard: prevState.indexBoard
     }), () => {
-      if (this.state.clickCount === 3) {
+      if (this.state.indexBoard === 3) {
         this.setState({ showThankYouMessage: true, showCards: true });
-        console.log(this.state.clickCount)
+        // console.log(this.state.indexBoard)
       }
     });
 
@@ -67,20 +84,15 @@ class ChangeAcceptQuestions extends Component<QuestionProps,QuestionListState> {
       gender:  this.props.user.gender,
       sayYesNo:  this.props.user.sayYesNo,
       animationType:  this.props.user.animationType,
-      model:  this.props.user.model,
-      object:  this.props.user.object,
-      positionX:  this.props.user.positionX,
-      positionY:  this.props.user.positionY,
-      positionZ:  this.props.user.positionZ,
-      image:  this.props.user.image,
-      section:  this.props.user.section,
-      movement:  this.props.user.movement,
-      speed:  this.props.user.speed,
-      distance:  this.props.user.distance,
+      model:  'kula',
+      object:  [chosenBallType],
+      movement: [chosenMoving],
+      image: [this.state.textArea],
+      section: [this.state.chosenSection],
       numberOfBalls: [answer],
       status: false
     };
-    console.log('LALALALALALLA', updatedAnswer)
+    console.log('Odpowiedź zaktualizowana', updatedAnswer)
 
     updateUser(updatedAnswer)
      
@@ -93,44 +105,97 @@ class ChangeAcceptQuestions extends Component<QuestionProps,QuestionListState> {
 
   };
   
+  choiceHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = event.target;
+  
+    this.setState((prevState) => {
+      if (checked) {
+        return {
+          chosenSection: [...prevState.chosenSection, value.toLowerCase()],
+        };
+      } else {
+        return {
+          chosenSection: prevState.chosenSection.filter(
+            (option) => option !== value.toLowerCase()
+          ),
+        };
+      }
+    });
+  };
  
   render() {
-    const { showCards, showThankYouMessage, showAnimationList} = this.state;
+    const { showCards, showThankYouMessage, showAnimationList, textArea, indexBoard} = this.state;
     const {question, showCard, showContainer, user } = this.props;
 
     return (
       <AnimationListContainer style={{display: showContainer? "grid": "none"}} >
+         {/* {console.log("SHOWCARDS",showCards)} */}
+          
+         {!showCards && indexBoard <= 3 && ( 
         <AnimationListRowFirst  style={{ display: showCard ? "none" : "grid" }} >
 
-        {showCards === false && (
+        
           <Form >
-        <label>
+            <FieldsetIN>
+              <legend>Wypisz, co pojawiło się na zdjęciach:</legend>
+             <TextArea placeholder='Tutaj wpisz swoje spostrzeżenia...' value={textArea} onChange={this.handleTextAreaAnswer} />
+             
+            </FieldsetIN>
 
 
-          {`${question}`}
-          Wprowadź poniżej liczbę policzonych kulek:
-        </label>
-        <input
-          type="number"
-          placeholder="0"
-          min="0"
-          max="100"
-          onChange={this.handleAnswerChange}
-        />
+          
+            <FieldsetQ>
+              <legend>Zaznacz, w których kartach były dane obiekty kuli:</legend>
+              {sectionType.map((option, index) => (
+                <LabelChoice key={index}>
+                  <input
+                    type="checkbox"
+                    name="sectionType"
+                    value={option.toLowerCase()}
+                    id={`sectionType-${index}`}
+                    onChange={this.choiceHandler}
+                  />
+                  
+                  <label htmlFor={`sectionType-${index}`}>{option}</label>
+                </LabelChoice>
+                
+              ))}
+             
+            </FieldsetQ>
+            
+            <FieldsetNum>
+                <label>
+
+
+                  {`${question}`}
+                  Wprowadź poniżej liczbę policzonych kulek:
+                </label>
+                <input
+                  type="number"
+                  placeholder="0"
+                  min="0"
+                  max="100"
+                  onChange={this.handleAnswerChange}
+                />
+        </FieldsetNum>
+        <FieldsetIN>
         <input type="submit" value="Zatwierdź" onClick={this.handleButtonClick}
  />
-
+</FieldsetIN>
        </Form>
 
-        )}
+
           </AnimationListRowFirst>
+          )}
             {showAnimationList &&  (
+              
          <AnimationList  
-            num={generateRandomAnimation(0, 15)} showCards={true} showContainer={true} user={user}/>
+            indexBoard={this.state.indexBoard} showCards={true} showContainer={true} user={user} />
        
        )}
-        {showCards && !showThankYouMessage }
-        {showThankYouMessage && <p>Dziękuję za wypełnienie formularza oraz wzięcia udziału w badaniu!</p>}
+        {showCards && showThankYouMessage 
+         && <p>Dziękuję za wypełnienie formularza oraz wzięcia udziału w badaniu!</p>}
+         
       </AnimationListContainer>
     );
   }
