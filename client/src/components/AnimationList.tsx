@@ -9,7 +9,7 @@ import { Canvas } from '@react-three/fiber';
 import {  nameObjects, ballType, questions } from '../constants';
 import ChangeAcceptQuestions from './ChangeAcceptQuestions';
 import { IAnimation } from '../types/animation';
-import { generateUniqueID } from '../utils/functions';
+import { generateRandomAnimation, generateUniqueID } from '../utils/functions';
 import RandomMove from './animationsObjects/move/RandomMove';
 import AnimationMotion from './animationsObjects/AnimationMotion';
 import SphereMove from './animationsObjects/AnimationThreeD';
@@ -158,21 +158,21 @@ drawAnimationListData() {
       section: string;
       movement: string;
       speed: number[];
-      distance: number[];
+      information: any;
       status: boolean;
     }[] = [];
 
 
     for (let i = 0; i < 9; i++) {
-     uniqueObject=this.components[Math.round(Math.random() * this.components.length)]     
+     uniqueObject=this.components[generateRandomAnimation(0,this.components.length-1)]     
       console.log("UNIQYE", uniqueObject);
+
 
       const balltype =
         uniqueObject.type.name === "RandomMove" ||
         uniqueObject.type.name === "AnimationMotion"
           ? ballType[0]
           : ballType[1];
-      console.log(balltype);
 
 
 
@@ -181,15 +181,15 @@ drawAnimationListData() {
         userId: this.props.user._id,
         name: nameObjects[i],
         model: "kula",
-        object: String(uniqueObject.type.name),
+        object: balltype,
         positionX: [SetPositionX],
         positionY: [SetPositionY],
         positionZ: [SetPositionZ],
         image: "",
-        section: String(i),
+        section: String(i+1),
         movement: "",
         speed: [],
-        distance: [],
+        information: uniqueObject,
         status: false,
       };
 
@@ -198,7 +198,7 @@ drawAnimationListData() {
 
 
     const AnimationDataArray = [...animationData];
-    console.log("anima", AnimationDataArray.length);
+    console.log("anima", AnimationDataArray);
     console.log("Unique count:", uniqueObject.key);
     this.setState((state) => ({
       ...state,
@@ -220,7 +220,7 @@ pause(ms: number): Promise<void> {
 
   render() {
     const { showCards, showContainer, user} = this.props;
-    const {showLabel, loading, showLabelEmpty, showChangeAcceptQuestion, uniqueObject} = this.state;
+    const {showLabel, loading, showLabelEmpty, showChangeAcceptQuestion} = this.state;
     const cardsToShow = this.state.AnimationData;
 
 
@@ -290,7 +290,7 @@ pause(ms: number): Promise<void> {
 
            
                  {this.setState({ cardNumber: index + 1})}
-                 {uniqueObject}
+                 {item.information}
                     </Card>
   
                 </CardContainer>

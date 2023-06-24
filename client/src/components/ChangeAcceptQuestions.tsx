@@ -187,7 +187,7 @@ class ChangeAcceptQuestions extends Component<QuestionProps,QuestionListState> {
 
           </AnimationListRowFirst>
           )}
-            {showAnimationList &&  (
+            {showAnimationList && indexBoard <= 3 && (
               
          <AnimationList  
             indexBoard={this.state.indexBoard} showCards={true} showContainer={true} user={user} />

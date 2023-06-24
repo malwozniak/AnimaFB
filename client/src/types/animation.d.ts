@@ -12,7 +12,7 @@ interface IAnimation {
   section: string;
   movement: string;
   speed: number[]
-  distance: number[]
+  information: JSX
   status: boolean
   createdAt?: string
   updatedAt?: string

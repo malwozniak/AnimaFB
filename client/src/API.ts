@@ -122,7 +122,7 @@ export const addAnimation = async (
       section: formDataAnimation.section,
       movement: formDataAnimation.movement,
       speed: formDataAnimation.speed,
-      distance: formDataAnimation.distance,
+      information: formDataAnimation.information,
       status: false,
     };
     // console.log("INFO", info)

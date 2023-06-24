@@ -31,7 +31,7 @@ class AddAnimation extends React.Component<Props, State> {
         section: '',
         movement: '',
         speed: [],
-        distance: [],
+        information: [],
         status: false
       },
       chosenNumber: 0,
