@@ -1,6 +1,8 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { device } from '../constants/device';
 import { createGlobalStyle } from 'styled-components'
+import { BallBouncingProps } from '../types/animation';
+ 
 
 
 const GlobalStyle = createGlobalStyle`
@@ -125,7 +127,6 @@ width: 3vw;
 left: 3.5vw;
 top: 3.5vw;
 `;
-
 /* Ball bouncing up */
 
 const ballBouncing = keyframes`
@@ -154,12 +155,13 @@ const ballBouncing = keyframes`
 }
 `;
 
-const BallBouncing = styled.div`
-animation: ${ballBouncing} 1s ease-in infinite;
-transform-origin: bottom;
+const BallBouncing = styled.div<BallBouncingProps>`
+  transform-origin: bottom;
+  animation: ${({ ballSpeedValue, ballMoveValue, ballDistanceValue }) => {
+    console.log("WE", ballDistanceValue, ballSpeedValue, ballMoveValue);
+    return css`${ballBouncing} ${ballDistanceValue} ${ballSpeedValue} ${ballMoveValue}`;
+  }};
 `;
-
-
 /* End ball bouncing up*/
 /* Ball bouncing down*/
 const ballBouncingDown = keyframes`
@@ -176,7 +178,7 @@ const ballBouncingDown = keyframes`
     transform: translateY(1.4vw);
   }
   30%,
-  70% {
+s  70% {
     transform: translateY(2.1vw);
   }
   40%,
@@ -189,9 +191,13 @@ const ballBouncingDown = keyframes`
 `;
 
 
-const BallBouncingDown = styled.div`
-animation: ${ballBouncingDown} 1s ease-in infinite;
-transform-origin: bottom;`;
+const BallBouncingDown = styled.div<BallBouncingProps>`
+  transform-origin: bottom;
+  animation: ${({ ballSpeedValue, ballMoveValue, ballDistanceValue }) => {
+    console.log("WE", ballDistanceValue, ballSpeedValue, ballMoveValue);
+    return css`${ballBouncingDown} ${ballDistanceValue} ${ballSpeedValue} ${ballMoveValue}`;
+  }};
+`;
 
 
 
@@ -225,11 +231,14 @@ const ballBouncingLeft = keyframes`
     transform: translateX(-3.5vw);
   }
 `;
-const BallBouncingLeft = styled.div`
-animation: ${ballBouncingLeft} 1s ease-in infinite;
-transform-origin: bottom;
-`;
 
+const BallBouncingLeft = styled.div<BallBouncingProps>`
+  transform-origin: bottom;
+  animation: ${({ ballSpeedValue, ballMoveValue, ballDistanceValue }) => {
+    console.log("WE", ballDistanceValue, ballSpeedValue, ballMoveValue);
+    return css`${ballBouncingLeft} ${ballDistanceValue} ${ballSpeedValue} ${ballMoveValue}`;
+  }};
+`;
 
 /* End ball bouncing left*/
 /* Ball bouncing right*/
@@ -260,12 +269,13 @@ const ballBouncingRight = keyframes`
 }
 `;
 
-
-const BallBouncingRight = styled.div`
-animation: ${ballBouncingRight} 1s ease-in infinite;
+const BallBouncingRight = styled.div<BallBouncingProps>`
 transform-origin: bottom;
+animation: ${({ ballSpeedValue, ballMoveValue, ballDistanceValue }) => {
+  console.log("WE", ballDistanceValue, ballSpeedValue, ballMoveValue);
+  return css`${ballBouncingRight} ${ballDistanceValue} ${ballSpeedValue} ${ballMoveValue}`;
+}};
 `;
-
 
 /* End ball bouncing right */
 
@@ -318,6 +328,7 @@ display: flex;
 text-align:center;
 justify-content: center;
 margin: 5rem;
+border:none;
 
 `;
 
@@ -337,6 +348,7 @@ grid-gap: 30px;
 -webkit-box-pack: center;
 justify-content: center;
 margin: 5rem;
+border: none;
 
 
 `

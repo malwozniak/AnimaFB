@@ -7,15 +7,16 @@ import {
   
   RandomImage} from '../../../utils/functions';
 import { BallMovement, Ball, Card } from '../../../constants/style';
-import { Point } from '../../../types/animation';
-
-interface AnimationRandomProps {
-  updatePositions: (x: number, y: number, z: number) => void;
-}
+import { AnimationMotionProps, Point } from '../../../types/animation';
+import { ballMove } from '../../../constants';
 
 
-function RandomMove({updatePositions}: AnimationRandomProps): JSX.Element {
+function RandomMove({ updatePositions }: AnimationMotionProps ): JSX.Element {
   const [styles] = useState([{ transform: 'translate(0, 0)' }]);
+  const [x, setX] = useState(0);
+  const [y, setY] = useState(0);
+
+  let img: string = String(generateRandomAnimation(1, 16));
 
   useEffect(() => {
     const balls = Array.from(document.querySelectorAll('.ballr')) as HTMLElement[];
@@ -30,11 +31,11 @@ function RandomMove({updatePositions}: AnimationRandomProps): JSX.Element {
       const speed: number = 0.33; // in pixels per second
       const duration: number = (distance / speed) * 1000;
       const keyframes: Keyframe[] = [];
-
       for (let i: number = 0; i < 50; i++) {
-        const x: number = getRandomNumber(-3, 3);
-        const y: number = getRandomNumber(-3, 3);
-        updatePositions(x,y,0)
+        x: getRandomNumber(-3, 3);
+        y: getRandomNumber(-3, 3);
+       setX(x)
+       setY(y)
         keyframes.push({ transform: `translate(${x}vw, ${y}vw)` });
       }
 
@@ -42,12 +43,13 @@ function RandomMove({updatePositions}: AnimationRandomProps): JSX.Element {
       keyframes.push({ transform: 'translate(0, 0)' });
       const options: KeyframeAnimationOptions = {
         duration,
-        easing: 'linear',
+        easing: ballMove[generateRandomAnimation(0, ballMove.length-1)]?? 'defaultEasing',
         iterations: Infinity,
       };
+      const easing: string = options.easing || 'defaultEasing';
 
       balls[ballIndex].animate(keyframes, options);
-
+      updatePositions(x,y,0, img, String(speed), easing, String(duration))
       
     }
     
@@ -64,7 +66,7 @@ function RandomMove({updatePositions}: AnimationRandomProps): JSX.Element {
         <Ball key={index} className="ballr" style={style}></Ball>
       ))}
       </BallMovement>
-      <RandomImage num={generateRandomAnimation(1, 16)} />
+      <RandomImage num={img} />
 
     </Card>
   );

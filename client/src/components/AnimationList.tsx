@@ -10,10 +10,10 @@ import {  nameObjects, ballType, questions } from '../constants';
 import ChangeAcceptQuestions from './ChangeAcceptQuestions';
 import { IAnimation } from '../types/animation';
 import { generateRandomAnimation, generateUniqueID } from '../utils/functions';
-import RandomMove from './animationsObjects/move/RandomMove';
+// import RandomMove from './animationsObjects/move/RandomMove';
 import AnimationMotion from './animationsObjects/AnimationMotion';
-import SphereMove from './animationsObjects/AnimationThreeD';
-import RandomMove3D from './animationsObjects/move/RandomMove3D';
+// import SphereMove from './animationsObjects/AnimationThreeD';
+// import RandomMove3D from './animationsObjects/move/RandomMove3D';
 
 
 
@@ -34,9 +34,14 @@ type AnimationListState = {
   loading: boolean;
   cardNumber: number;
   uniqueObject: JSX.Element;
-  SetPositionX: number;
-  SetPositionY: number;
-  SetPositionZ: number;
+  x: number;
+  y: number;
+  z: number;
+  speed: string;
+  move: string;
+  distance: string;
+  SetImg: string;
+  img: string,
   created: boolean;
   indexBoard: number;
 };
@@ -50,23 +55,7 @@ class AnimationList extends React.Component<
 
   constructor(props: AnimationListProps | Readonly<AnimationListProps>) {
     super(props);
-
-    this.components = [
-      <Canvas camera={{ position: [0, 0, 5] }}>
-      <ambientLight intensity={1} />
-      <pointLight position={[40, 40, 40]} />
-          <SphereMove/>
-          </Canvas>,
-          <RandomMove updatePositions={this.updatePositions}/>,
-          <AnimationMotion updatePositions={this.updatePositions}/>,
-          <Canvas camera={{ position: [0, 0, 5] }}>
-          <ambientLight intensity={1} />
-          <pointLight position={[40, 40, 40]} />
-           <RandomMove3D />
-           </Canvas>,
-
-    ];
-    
+   
     this.state = {
       AnimationData: [],
       timeElapsed: 0, 
@@ -81,14 +70,34 @@ class AnimationList extends React.Component<
         props: undefined,
         key: null
       },
-      SetPositionX: 0,
-      SetPositionY: 0,
-      SetPositionZ: 0,
+      x: 0,
+      y: 0,
+      z: 0,
+      speed: '',
+      move: '',
+      distance: '',
+      SetImg: '',
+      img: '',
       created: false,
       indexBoard: this.props.indexBoard +1,
   
 
     };
+    this.components = [
+      // <Canvas camera={{ position: [0, 0, 5] }}>
+      // <ambientLight intensity={1} />
+      // <pointLight position={[40, 40, 40]} />
+      //     <SphereMove/>
+      //     </Canvas>,
+      
+      <AnimationMotion updatePositions={this.handleUpdatePositions}/>,
+      // <Canvas camera={{ position: [0, 0, 5] }}>
+      // <ambientLight intensity={1} />
+      // <pointLight position={[40, 40, 40]} />
+      //  <RandomMove3D />aa
+      //  </Canvas>,
+
+];
   }
 
   getAnimationDataList() {
@@ -107,8 +116,8 @@ class AnimationList extends React.Component<
         
       }));
   
-      console.log("Time count:", this.state.timeElapsed);
-      if (this.state.timeElapsed >= 1) {
+      console.log("Time laps:", this.state.timeElapsed);
+      if (this.state.timeElapsed > 1) {
         clearInterval(this.interval);
         this.setState({
           showLabelEmpty: true,
@@ -119,30 +128,48 @@ class AnimationList extends React.Component<
           this.drawAnimationListData();
         
       
-      }
-    }, 6000);
-  }
+        }
+      }, 6000);
+    }
   componentWillUnmount() {
     clearInterval(this.interval);
   }
 
-updatePositions = (x: number, y: number, z: number) => {
-  this.setState({
-    SetPositionX: x,
-    SetPositionY: y,
-    SetPositionZ: z,
-  });
-};
+
+
+  handleUpdatePositions = (x: any, y: any, z: any, img: any, s: any, m: any, d: any) => {
+      this.setState({
+        x,
+        y,
+        z,
+        img: img,
+        speed: s,
+        move: m,
+        distance: d,
+
+    });
+    // console.log("LALAL", z,y,img,x)
+  };
+
+
+
 drawAnimationListData() {
 
- const {AnimationData, SetPositionX, SetPositionY, SetPositionZ} = this.state;
-
+ 
+ const {AnimationData, x, y, z, img, speed, move, distance} = this.state;
  let { uniqueObject } = this.state;
+//  const randomIndex = generateRandomAnimation(0, this.components.length - 1);
+//  const selectedComponent = this.components[randomIndex];
+//   uniqueObject = React.cloneElement(selectedComponent, {
+//    updatePositions: this.updatePositions,
+//  });
+
+
 
   if (AnimationData.length <= 9) {
 
 
-    console.log("ANIMATION",AnimationData.length)
+    // console.log("ANIMATION",AnimationData.length)
 
 
     const animationData: {
@@ -157,7 +184,7 @@ drawAnimationListData() {
       image: string;
       section: string;
       movement: string;
-      speed: number[];
+      speed: string;
       information: any;
       status: boolean;
     }[] = [];
@@ -165,30 +192,34 @@ drawAnimationListData() {
 
     for (let i = 0; i < 9; i++) {
      uniqueObject=this.components[generateRandomAnimation(0,this.components.length-1)]     
-      console.log("UNIQYE", uniqueObject);
 
+     this.handleUpdatePositions(x, y, z, img, speed, move, distance);
 
-      const balltype =
+// console.log(uniqueObject,"PO")      
+       
+       const balltype =
         uniqueObject.type.name === "RandomMove" ||
         uniqueObject.type.name === "AnimationMotion"
           ? ballType[0]
           : ballType[1];
 
+      
+          // console.log("IMAGEwe",this.state.SetImage)
 
-
+          // console.log("PositionX",this.state.SetPositionX)
       const animationObject = {
         id: Number(generateUniqueID()),
         userId: this.props.user._id,
         name: nameObjects[i],
         model: "kula",
         object: balltype,
-        positionX: [SetPositionX],
-        positionY: [SetPositionY],
-        positionZ: [SetPositionZ],
-        image: "",
+        positionX: [x],
+        positionY: [y],
+        positionZ: [z],
+        image: img,
         section: String(i+1),
-        movement: "",
-        speed: [],
+        movement: move,
+        speed: speed,
         information: uniqueObject,
         status: false,
       };
@@ -198,8 +229,8 @@ drawAnimationListData() {
 
 
     const AnimationDataArray = [...animationData];
-    console.log("anima", AnimationDataArray);
-    console.log("Unique count:", uniqueObject.key);
+    console.log("Tablica z animacjami", AnimationDataArray);
+
     this.setState((state) => ({
       ...state,
       AnimationData: AnimationDataArray,
@@ -212,11 +243,7 @@ drawAnimationListData() {
     
   }
 }
-pause(ms: number): Promise<void> {
-  return new Promise<void>(resolve => {
-    setTimeout(resolve, ms);
-  });
-}
+
 
   render() {
     const { showCards, showContainer, user} = this.props;
@@ -239,8 +266,8 @@ pause(ms: number): Promise<void> {
             </label>
             <label>Poniżej przedstawiony jest model obiektu kuli w karcie:</label>
             {this.state.question.includes("3D") ? (
-                                    <CardBorder >
-                      <GlobalStyle/>
+                <CardBorder >
+                  <GlobalStyle/>
 
                     <Canvas camera={{ position: [0, 0, 5] }}>
                       <ambientLight intensity={1} />
@@ -255,8 +282,8 @@ pause(ms: number): Promise<void> {
                             metalness={0.1}
                           />
                         </mesh>          
-                    </Canvas>
-                    </CardBorder>
+                  </Canvas>
+                  </CardBorder>
                   ) : (
                    
                       <CardBorder >

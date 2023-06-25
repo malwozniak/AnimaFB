@@ -30,7 +30,7 @@ class AddAnimation extends React.Component<Props, State> {
         image: '',
         section: '',
         movement: '',
-        speed: [],
+        speed: '',
         information: [],
         status: false
       },
@@ -42,7 +42,7 @@ class AddAnimation extends React.Component<Props, State> {
   render() {
     return (
       <>
-        {/* Your component JSX */}
+        {/*  */}
       </>
     );
   }

@@ -60,7 +60,12 @@ export function getDistance(p1: Point, p2: Point): number {
   return Math.sqrt(dx * dx + dy * dy);
 }
 
+/**Generuje losowe liczy float */
+export  function getRandomFloat(min: number, max: number, decimals: any) {
+  const str = (Math.random() * (max - min) + min).toFixed(decimals);
 
+  return parseFloat(str);
+}
 
 
 /**Generuje losowe id */

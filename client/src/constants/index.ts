@@ -1,5 +1,13 @@
-import { BallBouncing, BallBouncingDown, BallBouncingLeft, BallBouncingRight } from "./style";
-import { generateRandomAnimation } from "../utils/functions";
+import {
+  BallBouncing as BouncingBall,
+  BallBouncingDown as BouncingBallDown,
+  BallBouncingLeft as BouncingBallLeft,
+  BallBouncingRight as BouncingBallRight,
+} from "./style";
+
+import { generateRandomAnimation, getRandomFloat, getRandomNumber } from "../utils/functions";
+import { StyledComponent } from "styled-components";
+import { BallBouncingProps } from "../types/animation";
 
 
 const moving = [
@@ -32,12 +40,18 @@ const gender = ['Kobieta', 'Mężczyzna', 'Nieokreślona']
 const answerYesNo =[ 'Tak', 'Nie']
 
 const animationWhich = ['ruch obiektu liniowy','ruch obiektu losowy','brak animacji', 'ruch przesadny']
+const ballMoveComponents : StyledComponent<"div", any, BallBouncingProps>[] = [
+  BouncingBall,
+  BouncingBallDown,
+  BouncingBallLeft,
+  BouncingBallRight
+];
+
 const ballXYZ = [0,-0.7,-1.4,-2.1,-2.8,-3.5,0.7,1.4,2.1,2.8,3.5]
-const ballMoving = [
-    BallBouncing,
-    BallBouncingDown,
-    BallBouncingLeft,
-    BallBouncingRight
-  ];
-  export {questions, ballXYZ, nameObjects, ballMoving, gender, ballType,  answerYesNo, animationWhich, sectionType, chosenBallType, chosenMoving};
+const ballSpeed = ['1s','2s']
+const ballMove = ['ease-in', 'linear', 'ease-out', 'ease-in-out', `cubic-bezier(${getRandomNumber(0.0,1.0)}, ${getRandomFloat(0.0,1.0,1)}, ${getRandomFloat(0.0,1.0,1)}, 1)`]
+const ballDistance = [`${generateRandomAnimation(0,20)}`, 'infinite']
+
+
+  export {questions,ballMoveComponents, ballXYZ, ballSpeed, ballMove, ballDistance, nameObjects, gender, ballType,  answerYesNo, animationWhich, sectionType, chosenBallType, chosenMoving};
   

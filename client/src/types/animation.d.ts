@@ -11,7 +11,7 @@ interface IAnimation {
   image: string;
   section: string;
   movement: string;
-  speed: number[]
+  speed: string;
   information: JSX
   status: boolean
   createdAt?: string
@@ -37,4 +37,15 @@ type AnimationDataType = {
   export interface Point {
     x: number;
     y: number;
+  }
+
+  export interface AnimationMotionProps {
+
+    updatePositions: (x: number, y: number, z: number, img: string, speed: string, move: string, distance: string) => void;
+  }
+
+  export interface BallBouncingProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+    ballSpeedValue: string;
+    ballMoveValue: string;
+    ballDistanceValue: string;
   }
