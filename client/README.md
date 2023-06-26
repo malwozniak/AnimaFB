@@ -4,7 +4,7 @@
 
 Celem pracy jest opracowanie modelu systemu do badania efektywności animacji webowych pod kątem absorpcji uwagi użytkowników oraz zbadanie z udziałem eye trackera skuteczności animacji realizowanych w różnych technologiach. Podczas budowy prototypu aplikacji webowej jako metody animacji dwuwymiarowej oraz trójwymiarowej porównuje ze sobą rozwiązanie natywne CSS Animations z biblioteką Three.js.
 
-Najskuteczniejsze rodzaje animacji zależą od kontekstu, w jakim są używane i od celu, jaki ma być osiągnięty. Oto kilka rodzajów animacji, które użyłam przy budowie modelu:
+Najskuteczniejsze rodzaje animacji zależą od kontekstu, w jakim są używane i od celu, jaki ma być osiągnięty.
 
 ## Animacja wyświetlania treści
 
@@ -21,7 +21,7 @@ Animacje, które przyciągają uwagę użytkownika poprzez kierowanie go w okre�
 # Wybór odpowiednich miar i wskaźników.
 
 Głównym celem badanie jest reakcja, skupienie użytkownika oraz przyciągnięcie uwagi badanej osoby poprzez szybkość oraz kierunek animacji zawartej w określonej sekcji aplikacji webowej.
-Głównymi wskaźnikami, które mierzą efektywność animacji, są:
+
 
 ## Czas ładowania strony
 
@@ -39,23 +39,3 @@ Animacje, które pomagają przyciągnąć uwagę użytkownika na określony elem
 
 Animacje, które są estetycznie wykonane i odpowiednio dopasowane do treści na stronie internetowej, mogą pomóc zwiększyć zaangażowanie użytkowników i zachęcić ich do dalszego korzystania z serwisu.
 
-# Określenie warunków testowych
-
-Grupą docelową użytkowników badania są chętni studenci, w przedziale wiekowym. Analizując określone obiekty, przez które są budowane animacja, podstawowymi figurami geometrycznymi są kwadra, trójkąt, koło. Musiałam początkowo wybrać odopwiedni testowany obiekt, którym jest koło, ponieważ jest przypomina punkt kierujący największą uwagę użytkownika.
-Następnie wybrałam odpowiednie rodzaje animacji,które badają ruch danego obiektu na stronie.
-
-# Przygotowanie zestawu danych
-
-Przygotowanie zestawu danych to ważny krok w budowie modelu.
-Opracowałam zestaw animacji, które będą testowane oraz zestaw kontroli, w których nie będzie animacji. Dzięki temu można porównać efektywność animacji z brakiem animacji.
-Dane, które są istotne przy budowie wskazanej animacji to ruch. Model składa się z galerii obrazków. Każdy z nich w pojedynczych kartach, losowo wyświetla obiekty z animacją wskazującą ruch liniowy, bądź losowy.
-
-# Przeprowadzenie badań
-
-Następnie z pomocą eye trackera dokonałam porównania wydajności oraz optymalnych rozwiązań dla poszczególnych kart oraz animacji wskazanych modeli.
-
-# Analiza wyników
-
-Po zakończeniu badania dokładnie przeanalizowałam wyniki.
-
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/react-ts-1dq1it)
