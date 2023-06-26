@@ -3,34 +3,23 @@ import { IAnimation } from  '../types/animation'
 
 
 export const animationSchema = new Schema({
-
+  id: {
+    type:String,
+},
   userId: 
-  {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
-
-  model:
   {
     type: String,
   },
+  name: {
+    type:String,
+},
 
   object: 
   {
     type: String,
   },
 
-  positionX: 
-  {
-    type: Array,
-  },
-
-  positionY: 
-  {
-    type: Array,
-  },
-
-  positionZ: 
+  position: 
   {
     type: Array,
   },
@@ -54,7 +43,10 @@ export const animationSchema = new Schema({
   },
   distance: 
   {
-    type: Array,
+    type: String,
+  },
+  information:{
+    type: Object
   },
   status: {
     type: Boolean,

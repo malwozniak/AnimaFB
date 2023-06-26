@@ -1,18 +1,23 @@
 import * as THREE from 'three';
 import {  useRef } from 'react';
-import { useFrame, useLoader } from '@react-three/fiber';
-import { BufferGeometry, Material, Mesh, Texture } from 'three';
+import { useFrame } from '@react-three/fiber';
 import React from 'react';
+import { AnimationMotionProps, Material } from '../../../library/library/allImports';
 
 
-function RandomMove3D() {
-  const mesh = useRef<Mesh<BufferGeometry, Material | Material[]>>(null); 
+
+export default function RandomMove3D({ updatePositions }: AnimationMotionProps ) {
+ 
+  const mesh = useRef<THREE.Mesh<THREE.BufferGeometry, Material | Material[]>>(null); 
+  const x = Math.random() * 10 - 3;
+  const y = Math.random() * 10 - 3;
+  const z = Math.random() * 10 - 3;
 //Zdefiniuj losową pozycję dla kuli
  const randomPosition = () => {
   return new THREE.Vector3(
-    Math.random() * 10 - 3, // Randomowwa wartość pomiędzy -3 a 3
-    Math.random() * 10 - 3,
-    Math.random() * 10 - 3
+    x, // Randomowwa wartość pomiędzy -3 a 3
+    y,
+    z
   );
 };
 
@@ -26,11 +31,7 @@ function RandomMove3D() {
   let position = randomPosition();
   let speed = randomSpeed();
   // Ładuję losowy obrazek
-  const texture = useLoader(
-    THREE.TextureLoader,
-    `https://raw.githubusercontent.com/malwozniak/react-ts-1dq1it/main/textures/img${
-      Math.floor(Math.random() * 16) + 1
-    }.jpg` ) as Texture;
+
 
 
   // Użycie hook'a useFrame, aby aktualizować pozycję sfery co klatkę
@@ -45,16 +46,20 @@ function RandomMove3D() {
     if (mesh.current.position.distanceTo(position) < 0.1) {
       position = randomPosition();
       speed = randomSpeed();
+      // console.log("Randomm Move 3D", speed)
     }
   }
   });
 
+  // const randomSpeedCons = [speed]
+  // const randomPos = [position]
+  console.log("Randomm Move 3D", position.x)
+
+updatePositions([x, y, z], [speed], "Random", "infinite");
+
   return (
     <mesh>
-      <mesh>
-        <planeGeometry args={[8, 8]} />
-        <meshStandardMaterial map={texture} attach="material" />
-      </mesh>
+    
       <mesh ref={mesh}>
         <sphereGeometry attach="geometry" args={[1, 16, 16]} />
         <meshStandardMaterial
@@ -68,6 +73,4 @@ function RandomMove3D() {
     </mesh>
   );
 }
-
-export default RandomMove3D;
 /**W tym przykładzie komponent Sphere tworzy kulę z losową pozycją początkową i prędkością, a następnie aktualizuje jej pozycję w każdej klatce, aby poruszać się w kierunku nowej losowej pozycji z losową prędkością. Do renderowania sceny używany jest komponent Canvas z react-three-fiber. */

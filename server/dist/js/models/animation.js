@@ -3,9 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.animationSchema = void 0;
 const mongoose_1 = require("mongoose");
 exports.animationSchema = new mongoose_1.Schema({
+    id: {
+        type: String,
+    },
     userId: {
-        type: mongoose_1.Schema.Types.ObjectId,
-        ref: "User",
+        type: String,
+    },
+    name: {
+        type: String,
     },
     model: {
         type: String,
@@ -35,7 +40,10 @@ exports.animationSchema = new mongoose_1.Schema({
         type: Array,
     },
     distance: {
-        type: Array,
+        type: String,
+    },
+    information: {
+        type: Object
     },
     status: {
         type: Boolean,

@@ -16,8 +16,9 @@ exports.getAnimationById = exports.updateAnimation = exports.addAnimation = expo
 const animation_1 = __importDefault(require("../../models/animation"));
 const getAnimation = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const allAnimations = yield animation_1.default.find();
-        res.status(200).json({ allAnimations });
+        const animations = yield animation_1.default.find();
+        console.log("Server", animations);
+        res.status(200).json({ animations });
     }
     catch (error) {
         res.status(500).json({ error: 'Nie udało się pobrać animacji' });
@@ -61,6 +62,7 @@ const addAnimation = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const animation = new animation_1.default({
             id: body.id,
             userId: body.userId,
+            name: body.name,
             model: body.model,
             object: body.object,
             positionX: body.positionX,
@@ -71,12 +73,13 @@ const addAnimation = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             movement: body.movement,
             speed: body.speed,
             distance: body.distance,
+            information: body.information,
             status: false,
         });
         const newAnimation = yield animation.save();
-        const allAnimations = yield animation_1.default.find();
+        const animations = yield animation_1.default.find();
         // console.log('Odpowiedź dane użytkownika:', newUser); 
-        res.status(201).json({ message: 'Animacja dodana.', animmation: newAnimation, users: allAnimations });
+        res.status(201).json({ message: 'Animacja dodana.', animmation: newAnimation, users: animations });
     }
     catch (error) {
         res.status(500).json({ error: 'Nie udało się dodać animacji.' });

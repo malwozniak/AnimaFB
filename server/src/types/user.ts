@@ -8,7 +8,7 @@ export interface IUser extends Document {
     animationType: Array<string>
     model: Array<string>;
     object: Array<string>;
-    image: Array<string>
+    opinion: Array<string>
     section: Array<string>
     movement: Array<string>
     numberOfBalls: Array<number>

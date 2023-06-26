@@ -26,6 +26,11 @@
     "noFallthroughCasesInSwitch": true,
     "isolatedModules": true
   },
+ 
+    "baseUrl": "./src",
+    "paths": {
+      "@components/*": ["components/*"]
+    },
   "include": [
     "src/**/*"
 , "../server/src/types/animation.ts"  ],

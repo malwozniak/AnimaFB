@@ -1,12 +1,12 @@
 import express from 'express';
-import { getUser, addUser, updateUser, getWeb, getUserById, getAnimation, updateAnimation, getAnimationById} from '../controllers/users/';
+import { getUser, addUser, updateUser, getWeb, getUserById, getAnimation, addAnimation, getAnimationById, updateAnimation} from '../controllers/users/';
 import path from 'path';
 
 
 const router = express.Router();
 router.use(express.static(path.join(__dirname, '../../../../client/build'))); 
 
-router.get('*', getWeb);
+// router.get('*', getWeb);
 
 /**Użytkownik */
 
@@ -18,8 +18,8 @@ router.put('/users/:id', updateUser)
 /**Animacje */
 router.get('/animations', getAnimation);
 router.get('/animations/:id', getAnimationById);
-router.post('/animation', getAnimation)
-router.put('/aniamtion/:id', updateAnimation)
+router.post('/animations', updateAnimation)
+// router.put('/aniamtions/:id', updateAnimation)
 
 
 export default router;

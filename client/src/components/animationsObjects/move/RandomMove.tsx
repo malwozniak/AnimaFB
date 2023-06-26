@@ -1,75 +1,60 @@
-import { useState, useEffect } from 'react';
-import * as React from 'react';
-import {
-  generateRandomAnimation,
-  getDistance,
-  getRandomNumber,
-  
-  RandomImage} from '../../../utils/functions';
-import { BallMovement, Ball, Card } from '../../../constants/style';
-import { AnimationMotionProps, Point } from '../../../types/animation';
-import { ballMove } from '../../../constants';
+import { useState, useEffect, useRef } from 'react';
+import {getDistance, getRandomFloat, getRandomNumber } from '../../../library/utils/functions';
+import { AnimationMotionProps, Point } from '../../types/Animation';
+import React from 'react';
+import { Ball } from '../../../library/constants/style';
 
-
-function RandomMove({ updatePositions }: AnimationMotionProps ): JSX.Element {
-  const [styles] = useState([{ transform: 'translate(0, 0)' }]);
-  const [x, setX] = useState(0);
-  const [y, setY] = useState(0);
-
-  let img: string = String(generateRandomAnimation(1, 16));
+export default function RandomMove({ updatePositions }: AnimationMotionProps) {
+  const [style, setStyle] = useState({ transform: 'translate(0, 0)' });
+  const ballRef = useRef<HTMLDivElement>(null);
+  const startPoint: Point = { x: 0, y: 0 };
+  const endPoint: Point = {
+    x: getRandomNumber(-3, 3),
+    y: getRandomNumber(-3, 3),
+  };
+  const distance: number = getDistance(startPoint, endPoint);
+  const speed: number = getRandomFloat(0,0.2,2); // in pixels per second
+  const duration: number = (distance / speed) * 1000;
 
   useEffect(() => {
-    const balls = Array.from(document.querySelectorAll('.ballr')) as HTMLElement[];
+    let animationId: number | null = null; // ID of the animation frame
 
-    function moveBall(ballIndex: number): void {
-      const startPoint: Point = { x: 0, y: 0 };
-      const endPoint: Point = {
-        x: getRandomNumber(-3, 3),
-        y: getRandomNumber(-3, 3),
-      };
-      const distance: number = getDistance(startPoint, endPoint);
-      const speed: number = 0.33; // in pixels per second
-      const duration: number = (distance / speed) * 1000;
-      const keyframes: Keyframe[] = [];
-      for (let i: number = 0; i < 50; i++) {
-        x: getRandomNumber(-3, 3);
-        y: getRandomNumber(-3, 3);
-       setX(x)
-       setY(y)
-        keyframes.push({ transform: `translate(${x}vw, ${y}vw)` });
+    const moveBall = () => {
+      const x: number = getRandomNumber(-2, 2);
+      const y: number = getRandomNumber(-2, 2);
+      setStyle({ transform: `translate(${x}rem, ${y}rem)` });
+
+      animationId = requestAnimationFrame(moveBall); // Schedule the next animation frame
+    };
+
+    const startMoving = () => {
+      if (animationId === null) {
+        animationId = requestAnimationFrame(moveBall);
       }
+    };
 
-      keyframes.unshift({ transform: 'translate(0, 0)' });
-      keyframes.push({ transform: 'translate(0, 0)' });
-      const options: KeyframeAnimationOptions = {
-        duration,
-        easing: ballMove[generateRandomAnimation(0, ballMove.length-1)]?? 'defaultEasing',
-        iterations: Infinity,
-      };
-      const easing: string = options.easing || 'defaultEasing';
+    const stopMoving = () => {
+      if (animationId !== null) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+      }
+    };
 
-      balls[ballIndex].animate(keyframes, options);
-      updatePositions(x,y,0, img, String(speed), easing, String(duration))
-      
-    }
-    
-  
-    for (let i = 0; i < balls.length; i++) {
-      moveBall(i);
-    }
-  }, []); 
+    startMoving(); // Start the initial movement
+
+    // Stop the movement when the component unmounts
+    return () => {
+      stopMoving();
+    };
+  }, []);
+
+  useEffect(() => {
+    updatePositions([startPoint.x, startPoint.y, 0], [speed], 'linear', duration.toString());
+  }, [speed, duration, updatePositions, startPoint]);
 
   return (
-    <Card>
-      <BallMovement>
-      {styles.map((style, index) => (
-        <Ball key={index} className="ballr" style={style}></Ball>
-      ))}
-      </BallMovement>
-      <RandomImage num={img} />
-
-    </Card>
+    <>
+      <Ball ref={ballRef} style={style} />
+     </>
   );
 }
-
-export default RandomMove;

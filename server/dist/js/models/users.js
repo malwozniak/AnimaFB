@@ -27,28 +27,13 @@ const userSchema = new mongoose_1.Schema({
     object: {
         type: Array,
     },
-    positionX: {
-        type: Array,
-    },
-    positionY: {
-        type: Array,
-    },
-    positionZ: {
-        type: Array,
-    },
-    image: {
+    opinion: {
         type: Array,
     },
     section: {
         type: Array,
     },
     movement: {
-        type: Array,
-    },
-    speed: {
-        type: Array,
-    },
-    distance: {
         type: Array,
     },
     numberOfBalls: {

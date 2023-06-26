@@ -27,16 +27,7 @@ const userSchema: Schema = new Schema({
     object: {
         type: Array,
     },
-    positionX: {
-        type: Array,
-    },
-    positionY: {
-        type: Array,
-    },
-    positionZ: {
-        type: Array,
-    },
-    image: {
+    opinion: {
         type: Array,
     },
     section: {
@@ -45,13 +36,6 @@ const userSchema: Schema = new Schema({
     movement: {
         type: Array,
     },
-    speed: {
-        type: Array,
-    },
-    distance: {
-        type: Array,
-    },
-   
     numberOfBalls: {
         type: Array,
     },

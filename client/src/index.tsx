@@ -5,9 +5,9 @@ import * as React from 'react';
 import { Component } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import styled, { createGlobalStyle } from 'styled-components';
-import { AnimationListContainer, AnimationListRowFirst } from './constants/style';
+import { AnimationListContainer, AnimationListRowFirst } from './library/constants/style';
 // import RouteSchema from './routes/RouteSchema';
-import AppAPI from './AppAPI';
+import AppAPI from './API/AppAPI';
 
 
 interface AppProps {}

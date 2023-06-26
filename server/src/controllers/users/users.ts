@@ -61,7 +61,7 @@ const updateUser = async (req: Request, res: Response): Promise<void> => {
       const body = req.body as Pick<
         IUser,
         '_id' |'age' | 'gender' | 'sayYesNo' | 'animationType' | 'model' | 'object' | 
-         'image' | 'section'| 'movement' | 'numberOfBalls' | 'status'
+         'opinion' | 'section'| 'movement' | 'numberOfBalls' | 'status'
   
       >;
   
@@ -94,7 +94,7 @@ const updateUser = async (req: Request, res: Response): Promise<void> => {
         animationType: body.animationType,
         model: body.model,
         object: body.object,
-        image: body.image,
+        opinion: body.opinion,
         section: body.section,
         movement: body.movement,
         numberOfBalls: body.numberOfBalls,

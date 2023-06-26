@@ -83,7 +83,7 @@ const addUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             animationType: body.animationType,
             model: body.model,
             object: body.object,
-            image: body.image,
+            opinion: body.opinion,
             section: body.section,
             movement: body.movement,
             numberOfBalls: body.numberOfBalls,

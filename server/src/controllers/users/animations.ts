@@ -6,8 +6,9 @@ import { IAnimation } from '../../types/animation';
 
 const getAnimation = async (_req: Request, res: Response): Promise<void> => {
     try {
-      const allAnimations: IAnimation[] = await Animation.find();
-      res.status(200).json({ allAnimations });
+      const animations: IAnimation[] = await Animation.find();
+      console.log("Server", animations)
+      res.status(200).json({ animations });
     } catch (error) {
       res.status(500).json({ error: 'Nie udało się pobrać animacji' });
     }
@@ -60,32 +61,31 @@ const updateAnimation = async (req: Request, res: Response): Promise<void> => {
     try {
       const body = req.body as Pick<
         IAnimation,
-        'id' | 'userId' | 'model' | 'object' | 'positionX' | 'positionY' | 'positionZ' |
-         'image' | 'section'| 'movement' | 'speed' | 'distance' | 'status'
+        'id' | 'userId' | 'name'  | 'object' | 'position' |
+         'image' | 'section'| 'movement' | 'speed' | 'distance' | 'information' | 'status'
   
       >;
   
       const animation: IAnimation = new Animation({
         id: body.id,
         userId: body.userId,
-        model: body.model,
+        name: body.name,
         object: body.object,
-        positionX: body.positionX,
-        positionY: body.positionY,
-        positionZ: body.positionZ,
+        position: body.position,
         image: body.image,
         section: body.section,
         movement: body.movement,
         speed: body.speed,
         distance: body.distance,
+        information: body.information,
         status: false,
       });
   
       const newAnimation: IAnimation = await animation.save();
-      const allAnimations: IAnimation[] = await Animation.find();
+      const animations: IAnimation[] = await Animation.find();
       // console.log('Odpowiedź dane użytkownika:', newUser); 
   
-      res.status(201).json({ message: 'Animacja dodana.', animmation: newAnimation, users: allAnimations });
+      res.status(201).json({ message: 'Animacja dodana.', animmation: newAnimation, users: animations });
     } catch (error) {
       res.status(500).json({ error: 'Nie udało się dodać animacji.' });
     }
