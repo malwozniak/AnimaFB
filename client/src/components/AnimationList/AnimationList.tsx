@@ -41,7 +41,7 @@ class AnimationList extends Component<
       move: '',
       distance: '',
       SetImg: '',
-      img:String(generateRandomAnimation(0,16)),
+      img:String(generateRandomAnimation(1,16)),
       created: false,
       imageNumber: 0,
       indexBoard: this.props.indexBoard +1,
@@ -64,7 +64,7 @@ class AnimationList extends Component<
        </Canvas>,
      <Card>
         <AnimationMotion updatePositions={this.handleUpdatePositions} />
-        <RandomImage num={this.state.img}/>
+        {/* <RandomImage num={this.state.img}/> */}
         </Card>
        ,      
        <Card>
@@ -105,7 +105,7 @@ class AnimationList extends Component<
             AnimationData: [],
             
           }));
-          this.handleUpdatePositions(this.state.position, this.state.speed, this.state.move, this.state.distance)
+         // this.handleUpdatePositions(this.state.position, this.state.speed, this.state.move, this.state.distance)
      
             console.log(this.state.timeElapsed)
         }, 10000)
@@ -177,8 +177,8 @@ const animationData: {
 // console.log(uniqueObject,"PO")      
        
           
-          // console.log("IMAGEwe",this.state.SetImage)
-        this.handleUpdatePositions( position, speed, move, distance);
+          console.log("IMAGEwe",uniqueObject.props.children[3])
+        this.handleUpdatePositions( uniqueObject.props.position, uniqueObject.props.speed, uniqueObject.props.move, uniqueObject.props.distance);
           console.log("UniqueNAme",uniqueObject)
       const animationObject = {
         id: String(generateUniqueID()),

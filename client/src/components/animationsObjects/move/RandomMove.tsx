@@ -13,7 +13,7 @@ export default function RandomMove({ updatePositions }: AnimationMotionProps) {
     y: getRandomNumber(-3, 3),
   };
   const distance: number = getDistance(startPoint, endPoint);
-  const speed: number = getRandomFloat(0,0.2,2); // in pixels per second
+  const speed: number = getRandomFloat(7,13,2); // in pixels per second
   const duration: number = (distance / speed) * 1000;
 
   useEffect(() => {
@@ -39,7 +39,6 @@ export default function RandomMove({ updatePositions }: AnimationMotionProps) {
         animationId = null;
       }
     };
-
     startMoving(); // Start the initial movement
 
     // Stop the movement when the component unmounts
@@ -49,6 +48,8 @@ export default function RandomMove({ updatePositions }: AnimationMotionProps) {
   }, []);
 
   useEffect(() => {
+    console.log("SPEED",speed)
+
     updatePositions([startPoint.x, startPoint.y, 0], [speed], 'linear', duration.toString());
   }, [speed, duration, updatePositions, startPoint]);
 
