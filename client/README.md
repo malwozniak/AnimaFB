@@ -50,12 +50,3 @@ Przygotowanie zestawu danych to ważny krok w budowie modelu.
 Opracowałam zestaw animacji, które będą testowane oraz zestaw kontroli, w których nie będzie animacji. Dzięki temu można porównać efektywność animacji z brakiem animacji.
 Dane, które są istotne przy budowie wskazanej animacji to ruch. Model składa się z galerii obrazków. Każdy z nich w pojedynczych kartach, losowo wyświetla obiekty z animacją wskazującą ruch liniowy, bądź losowy.
 
-# Przeprowadzenie badań
-
-Następnie z pomocą eye trackera dokonałam porównania wydajności oraz optymalnych rozwiązań dla poszczególnych kart oraz animacji wskazanych modeli.
-
-# Analiza wyników
-
-Po zakończeniu badania dokładnie przeanalizowałam wyniki.
-
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/react-ts-1dq1it)
