@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import AddUser from '../components/AddUser/AddUser'
-import { getUser, addUser, updateUser, getUserId, getAnimationId, getAnimation, addAnimation } from './API'
+import { getUser, addUser, updateUser, getUserId, getAnimationId, getAnimation } from './API'
 import ChangeAcceptQuestions from '../components/QuestionsAndLastPage/ChangeAcceptQuestions'
 import { IAnimation } from '../components/types/Animation'
 // import AnimationList from './components/AnimationList'
 // import { AnimationListRow } from './constants/style'
-
+import { gsap } from 'gsap';
 const AppAPI: React.FC = () => {
   const [users, setUsers] = useState<IUser[]>([])
   const [animations, setAnimations] = useState<IAnimation[]>([])
@@ -43,17 +43,14 @@ const AppAPI: React.FC = () => {
       .catch((err) => console.log(err));
   };
 
-  const handleUpdateUser = (user: IUser): void => {
-    updateUser(user)
-    .then(({ status, data }) => {
-        if (status !== 200) {
-          throw new Error('Błąd! Użytkownik nie zaktualizowany!')
-        }
-        setUsers(data.users)
-      })
-      .catch((err) => console.log(err))
-  }
-
+  const handleUpdateUser = (user: IUser, newNumberOfBalls: number[]): void => {
+    try {
+      const response = updateUser(user, newNumberOfBalls);
+      console.log('User updated successfully:', response);
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
+  };
 
   const fetchAnimations = (): void => {
     getAnimation()
@@ -68,16 +65,20 @@ const AppAPI: React.FC = () => {
     .catch((err: Error) => console.log(err, "Błąd! Animacja nie znaleziona."))})
   }
 
-  const handleSaveAnimation = (animationData: IAnimation): void => {
-    addAnimation(animationData)
-      .then(({ status, data }) => {
-        if (status !== 201) {
-          throw new Error('Błąd! Animacja nie zapisana!');
-        }
-        setAnimations(data.animations);
-        console.log(animations, "Dane", animationData);
-      })
-      .catch((err) => console.log(err));
+
+  const handleSaveAnimation = async (objects: HTMLElement[]): Promise<void> => {
+    try {
+      const animations = objects.map((object) =>
+        gsap.to(object, { /* animation properties */ })
+      );
+  
+      // Await all animations to complete
+      await Promise.all(animations);
+  
+      console.log('Animations saved successfully!');
+    } catch (error) {
+      console.error('Error saving animations:', error);
+    }
   };
 
   // const handleUpdateAnimation = (animation: IAnimation): void => {

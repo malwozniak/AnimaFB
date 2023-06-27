@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AnimationListContainer, AnimationListRowFirst, FieldsetIN, FieldsetNum, FieldsetQ, Form, LabelChoice, TextArea, chosenBallType, chosenMoving, generateRandomAnimation, sectionType, updateUser } from '../../library/library/allImports';
+import { AnimationListContainer, AnimationListRowFirst, Fieldset, FieldsetIN, FieldsetNum,animationWhich, FieldsetQ, Form, LabelChoice, TextArea, generateRandomAnimation, sectionType, updateUser } from '../../library/library/allImports';
 import AnimationList from '../AnimationList/AnimationList';
 
 
@@ -19,6 +19,7 @@ class ChangeAcceptQuestions extends Component<QuestionProps,QuestionListState> {
       selectedAns: '',
       textArea: '',
       chosenSection: [],
+      chosenSectionFirst: [],
       indexBoard: this.props.indexBoard,
 
     };
@@ -38,7 +39,7 @@ class ChangeAcceptQuestions extends Component<QuestionProps,QuestionListState> {
       this.setState({ showCards: true,  showAnimationList: true});
      
       const { saveUser } = this.props;
-      const { answer } = this.state;
+      const { answer, textArea } = this.state;
     this.setState((prevState) => ({
       indexBoard: prevState.indexBoard
     }), () => {
@@ -55,18 +56,18 @@ class ChangeAcceptQuestions extends Component<QuestionProps,QuestionListState> {
       gender: this.props.user.gender,
       sayYesNo: this.props.user.sayYesNo,
       animationType: this.props.user.animationType,
-      model: 'kula',
-      object: [chosenBallType],
-      movement: [chosenMoving],
-      opinion: [this.state.textArea],
-      section: [this.state.chosenSection],
-      numberOfBalls: [answer],
+      model: ['kula'],
+      object: [...this.props.user.object], 
+      movement: [this.props.user.movement],
+      opinion:  [...this.props.user.opinion, textArea ],
+      section: [...this.props.user.section, this.state.chosenSection],
+      numberOfBalls: [...this.props.user.numberOfBalls],
       status: false,
 
     };
     console.log('Odpowiedź zaktualizowana', updatedAnswer)
 
-    updateUser(updatedAnswer)
+    updateUser(updatedAnswer, [answer])
      
 
   
@@ -94,6 +95,24 @@ class ChangeAcceptQuestions extends Component<QuestionProps,QuestionListState> {
       }
     });
   };
+
+  choiceHandlerFirst = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = event.target;
+  
+    this.setState((prevState) => {
+      if (checked) {
+        return {
+          chosenSectionFirst: [...prevState.chosenSectionFirst, value.toLowerCase()],
+        };
+      } else {
+        return {
+          chosenSectionFirst: prevState.chosenSectionFirst.filter(
+            (option) => option !== value.toLowerCase()
+          ),
+        };
+      }
+    });
+  };
  
   render() {
     const { showCards, showThankYouMessage, showAnimationList, textArea, indexBoard} = this.state;
@@ -114,7 +133,22 @@ class ChangeAcceptQuestions extends Component<QuestionProps,QuestionListState> {
              
             </FieldsetIN>
 
+            <Fieldset>
+              <legend>Jakie animacje najbardziej zwróciły twoją uwagę?</legend>
+              {animationWhich.map((option, index) => (
+                <LabelChoice key={index}>
+                  <input
+                    type="checkbox"
+                    name="animationType"
+                    value={option.toLowerCase()}
+                    id={`animationType-${index}`}
+                    onChange={this.choiceHandlerFirst}
+                  />
+                  <label htmlFor={`animationType-${index}`}>{option}</label>
+                </LabelChoice>
+              ))}
 
+            </Fieldset>
           
             <FieldsetQ>
               <legend>Zaznacz, w których kartach były dane obiekty kuli:</legend>

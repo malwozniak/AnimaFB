@@ -49,17 +49,18 @@ class AddAnimation extends React.Component<Props, State> {
   }
 
   run = async () => {
-    try {
-      // const response = await addAnimation(this.state.animation);
-      this.props.saveAnimation(this.state.animation);
-      // if (response.status === 200 || response.status === 201) {
-      //   console.log('Dane formularza przesłane pomyślnie');
-      // } else {
-      //   console.error('Nie udało się przesłać danych formularza');
-      // }
-    } catch (error) {
-      console.error('Błąd przesyłania danych formularza:', error);
-    }
+    return null
+    // try {
+    //    const response = await addAnimation(this.state.animation);
+    //   this.props.saveAnimation(this.state.animation);
+    //    if (response.status === 200 || response.status === 201) {
+    //      console.log('Dane formularza przesłane pomyślnie');
+    //    } else {
+    //      console.error('Nie udało się przesłać danych formularza');
+    //    }
+    // } catch (error) {
+    //   console.error('Błąd przesyłania danych formularza:', error);
+    // }
   };
 
   render() {

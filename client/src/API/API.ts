@@ -58,29 +58,29 @@ export const addUser = async (
 }
 
 
-export const updateUser = async (user :IUser) : Promise<AxiosResponse<ApiDataType>> => {
-  try{
+export const updateUser = async (user: IUser, newNumberOfBalls: number[]): Promise<AxiosResponse<ApiDataType>> => {
+  try {
     const bodyUpdate: Pick<IUser, 'numberOfBalls'> = {
-      numberOfBalls: user.numberOfBalls
+      numberOfBalls: newNumberOfBalls,
     };
-     console.log(`${baseUrl}/users/${user._id}`)
-try{
-      const updatedUser: AxiosResponse<ApiDataType> = await axios.put(
 
-        `${baseUrl}/users/${user._id}`, bodyUpdate
-      )
-    
-      console.log("Zaktulizowane dane po dodaniu danych.", updatedUser)
-      return updatedUser
-    }catch(error){
-        throw new Error(String(error))
+    console.log(`${baseUrl}/users/${user._id}`);
 
-      }
-     
-  } catch (error){
-        throw new Error(String(error))
-      }
-}
+    try {
+      const updatedUser: AxiosResponse<ApiDataType> = await axios.post(
+        `${baseUrl}/users/${user._id}/`,
+        bodyUpdate
+      );
+
+      console.log("Updated data after adding number of balls:", updatedUser);
+      return updatedUser;
+    } catch (error) {
+      throw new Error(String(error));
+    }
+  } catch (error) {
+    throw new Error(String(error));
+  }
+};
 export const getAnimation = async (): Promise<AxiosResponse<IAnimation>> => {
   try {
     const animations = await axios.get(
@@ -95,46 +95,46 @@ export const getAnimation = async (): Promise<AxiosResponse<IAnimation>> => {
 
 export const getAnimationId = async (userId: string): Promise<AxiosResponse<IAnimation>> => {
   try {
-    const animation = await axios.get(`${baseUrl}/users/${userId}`);
+    const animation = await axios.get(`${baseUrl}/animations/${userId}`);
     return animation;
   } catch (error) {
     throw new Error(String(error));
   }
 };
-
 export const addAnimation = async (
-  animationData: IAnimation
+  animationData: IAnimation[]
 ): Promise<AxiosResponse<AnimationDataType>> => {
   try {
     console.log('AnimationData:', animationData); 
 
-
-    const info: Omit<IAnimation, 'key'> = {
-      id: animationData.id,
-      userId: animationData.userId,
-      name: animationData.name,
-      position: animationData.position,
-      object: animationData.object,
-      image: animationData.image,
-      section: animationData.section,
-      movement: animationData.movement,
-      speed: animationData.speed,
-      distance: animationData.distance,
-      information: animationData.information,
+    const animations: Omit<IAnimation, 'key'>[] = animationData.map(animation => ({
+      id: animation.id,
+      userId: animation.userId,
+      name: animation.name,
+      position: animation.position,
+      object: animation.object,
+      image: animation.image,
+      section: animation.section,
+      movement: animation.movement,
+      speed: animation.speed,
+      distance: animation.distance,
+      information: animation.information,
       status: false,
-    };
-   console.log("INFO", info)
-    const saveAnimation: AxiosResponse<AnimationDataType> = await axios.post(
-        `${baseUrl}/animations`,
-      info
-    )
-    
-    console.log('Odpowiedź animacja:', saveAnimation);
-    return saveAnimation
+    }));
+
+    console.log('Animations:', animations);
+
+    const saveAnimations: AxiosResponse<AnimationDataType> = await axios.post(
+      `${baseUrl}/animations`,
+      animations
+    );
+
+    console.log('Odpowiedź animacje:', saveAnimations);
+    return saveAnimations;
   } catch (error) {
-    throw new Error(String(error))
+    throw new Error(String(error));
   }
-}
+};
 
 
 // export const updateAnimation = async (animation :IAnimation) : Promise<AxiosResponse<AnimationDataType>> => {

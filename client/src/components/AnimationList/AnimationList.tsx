@@ -5,10 +5,12 @@
 import React, { Component } from "react";
 import { AnimationListBox, AnimationListRow, AnimationListRowFirst, BallShow, Canvas, Card, CardBorder, CardContainer, ChangeAcceptQuestions, GlobalStyle, IAnimation, RandomImage, RandomImage3D,  ballType, generateRandomAnimation, generateUniqueID, nameObjects, questions } from "../../library/library/allImports";
 import { addAnimation } from "../../API/API";
-import AnimationMotion from "../AnimationsObjects/AnimationMotion";
-import RandomMove3D from "../AnimationsObjects/move/RandomMove3D";
 import SphereMove from "../AnimationsObjects/AnimationThreeD";
+import AnimationMotion from "../AnimationsObjects/AnimationMotion";
 import RandomMove from "../AnimationsObjects/move/RandomMove";
+import RandomMove3D from "../AnimationsObjects/move/RandomMove3D";
+
+
 // import AddAnimation from "./AddAnimation";
 
 
@@ -155,27 +157,13 @@ class AnimationList extends Component<
   };
  
 
-drawAnimationListData () {
+async drawAnimationListData () {
 
    
  const { position , speed, move, distance} = this.state;
  let { nameObject, setNum  } = this.state;
 //  
-const animationData: {
-  id: string;
-  userId: string;
-  name: string;
-  object: string;
-  position: number[]
-  image: string;
-  section: string;
-  movement: string;
-  speed: number[];
-  distance: string;
-  information: any;
-  status: boolean;
-}[] = [];
-
+const animationData: IAnimation[] = [];
     for (let i = 0; i < 9; i++) {
       setNum = generateRandomAnimation(0,this.components.length-1);
       const uniqueObject = React.cloneElement(this.components[setNum], {
@@ -226,13 +214,15 @@ const animationData: {
         information: uniqueObject,
         status: false,
       };
-  this.handleResponse(animationData[i]);
-  console.log("NANA", animationData[i])
-      animationData.push(animationObject);
+
+  console.log("NANA", animationData)
+     animationData.push(animationObject);
   
     }
 
+   
     const AnimationDataArray = [...animationData];
+    await this.handleResponse(AnimationDataArray);
   
     this.setState((state: any) => ({
       ...state,
@@ -254,7 +244,7 @@ const animationData: {
 
 
 
-  async handleResponse(DataAnimation: IAnimation){
+  async handleResponse(DataAnimation: IAnimation[]){
   try {
    
       const response = await addAnimation(DataAnimation);

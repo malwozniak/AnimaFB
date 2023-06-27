@@ -5,7 +5,7 @@ type QuestionProps = {
     showContainer: boolean
     saveUser: (user: IUser) => void
     saveAnimation: (animationData: IAnimation) => void
-    saveUpdate: (user: IUser) => void
+    saveUpdate: (user: IUser, newNumberOfBalls: number[]) => void
     user: IUser
     indexBoard: number
     };
@@ -21,7 +21,8 @@ type QuestionProps = {
     showAnimationList: boolean
     selectedAns: string
     textArea: string
-    chosenSection: Array<String>
+    chosenSection: string[]
+    chosenSectionFirst: string[]
     indexBoard: number
 
     
