@@ -39,9 +39,8 @@ type AnimationDataType = {
 
   export interface AnimationMotionProps {
 
-    updatePositions: (position: number[], speed: number[],   move: string, distance: string) => void
+   updatePositions: (position: number[], speed: number[], move: string, distance: string) => void; 
   }
-
   export interface BallBouncingProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     ballSpeedValue: string
     ballMoveValue: string

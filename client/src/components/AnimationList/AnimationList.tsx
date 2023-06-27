@@ -40,7 +40,8 @@ class AnimationList extends Component<
       speed: [],
       move: '',
       distance: '',
-      SetImg: '',
+      setNum: 0,
+      nameObject: '',
       img:String(generateRandomAnimation(1,16)),
       created: false,
       imageNumber: 0,
@@ -54,21 +55,26 @@ class AnimationList extends Component<
       <pointLight position={[40, 40, 40]} />
       
       <RandomImage3D num={this.state.img} />
-          <SphereMove updatePositions={this.handleUpdatePositions}/>
+          <SphereMove updatePositions={this.handleUpdatePositions
+    }/>
           </Canvas>,
        <Canvas camera={{ position: [0, 0, 5] }}>
       <ambientLight intensity={1} />
       <pointLight position={[40, 40, 40]} />
       <RandomImage3D num={this.state.img} />
-      <RandomMove3D updatePositions={this.handleUpdatePositions}/>
+      <RandomMove3D updatePositions={this.handleUpdatePositions
+    }/>
        </Canvas>,
      <Card>
-        <AnimationMotion updatePositions={this.handleUpdatePositions} />
+        <AnimationMotion
+    updatePositions={this.handleUpdatePositions
+    }/>
         {/* <RandomImage num={this.state.img}/> */}
         </Card>
        ,      
        <Card>
-        <RandomMove updatePositions={this.handleUpdatePositions}/>
+        <RandomMove updatePositions={this.handleUpdatePositions
+    }/>
         <RandomImage num={this.state.img}/>
         </Card>
         
@@ -108,7 +114,7 @@ class AnimationList extends Component<
          // this.handleUpdatePositions(this.state.position, this.state.speed, this.state.move, this.state.distance)
      
             console.log(this.state.timeElapsed)
-        }, 10000)
+        }, 6000)
        } else{
 
         this.setState(() => ({
@@ -149,8 +155,8 @@ class AnimationList extends Component<
 drawAnimationListData () {
 
    
- const { position,  speed, move, distance} = this.state;
- let { uniqueObject } = this.state;
+ const { position , speed, move, distance} = this.state;
+ let { nameObject, setNum  } = this.state;
 //  
 const animationData: {
   id: string;
@@ -168,24 +174,44 @@ const animationData: {
 }[] = [];
 
     for (let i = 0; i < 9; i++) {
-      
+      setNum = generateRandomAnimation(0,this.components.length-1);
+      const uniqueObject = React.cloneElement(this.components[setNum], {
+        position: position,
+        speed: speed,
+        move: move,
+        distance: distance
+      });    
     //imageNumber = generateRandomAnimation(0,16)
-     uniqueObject=this.components[generateRandomAnimation(0,this.components.length-1)]     
+
+    if(setNum  == 0 ){
+      nameObject = "SphereMove"
+      console.log("IMAGEwe",position)
+    }
+    else if(setNum == 1){
+      nameObject = "RandomImage3D"
+      console.log("IMAGEwe", speed)   }
+    else if(setNum == 2){
+      nameObject = "AnimationMotion"
+      console.log("IMAGEwe",position)
+    }
+    else {
+      nameObject = "RandomeBallMove"
+      console.log("IMAGEwe",position)
+    } 
 
     
-
-// console.log(uniqueObject,"PO")      
+// console.log(nameObject,"PO")      
        
           
-          console.log("IMAGEwe",uniqueObject.props.children[3])
-        this.handleUpdatePositions( uniqueObject.props.position, uniqueObject.props.speed, uniqueObject.props.move, uniqueObject.props.distance);
+          
+        //this.handleUpdatePositions( uniqueObject.props.position, uniqueObject.props.speed, uniqueObject.props.move, uniqueObject.props.distance);
           console.log("UniqueNAme",uniqueObject)
       const animationObject = {
         id: String(generateUniqueID()),
         userId: this.props.user._id,
         name: nameObjects[i],
-       object:  uniqueObject.type.name === "RandomMove" ||
-        uniqueObject.type.name === "AnimationMotion"
+       object:  nameObject === "RandomMove" ||
+        nameObject === "AnimationMotion"
           ? ballType[0]
           : ballType[1],
         position: position,
@@ -307,7 +333,7 @@ const animationData: {
             return (
             
               <AnimationListBox
-                key={item.name}
+                key={item.name} 
               >
                 <CardContainer>
                   <Card>

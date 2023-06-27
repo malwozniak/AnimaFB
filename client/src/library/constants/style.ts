@@ -117,6 +117,26 @@ height: 100%;
 background-repeat: no-repeat;
 `;
 
+const BallRandom = styled.div`
+background-color: var(--gray-card);
+border-radius: 50%;
+height: 3vw;
+position: absolute;
+width: 3vw;
+left: 3.5vw;
+top: 3.5vw;
+animation: moveBall 2s infinite linear;
+transform: translate(var(--randomX), var(--randomY));
+@keyframes moveBall {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(var(--randomX), var(--randomY));
+  }
+}
+`;
+
 const Ball = styled.div`
 background-color: var(--gray-card);
 border-radius: 50%;
@@ -373,6 +393,6 @@ width: 40%;
    export{GlobalStyle,AnimationListBox,AnimationListContainer,AnimationListRow,
     AnimationListRowFirst, Form, Input, CardContainer,
   AnimationCardContainer,AnimationCardTitle,AnimationDescription, DoubleColumnCard, TextArea,
-  Card, Ball, BallBouncing, BallBouncingDown,BallBouncingLeft ,BallBouncingRight,
+  Card, Ball,BallRandom, BallBouncing, BallBouncingDown,BallBouncingLeft ,BallBouncingRight,
     BallMovement, MainApp, CardBorder, LabelChoice, ChoiceGroup, BallShow, Fieldset,
     FieldsetQ, FieldsetNum, FieldsetIN}

@@ -25,8 +25,9 @@ type AnimationListState = {
       speed: number[]
       move: string
       distance: string
-      SetImg: string
+      setNum: number
       img: string
+      nameObject: string
       created: boolean
       indexBoard: number
       imageNumber: number

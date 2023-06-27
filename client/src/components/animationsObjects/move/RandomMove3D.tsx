@@ -9,9 +9,9 @@ import { AnimationMotionProps, Material } from '../../../library/library/allImpo
 export default function RandomMove3D({ updatePositions }: AnimationMotionProps ) {
  
   const mesh = useRef<THREE.Mesh<THREE.BufferGeometry, Material | Material[]>>(null); 
-  const x = Math.random() * 10 - 3;
-  const y = Math.random() * 10 - 3;
-  const z = Math.random() * 10 - 3;
+  const x = Math.random() * 10 - 1;
+  const y = Math.random() * 10 - 1;
+  const z = Math.random() * 10 - 1;
 //Zdefiniuj losową pozycję dla kuli
  const randomPosition = () => {
   return new THREE.Vector3(

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import * as React from 'react';
-import { AnimationMotionProps, Ball, BallBouncingProps, CardContainer, GlobalStyle, ballDistance, ballMove, ballMoveComponents, ballSpeed, ballXYZ, generateRandomAnimation, getRandomNumber } from '../../library/library/allImports';
+import { AnimationMotionProps, Ball, BallBouncingProps, Card, CardContainer, GlobalStyle, RandomImage, ballDistance, ballMove, ballMoveComponents, ballSpeed, ballXYZ, generateRandomAnimation, getRandomNumber } from '../../library/library/allImports';
 
 
 
@@ -11,14 +11,15 @@ export default function AnimationMotion({ updatePositions }: AnimationMotionProp
   const [, setMove] = useState('');
   const [, setDistance] = useState('');
   const randomIndex = generateRandomAnimation(0, 3);
+  const randomImageNumber = generateRandomAnimation(1, 16);
   const x = ballXYZ[randomIndex % 2 === 0 ? 0 : 10];
   const y = ballXYZ[randomIndex % 2 === 0 ? 10 : 0];
   const speed = ballSpeed[generateRandomAnimation(0,1)];
   const move = ballMove[generateRandomAnimation(0, ballMove.length - 1)];
   const distance = ballDistance[getRandomNumber(0, 1)];
   const [items] = useState([
-    ballMoveComponents.map((Component:  React.ComponentType<BallBouncingProps>, ) => (
-   <>
+    ballMoveComponents.map((Component:  React.ComponentType<BallBouncingProps>, index: any) => (
+      <Card key={index}>
         <GlobalStyle />
         <Component 
         ballSpeedValue = {`${String(speed)}s`}
@@ -30,7 +31,8 @@ export default function AnimationMotion({ updatePositions }: AnimationMotionProp
           {/* {String(randomImageNumber)} */}
         </Component>
         {/* {console.log("Comp", Component)} */}
-       </>
+        <RandomImage num={randomImageNumber} />
+      </Card>
     ))
   ]);
 
