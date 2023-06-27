@@ -11,7 +11,7 @@ let time_step = 0.1;
 let time_counter = Math.sqrt((-bounce_distance * 2) / -acceleration);
 let initial_speed = acceleration * time_counter;
 
-export default function AnimationMotion({ updatePositions }: AnimationMotionProps) {
+export default function SphereMove({ updatePositions }: AnimationMotionProps) {
   const mesh = useRef<THREE.Mesh | null>(null);
   const [startTime, setStartTime] = useState<number | null>(null);
   const duration = 2000; // Duration in milliseconds

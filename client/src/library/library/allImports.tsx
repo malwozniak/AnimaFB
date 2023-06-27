@@ -4,10 +4,6 @@ import { Canvas } from '@react-three/fiber';
 import { animationWhich, answerYesNo, ballDistance, ballMove, ballMoveComponents, ballSpeed, ballType, ballXYZ, chosenBallType, chosenMoving, gender, nameObjects, questions, sectionType } from '../constants';
 import ChangeAcceptQuestions from '../../components/QuestionsAndLastPage/ChangeAcceptQuestions';
 import { RandomImage, RandomImage3D, generateRandomAnimation, generateUniqueID, getDistance, getRandomNumber } from '../utils/functions';
-import SphereMove from '../../components/AnimationsObjects/AnimationThreeD';
-import AnimationMotion from '../../components/AnimationsObjects/AnimationMotion';
-import RandomMove from '../../components/AnimationsObjects/move/RandomMove';
-import AnimationList from '../../components/AnimationList/AnimationList';
 import { addUser, updateUser } from '../../API/API';
 import { AnimationMotionProps, BallBouncingProps, IAnimation, Point } from '../../components/types/Animation'
 import { Html } from '@react-three/drei';
@@ -29,9 +25,6 @@ export {
   RandomImage,
   generateRandomAnimation,
   generateUniqueID,
-  SphereMove,
-  AnimationMotion,
-  RandomMove,
   AnimationListContainer,
   FieldsetIN,
   FieldsetNum,
@@ -39,7 +32,6 @@ export {
   Form,
   LabelChoice,
   TextArea,
-  AnimationList,
   updateUser,
   chosenBallType,
   chosenMoving,
