@@ -1,5 +1,6 @@
 import React from 'react';
-import { AnimationList, ChoiceGroup, Fieldset, Form,  LabelChoice, addUser, animationWhich, answerYesNo, gender, generateRandomAnimation, generateUniqueID } from '../../library/library/allImports';
+import {  ChoiceGroup, Fieldset, Form,  LabelChoice, addUser, animationWhich, answerYesNo, gender, generateRandomAnimation, generateUniqueID } from '../../library/library/allImports';
+import AnimationList from '../AnimationList/AnimationList';
 
 class AddUser extends React.Component<Props, State> {
   constructor(props: Props) {

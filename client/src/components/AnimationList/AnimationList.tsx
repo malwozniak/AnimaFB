@@ -3,10 +3,13 @@
  */
 
 import React, { Component } from "react";
-import { AnimationListBox, AnimationListRow, AnimationListRowFirst, AnimationMotion, BallShow, Canvas, Card, CardBorder, CardContainer, ChangeAcceptQuestions, GlobalStyle, IAnimation, RandomImage, RandomImage3D, RandomMove, SphereMove, ballType, generateRandomAnimation, generateUniqueID, nameObjects, questions } from "../../library/library/allImports";
+import { AnimationListBox, AnimationListRow, AnimationListRowFirst, BallShow, Canvas, Card, CardBorder, CardContainer, ChangeAcceptQuestions, GlobalStyle, IAnimation, RandomImage, RandomImage3D,  ballType, generateRandomAnimation, generateUniqueID, nameObjects, questions } from "../../library/library/allImports";
 import { addAnimation } from "../../API/API";
-// import AddAnimation from "./AddAnimation";
+import AnimationMotion from "../AnimationsObjects/AnimationMotion";
 import RandomMove3D from "../AnimationsObjects/move/RandomMove3D";
+import SphereMove from "../AnimationsObjects/AnimationThreeD";
+import RandomMove from "../AnimationsObjects/move/RandomMove";
+// import AddAnimation from "./AddAnimation";
 
 
 
