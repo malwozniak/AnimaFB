@@ -43,9 +43,9 @@ const AppAPI: React.FC = () => {
       .catch((err) => console.log(err));
   };
 
-  const handleUpdateUser = (user: IUser) => {
+  const handleUpdateUser = (user: IUser,  newNumberOfBalls: number, newMovement: string[], newSection: string[], newOpinion: string, badOpinion: string, object: string) => {
     try {
-      const response = updateUser(user);
+      const response = updateUser(user, newNumberOfBalls, newMovement, newSection, newOpinion, badOpinion, object);
       console.log('User updated successfully:', response);
     } catch (error) {
       console.error('Error updating user:', error);
@@ -101,7 +101,7 @@ const AppAPI: React.FC = () => {
       {/* <AddAnimation saveAnimation={handleSaveAnimation } /> */}
       {users.map((user: IUser) => (
         <>
-        <ChangeAcceptQuestions question={''} showCard={false} showContainer={false} saveUpdate={handleUpdateUser} user={user} indexBoard={0} saveUser={handleSaveUser} saveUpdateAnimation={handleUpdateAnimation} saveAnimation={handleSaveAnimation} />
+        <ChangeAcceptQuestions question={''} showCard={false} showContainer={false} saveUpdate={handleUpdateUser} user={user} indexBoard={0} saveUser={handleSaveUser} saveUpdateAnimation={handleUpdateAnimation} numberOBalls={[]}  />
        
        
      </>

@@ -21,7 +21,6 @@ class AnimationList extends Component<
   AnimationListState
 > {
   interval: any;
-  components: JSX.Element[];
 
   constructor(props: AnimationListProps | Readonly<AnimationListProps>) {
     super(props);
@@ -56,84 +55,38 @@ class AnimationList extends Component<
   
 
     };
-    this.components = [
-      <Canvas camera={{ position: [0, 0, 5] }}>
-      <ambientLight intensity={1} />
-      <pointLight position={[40, 40, 40]} />
-    
-          <SphereMove updatePositions={this.handleUpdatePositions
-    } key={String(generateUniqueID())}/>
-          </Canvas>,
-       <Canvas camera={{ position: [0, 0, 5] }}>
-      <ambientLight intensity={1} />
-      <pointLight position={[40, 40, 40]} />
-      <RandomMove3D updatePositions={this.handleUpdatePositions
-    } key={String(generateUniqueID())}/>
-       </Canvas>,
-     <Card>
-        <AnimationMotion
-    updatePositions={this.handleUpdatePositions
-    } key={String(generateUniqueID())}/>
-        {/* <RandomImage num={this.state.img}/> */}
-        </Card>
-       ,      
-       <Card>
-        <RandomMove updatePositions={this.handleUpdatePositions
-    }/>
-        </Card>
-        
-   
-  
-  ];
     
   }
 
 
 
     
-  componentDidMount() {
+componentDidMount() {
+  this.setState(() => ({
+    AnimationData: [],
+  }));
+
+  this.interval = setTimeout(() => {
     this.setState(() => ({
-        
       AnimationData: [],
-      
     }));
-    this.interval = setTimeout(() => {
-      this.setState(() => ({
-        
-        AnimationData: [],
-        
-      }));
 
-
-     if(this.state.timeElapsed ==0 ){
+    if (this.state.timeElapsed === 0) {
       this.drawAnimationListData();
-      
-    
-        setTimeout(() => {
-          this.showCardsWithoutChangingObjects();
-          this.setState(() => ({
-            timeElapsed: this.state.timeElapsed + 1,
-            AnimationData: [],
-            
-          }));
-         // this.handleUpdatePositions(this.state.position, this.state.speed, this.state.move, this.state.distance)
-     
-            console.log(this.state.timeElapsed)
-        }, 30000)
-       } else{
-
-        this.setState(() => ({
-          AnimationData: [],
-          
+      console.log("AAA",this.state.AnimationData)
+      setTimeout(() => {
+        this.showCardsWithoutChangingObjects();
+        this.setState((prevState) => ({
+          timeElapsed: prevState.timeElapsed + 1,
         }));
-
-        
-       }
-     
-  
-  }, 20000);
-        
-  }
+      }, 2000);
+    } else {
+      this.setState({
+        AnimationData: [],
+      });
+    }
+  }, 2000);
+}
 
   showCardsWithoutChangingObjects(){
     clearInterval(this.interval);
@@ -168,110 +121,128 @@ class AnimationList extends Component<
         animationObject: updatedAnimationObject,
       },
       () => {
-        console.log("FUNKCJA POSITIONS UPDATE", updatedAnimationObject)
+    //    console.log("FUNKCJA POSITIONS UPDATE", updatedAnimationObject)
     
       // this.props.saveUpdateAnimation(updatedAnimationObject);
       }
     );
   }
    
-drawAnimationListData = async() =>{
-
-   
-  const { position , speed, move, distance, img} = this.state;
-  let { nameObject, setNum  } = this.state;
- //  
- const animationData: {
-   id: string;
-   userId: string;
-   name: string;
-   object: string;
-   position: number[]
-   image: string;
-   section: string;
-   movement: string[];
-   speed: number[];
-   distance: string[];
-   information: any;
-   status: boolean;
- }[] = [];
- 
-     for (let i = 0; i < 9; i++) {
-       setNum = generateRandomAnimation(0,this.components.length-1);
-       const uniqueObject = React.cloneElement(this.components[setNum], {
-         position: position,
-         speed: speed,
-         move: move,
-         distance: distance
-       });    
- 
-     if(setNum  == 0 ){
-       nameObject = "SphereMove"
-       console.log("IMAGEwe",position)
-     }
-     else if(setNum == 1){
-       nameObject = "RandomMove"
-       console.log("IMAGEwe", speed)   }
-     else if(setNum == 2){
-       nameObject = "AnimationMotion"
-       console.log("IMAGEwe",position)
-     }
-     else {
-       nameObject = "RandomMove3D"
-       console.log("IMAGEwe",position)
-     } 
- 
-     
- // console.log(nameObject,"PO")      
-        
-           
-           
-         this.handleUpdatePositions( position, speed, move, distance, img);
-           console.log("UniqueNAme",uniqueObject)
-       const animationObject = {
-         id: String(generateUniqueID()),
-         userId: this.props.user._id,
-         name: nameObjects[i],
-        object:  nameObject,
-         position: position,
-         image: '',
-         section: String(i+1),
-         movement: [''],
-         speed: speed,
-         distance: [distance],
-         information: uniqueObject,
-         status: false,
-       };
- 
-   console.log("NANA", animationData)
-       animationData.push(animationObject);
-   
-     
- 
-     const AnimationDataArray = [...animationData];
- 
-console.log("PRZED ZAPISEM", AnimationDataArray)
-     this.props.saveAnimation(AnimationDataArray);
-     console.log("PO ZAPISIE", AnimationDataArray)
-    await this.handleResponse(AnimationDataArray);
-   
-     this.setState((state: any) => ({
-       ...state,
-       AnimationData: AnimationDataArray,
-       showCards: false,
-       showLabel: false,
-       loading: false,
-       created: true,
-     }));
-     
-   console.log("Tablica z animacjami", AnimationDataArray);
+  drawAnimationListData = async () => {
+    const { position, speed, move, distance, img } = this.state;
+  
+    const animationData: {
+      id: string;
+      userId: string;
+      name: string;
+      object: string;
+      position: number[];
+      image: string;
+      section: string;
+      movement: string[];
+      speed: number[];
+      distance: string[];
+      information: any;
+      status: boolean;
+    }[] = [];
+  
+    for (let i = 0; i < 9; i++) {
+      const setNum = generateRandomAnimation(0, 3);
+      let uniqueObject: JSX.Element | null = null;
+      let nameObject = "";
+  
+      if (setNum === 0) {
+        nameObject = "SphereMove";
+        uniqueObject = (
+          <Canvas camera={{ position: [0, 0, 5] }}>
+            <ambientLight intensity={1} />
+            <pointLight position={[40, 40, 40]} />
+            <SphereMove
+              updatePositions={this.handleUpdatePositions}
+              key={String(generateUniqueID())}
+              position={position} img={""}
+              speed={speed}
+              move={move}
+              distance={distance}
+            />
+          </Canvas>
+        );
+      } else if (setNum === 1) {
+        nameObject = "RandomMove";
+        uniqueObject = (
+          <Card>
+            <RandomMove
+              updatePositions={this.handleUpdatePositions}
+              position={position}
+              speed={speed}
+              move={move}
+              distance={distance} img={""}            />
+          </Card>
+        );
+      } else if (setNum === 2) {
+        nameObject = "AnimationMotion";
+        uniqueObject = (
+          <Card>
+            <AnimationMotion
+              updatePositions={this.handleUpdatePositions}
+              position={position}
+              speed={speed}
+              move={move}
+              distance={distance} img={""}            />
+          </Card>
+        );
+      } else {
+        nameObject = "RandomMove3D";
+        uniqueObject = (
+          <Canvas camera={{ position: [0, 0, 5] }}>
+            <ambientLight intensity={1} />
+            <pointLight position={[40, 40, 40]} />
+            <RandomMove3D
+              updatePositions={this.handleUpdatePositions}
+              position={position}
+              speed={speed}
+              move={move}
+              distance={distance} img={""}            />
+          </Canvas>
+        );
+      }
+  
+      this.handleUpdatePositions(position, speed, move, distance, img);
+  
+      const animationObject = {
+        id: String(generateUniqueID()),
+        userId: this.props.user._id,
+        name: nameObjects[i],
+        object: nameObject,
+        position: position,
+        image: "",
+        section: String(i + 1),
+        movement: [""],
+        speed: speed,
+        distance: [distance],
+        information: uniqueObject,
+        status: false,
+      };
+  
+      animationData.push(animationObject);
+  
+      const AnimationDataArray = [...animationData];
+  
+      this.props.saveAnimation(AnimationDataArray);
+      await this.handleResponse(AnimationDataArray);
+  
+      this.setState((state: any) => ({
+        ...state,
+        AnimationData: AnimationDataArray,
+        showCards: false,
+        showLabel: false,
+        loading: false,
+        created: true,
+      }));
     }
- 
-     
- 
- }
- 
-
+  
+    console.log("Tablica z animacjami", animationData);
+  };
 
 
 
@@ -299,12 +270,12 @@ console.log("PRZED ZAPISEM", AnimationDataArray)
     const { showCards, showContainer, user} = this.props;
     const {showLabel, loading, showLabelEmpty, showChangeAcceptQuestion} = this.state;
     const cardsToShow = this.state.AnimationData;
-   
+    // console.log("CARDS",cardsToShow.slice(0, this.state.isFirstRenderComplete ? 1: undefined))
     return (
       <>
      <div style={{display: showContainer? "grid": "none"}}>
       <div style={{display: showLabelEmpty? "none": "grid"}}> 
-    
+ 
       <AnimationListRowFirst style={{ display: showLabel ? "grid" : "none" }}>
      
       { showCards === true && this.state.showLabel === true && (
@@ -354,7 +325,7 @@ console.log("PRZED ZAPISEM", AnimationDataArray)
       ) : (
       <AnimationListRow style={{ display: showLabel ? "none" : "grid" }}>
         
-      {  cardsToShow.slice(0, this.state.isFirstRenderComplete ? 1 : undefined).map((item: IAnimation, index: number ) => {
+      {  cardsToShow.slice(0, this.state.isFirstRenderComplete ? 0 : undefined).map((item: IAnimation, index: number ) => {
             return (
             
               <AnimationListBox
@@ -385,7 +356,7 @@ console.log("PRZED ZAPISEM", AnimationDataArray)
           </div>
           {showChangeAcceptQuestion &&  (
 
-         <ChangeAcceptQuestions saveUpdate={()=>{}}  question={''} showCard={false} showContainer={true} indexBoard={this.state.indexBoard} saveUser={this.props.saveUser} saveAnimation={this.props.saveAnimation} saveUpdateAnimation={this.props.saveUpdateAnimation} user={user} />
+         <ChangeAcceptQuestions saveUpdate={() => { } } question={''} showCard={false} showContainer={true} indexBoard={this.state.indexBoard} saveUser={this.props.saveUser} saveUpdateAnimation={this.props.saveUpdateAnimation} user={user} numberOBalls={[this.props.numberOBalls]} />
         
           
        )}

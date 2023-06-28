@@ -9,6 +9,7 @@ interface IUser {
     opinion: array
     section: array
     movement: array
+    badOpinion: array
     numberOfBalls: array
     status: boolean
     createdAt?: string

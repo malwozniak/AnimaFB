@@ -23,21 +23,31 @@ const userSchema = new mongoose_1.Schema({
     },
     model: {
         type: Array,
+        required: true
     },
     object: {
         type: Array,
+        required: true
     },
     opinion: {
         type: Array,
+        required: true
+    },
+    badOpinion: {
+        type: Array,
+        required: true
     },
     section: {
         type: Array,
+        required: true
     },
     movement: {
         type: Array,
+        required: true
     },
     numberOfBalls: {
         type: Array,
+        required: true
     },
     status: {
         type: Boolean,

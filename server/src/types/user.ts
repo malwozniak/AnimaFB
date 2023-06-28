@@ -7,10 +7,11 @@ export interface IUser extends Document {
     sayYesNo: string
     animationType: Array<string>
     model: Array<string>;
-    object: Array<string>;
-    opinion: Array<string>
-    section: Array<string>
-    movement: Array<string>
+    object: Array<string[]>;
+    opinion: Array<string[]>
+    badOpinion: Array<string[]>
+    section: Array<string[]>
+    movement: Array<string[]>
     numberOfBalls: Array<number>
     status: boolean
 }

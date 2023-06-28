@@ -43,13 +43,20 @@ exports.getAnimationById = getAnimationById;
 const updateAnimation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { params: { id }, body, } = req;
-        const updatedAnimations = yield animation_1.default.findByIdAndUpdate({ _id: id }, { $set: body });
-        const allAnima = yield animation_1.default.find();
-        res.status(200).json({
-            message: 'Animacja zaktualizowana',
-            user: updatedAnimations,
-            users: allAnima,
-        });
+        const updatedAnimations = yield animation_1.default.findByIdAndUpdate({ _id: id }, { $push: { numberOfBall: body } });
+        if (updatedAnimations) {
+            const updatedAnimation = yield animation_1.default.findByIdAndUpdate({ id: id }, { $set: body }, { new: true } // To return the updated document
+            );
+            const animations = yield animation_1.default.find();
+            res.status(200).json({
+                message: 'Animacja zaktualizowana',
+                user: updatedAnimation,
+                users: animations,
+            });
+        }
+        else {
+            res.status(404).json({ error: 'Nie znaleziono animacji' });
+        }
     }
     catch (error) {
         res.status(500).json({ error: 'Nie udało się zaktualizować animacji' });

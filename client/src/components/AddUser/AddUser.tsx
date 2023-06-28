@@ -16,6 +16,7 @@ class AddUser extends React.Component<Props, State> {
         model: '',
         object: [],
         opinion: [],
+        badOpinion: [],
         section: [],
         movement: [],
         numberOfBalls: [],
@@ -240,7 +241,14 @@ class AddUser extends React.Component<Props, State> {
 
         <div style={{ display: showCards ? "none" : "grid" }}>
           {showCards === false && isSubmitted === true && (
-            <AnimationList indexBoard={0} showCards={true} showContainer={true} user={formData} saveUser={this.props.saveUser} saveAnimation={this.props.saveAnimation} saveUpdateAnimation={this.props.saveUpdateAnimation}         />
+            <AnimationList indexBoard={0} 
+            showCards={true} 
+            showContainer={true} 
+            user={formData}
+             saveUser={this.props.saveUser} 
+             saveAnimation={this.props.saveAnimation} 
+             saveUpdateAnimation={this.props.saveUpdateAnimation} 
+             numberOBalls={0}        />
           )}
         </div>
       </>

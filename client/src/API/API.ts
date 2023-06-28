@@ -39,6 +39,7 @@ export const addUser = async (
       model: formData.model,
       object: formData.object,
       opinion: formData.opinion,
+      badOpinion: formData.badOpinion,
       section: formData.section,
       movement: formData.movement,
       numberOfBalls: formData.numberOfBalls,
@@ -57,14 +58,15 @@ export const addUser = async (
   }
 }
 
-
-export const updateUser = async (user: IUser): Promise<AxiosResponse<ApiDataType>> => {
+export const updateUser = async (user: IUser,  newNumberOfBalls: number,newMovement: string[], newSection: string[], newOpinion: string, badOpinon: string, object: string ): Promise<AxiosResponse<ApiDataType>> => {
   try {
-    const bodyUpdate: Pick<IUser, 'numberOfBalls' | 'movement' | 'section' | 'opinion'> = {
-      numberOfBalls: [user.numberOfBalls],
-      movement: [user.movement],
-      section: [user.section],
-      opinion: [user.opinion]
+    const bodyUpdate: Pick<IUser, 'numberOfBalls' | 'movement' | 'section' | 'opinion' | 'badOpinion'  | 'object' > = {
+      numberOfBalls: [ newNumberOfBalls], 
+      movement: [newMovement], 
+      section: [ newSection], 
+      opinion: [ newOpinion],
+      badOpinion: [badOpinon],
+      object: [object]
     };
 
     console.log(`${baseUrl}/users/${user._id}`);
@@ -84,7 +86,6 @@ export const updateUser = async (user: IUser): Promise<AxiosResponse<ApiDataType
     throw new Error(String(error));
   }
 };
-
 
 
 export const getAnimation = async (): Promise<AxiosResponse<IAnimation>> => {

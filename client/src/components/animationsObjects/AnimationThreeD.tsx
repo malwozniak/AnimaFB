@@ -56,6 +56,9 @@ function SphereMove({ updatePositions }: AnimationMotionProps ) {
           0.5 * acceleration * time_counter * time_counter;
         time_counter += time_step;
         updatePositions([mesh.current.position.y],[initial_speed],'linear y',String(bounce_distance), String(img) )
+      
+      
+      
       }
     }
   });

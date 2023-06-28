@@ -32,7 +32,7 @@ const chosenBallType = ballType[generateRandomAnimation(0,1)];
 const chosenMoving =moving[generateRandomAnimation(0,moving.length-1)];
 
 const questions = [
-  `Policz ile jest kulek <strong>${chosenBallType}</strong> poruszających się w ruchu <b>${chosenMoving}</b>`
+  `Policz, ile jest kulek <strong>${chosenBallType}</strong> poruszających się w ruchu <b>${chosenMoving}</b>`
 ];
 const nameObjects = ['Animacja 1', 'Animacja 2', 'Animacja 3','Animacja 4', 'Animacja 5', 'Animacja 6', 'Animacja 7', 'Animacja 8', 'Animacja 9']
 const gender = ['Kobieta', 'Mężczyzna', 'Nieokreślona']
@@ -49,7 +49,7 @@ const ballMoveComponents : StyledComponent<"div", any, BallBouncingProps>[] = [
 
 const ballXYZ = [0,-0.7,-1.4,-2.1,-2.8,-3.5,0.7,1.4,2.1,2.8,3.5]
 const ballSpeed = [1,2]
-const ballMove = ['ease-in', 'linear', 'ease-out', 'ease-in-out', `cubic-bezier(${getRandomNumber(0.0,1.0)}, ${getRandomFloat(0.0,1.0,1)}, ${getRandomFloat(0.0,1.0,1)}, 1)`]
+const ballMove = ['ease-in', 'linear', 'ease-out', 'ease-in-out', `cubic-bezier(${getRandomNumber(0.0,1.0)}, ${getRandomFloat(0.0,1.0,1)}, ${getRandomFloat(0.0,1.0,1)})`]
 const ballDistance = [`${generateRandomAnimation(0,20)}`, 'infinite']
 
 

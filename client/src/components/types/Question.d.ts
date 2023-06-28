@@ -3,13 +3,14 @@ type QuestionProps = {
     question: string
     showCard: boolean
     showContainer: boolean
-    saveUser: (user: IUser) => void
-    saveAnimation: (animationData: IAnimation[]) => void
-    saveUpdate: (user: IUser) => void
+    saveUser: (user: IUser) => void 
+    saveUpdate: (user: IUser,  newNumberOfBalls: number,newMovement: string[], newSection: string[], newOpinion: string, badOpinon: string, object: string ) => void
     saveUpdateAnimation: (animationData: IAnimation[]) => void
     user: IUser
     indexBoard: number
+    numberOBalls: number[]
     };
+   
   interface QuestionListState {
     answer: number
     isSubmitted: boolean
@@ -21,9 +22,12 @@ type QuestionProps = {
     showThankYouMessage: boolean
     showAnimationList: boolean
     selectedAns: string
+    previousStates: array
     textArea: string
+    textAreaNegative: string
     chosenSection: string[]
     chosenSectionFirst: string[]
+    chooseBall: any
     indexBoard: number
     
   };

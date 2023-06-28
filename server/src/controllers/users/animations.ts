@@ -1,6 +1,7 @@
 import { Response, Request } from 'express';
 import Animation from '../../models/animation';
 import { IAnimation } from '../../types/animation';
+import { isNumberObject } from 'util/types';
 
 
 
@@ -36,31 +37,38 @@ const getAnimation = async (_req: Request, res: Response): Promise<void> => {
   };
 
 
-  
   const updateAnimation = async (req: Request, res: Response): Promise<void> => {
     try {
       const {
-        params: {id}, body,} = req;
-     
-   
+        params: { id },
+        body,
+      } = req;
+  
       const updatedAnimations: IAnimation | null = await Animation.findByIdAndUpdate(
- 
-        { _id: id},
-        { $set: body }
+        { _id: id },
+        { $push: { numberOfBall: body } },
       );
- 
-      const allAnima: IAnimation[] = await Animation.find()
-      res.status(200).json({
+  
+      if (updatedAnimations) {
+        const updatedAnimation: IAnimation | null = await Animation.findByIdAndUpdate(
+          { id: id },
+          { $set: body },
+          { new: true } // To return the updated document
+        );
+  
+        const animations: IAnimation[] = await Animation.find();
+        res.status(200).json({
           message: 'Animacja zaktualizowana',
-          user: updatedAnimations,
-          users: allAnima,
-      })
-      } catch (error) {
+          user: updatedAnimation,
+          users: animations,
+        });
+      } else {
+        res.status(404).json({ error: 'Nie znaleziono animacji' });
+      }
+    } catch (error) {
       res.status(500).json({ error: 'Nie udało się zaktualizować animacji' });
     }
   };
-
-
   
   const addAnimation = async (req: Request, res: Response): Promise<void> => {
     try {

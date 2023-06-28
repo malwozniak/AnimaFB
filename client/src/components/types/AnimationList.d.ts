@@ -4,12 +4,14 @@ import { IAnimation } from "./Animation";
 type AnimationListProps = {
     indexBoard: number
     showCards: boolean
+    numberOBalls: number
     showContainer: boolean
     user: IUser
     saveUser: (user: IUser) => void
     saveAnimation: (animationData: IAnimation[]) => void
     saveUpdateAnimation: (animationData: IAnimation[]) => void
 
+    onClick?: () => Promise<void>;
     };
     
 type AnimationListState = {
