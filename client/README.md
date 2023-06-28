@@ -29,7 +29,7 @@ Animacje, które powodują zbyt długi czas ładowania strony, mogą negatywnie 
 
 ## Częstotliwość użycia
 
-Zbyt częste użycie animacji na stronie internetowej może powodować, że użytkownik stanie się niewrażliwy na ich efekt, a nawet może to wpłynąć na negatywnie na korzystanie z serwisu. Dlatego ważne jest, aby umiejętnie dobierać rodzaj i częstotliwość animacji na stronie.
+Zbyt wiele animacji animacji na stronie internetowej może powodować, że użytkownik stanie się niewrażliwy na ich efekt, a nawet może to wpłynąć na negatywnie na korzystanie z serwisu. Dlatego ważne jest, aby umiejętnie dobierać rodzaj i ilość animacji na stronie.
 
 ## Konwersja
 
@@ -41,8 +41,8 @@ Animacje, które są estetycznie wykonane i odpowiednio dopasowane do treści na
 
 # Określenie warunków testowych
 
-Grupą docelową użytkowników badania są chętni studenci, w przedziale wiekowym. Analizując określone obiekty, przez które są budowane animacja, podstawowymi figurami geometrycznymi są kwadra, trójkąt, koło. Musiałam początkowo wybrać odopwiedni testowany obiekt, którym jest koło, ponieważ jest przypomina punkt kierujący największą uwagę użytkownika.
-Następnie wybrałam odpowiednie rodzaje animacji,które badają ruch danego obiektu na stronie.
+Grupą docelową użytkowników badania są chętne osoby. Analizując określone obiekty, przez które są budowane animacja, podstawowymi figurami geometrycznymi są kwadra, trójkąt, koło. Musiałam początkowo wybrać odopwiedni testowany obiekt, którym jest kula, ponieważ jest przypomina punkt kierujący największą uwagę użytkownika.
+Następnie wybrałam odpowiednie rodzaje animacji, które badają ruch danego obiektu na stronie.
 
 # Przygotowanie zestawu danych
 
