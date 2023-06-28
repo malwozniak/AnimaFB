@@ -346,7 +346,7 @@ const FieldsetIN = styled.fieldset`
 display: flex;
 text-align:center;
 justify-content: center;
-margin: 5rem;
+margin: 1rem;
 border:none;
 
 `;
@@ -356,7 +356,7 @@ display: grid;
 text-align:center;
 grid-template-columns: repeat(3, 1fr);
 justify-content: center;
-margin: 5rem;
+
 
 `;
 const FieldsetNum = styled.fieldset`
@@ -366,7 +366,6 @@ text-align: center;
 grid-gap: 30px;
 -webkit-box-pack: center;
 justify-content: center;
-margin: 5rem;
 border: none;
 
 
@@ -387,7 +386,7 @@ margin-top: 3rem;
 const TextArea = styled.textarea`
 padding: 0 1rem;
 margin: 10px;
-width: 40%;
+width: 100%;
 `
 
    export{GlobalStyle,AnimationListBox,AnimationListContainer,AnimationListRow,

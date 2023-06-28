@@ -43,7 +43,7 @@ const AppAPI: React.FC = () => {
       .catch((err) => console.log(err));
   };
 
-  const handleUpdateUser = (user: IUser,  newNumberOfBalls: number, newMovement: string[], newSection: string[], newOpinion: string, badOpinion: string, object: string) => {
+  const handleUpdateUser = (user: IUser,  newNumberOfBalls: number, newMovement: string[], newSection: string[], newOpinion: string, badOpinion: string, object: string[]) => {
     try {
       const response = updateUser(user, newNumberOfBalls, newMovement, newSection, newOpinion, badOpinion, object);
       console.log('User updated successfully:', response);

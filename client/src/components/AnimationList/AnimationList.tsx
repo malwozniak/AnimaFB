@@ -79,13 +79,13 @@ componentDidMount() {
         this.setState((prevState) => ({
           timeElapsed: prevState.timeElapsed + 1,
         }));
-      }, 2000);
+      }, 30000);
     } else {
       this.setState({
         AnimationData: [],
       });
     }
-  }, 2000);
+  }, 20000);
 }
 
   showCardsWithoutChangingObjects(){
@@ -129,8 +129,8 @@ componentDidMount() {
   }
    
   drawAnimationListData = async () => {
-    const { position, speed, move, distance, img } = this.state;
-  
+    const {AnimationData,  position, speed, move, distance } = this.state;
+  if(AnimationData.length <9){
     const animationData: {
       id: string;
       userId: string;
@@ -207,7 +207,7 @@ componentDidMount() {
         );
       }
   
-      this.handleUpdatePositions(position, speed, move, distance, img);
+      // this.handleUpdatePositions(position, speed, move, distance, img);
   
       const animationObject = {
         id: String(generateUniqueID()),
@@ -239,9 +239,14 @@ componentDidMount() {
         loading: false,
         created: true,
       }));
-    }
-  
+      
     console.log("Tablica z animacjami", animationData);
+    }
+  }else{
+    this.setState(()=>({
+    AnimationData: []
+  }))
+  }
   };
 
 
@@ -356,7 +361,7 @@ componentDidMount() {
           </div>
           {showChangeAcceptQuestion &&  (
 
-         <ChangeAcceptQuestions saveUpdate={() => { } } question={''} showCard={false} showContainer={true} indexBoard={this.state.indexBoard} saveUser={this.props.saveUser} saveUpdateAnimation={this.props.saveUpdateAnimation} user={user} numberOBalls={[this.props.numberOBalls]} />
+         <ChangeAcceptQuestions saveUpdate={() => { } } question={''} showCard={false} showContainer={true} indexBoard={this.state.indexBoard} saveUser={this.props.saveUser} saveUpdateAnimation={this.props.saveUpdateAnimation} user={user} numberOBalls={this.props.numberOBalls} />
         
           
        )}

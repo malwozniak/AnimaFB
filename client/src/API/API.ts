@@ -58,21 +58,33 @@ export const addUser = async (
   }
 }
 
-export const updateUser = async (user: IUser,  newNumberOfBalls: number,newMovement: string[], newSection: string[], newOpinion: string, badOpinon: string, object: string ): Promise<AxiosResponse<ApiDataType>> => {
+export const updateUser = async (
+  user: IUser,
+  newNumberOfBalls: number,
+  newMovement: string[],
+  newSection: string[],
+  newOpinion: string,
+  badOpinion: string,
+  object: string[]
+): Promise<AxiosResponse<ApiDataType>> => {
   try {
-    const bodyUpdate: Pick<IUser, 'numberOfBalls' | 'movement' | 'section' | 'opinion' | 'badOpinion'  | 'object' > = {
-      numberOfBalls: [ newNumberOfBalls], 
-      movement: [newMovement], 
-      section: [ newSection], 
-      opinion: [ newOpinion],
-      badOpinion: [badOpinon],
-      object: [object]
+    const bodyUpdate: Pick<
+      IUser,
+      'numberOfBalls' | 'movement' | 'section' | 'opinion' | 'badOpinion' | 'object'
+    > = {
+      object: [...user.object, object],
+      numberOfBalls: [...user.numberOfBalls, newNumberOfBalls],
+      movement: [...user.movement, ...newMovement],
+      section: [...user.section, ...newSection],
+      opinion: [...user.opinion, newOpinion],
+      badOpinion: [...user.badOpinion, badOpinion],
+      
     };
 
     console.log(`${baseUrl}/users/${user._id}`);
 
     try {
-      const updatedUser: AxiosResponse<ApiDataType> = await axios.post(
+      const updatedUser: AxiosResponse<ApiDataType> = await axios.put(
         `${baseUrl}/users/${user._id}/`,
         bodyUpdate
       );

@@ -12,6 +12,8 @@ import {
   generateRandomAnimation,
   ballType,
   updateUser,
+  sectionType,
+  FieldsetQ,
 } from '../../library/library/allImports';
 import AnimationList from '../AnimationList/AnimationList';
 
@@ -32,8 +34,10 @@ class ChangeAcceptQuestions extends Component<QuestionProps, QuestionListState> 
       textArea: '',
       textAreaNegative: '',
       chosenSection: [],
+      arrayNumbers: [],
       chooseBall: '',
       chosenSectionFirst: [],
+      choiceHandlerSection:[],
       indexBoard: this.props.indexBoard,
       previousStates: [],
     };
@@ -48,6 +52,7 @@ class ChangeAcceptQuestions extends Component<QuestionProps, QuestionListState> 
   }
 
   handleTextAreaAnswer = (e: { target: { value: any } }) => {
+
     this.setState({ textArea: e.target.value });
   };
 
@@ -56,84 +61,130 @@ class ChangeAcceptQuestions extends Component<QuestionProps, QuestionListState> 
   };
 
   handleAnswerChange = (e: { target: { value: any } }) => {
-    this.setState({ answer: Math.max(this.state.min, Math.min(this.state.max, Number(e.target.value))) });
+          const ans = Math.max(this.state.min, Math.min(this.state.max, Number(e.target.value)))
+    this.setState({ answer: ans });
   };
   handleButtonClick = async () => {
     try {
+      if (!this.state.isSubmitted) {
       this.setState({ showCards: true, showAnimationList: true });
   
-      const { saveUser, saveUpdate } = this.props;
-      const { answer, textArea, chosenSectionFirst, previousStates, chosenSection, textAreaNegative, chooseBall } = this.state;
-      const arraNumbers = [];
-      arraNumbers.push(this.props.numberOBalls)
-  
-      const updatedAnswer = {
-        ...saveUser,
-        _id: this.props.user._id,
-        age: this.props.user.age,
-        gender: this.props.user.gender,
-        sayYesNo: this.props.user.sayYesNo,
-        animationType: this.props.user.animationType,
-        model: ['kula'],
-        object: chooseBall,
-        movement:  chosenSectionFirst,
-        opinion: textArea,
-        badOpinion:  textAreaNegative,
-        section: chosenSection,
-        numberOfBalls: [arraNumbers],
-        status: false,
-      };
-      console.log("HELP", [...previousStates.map((state: { answer: any; }) => state.answer)])
-console.log("number of", this.state.answer)
-  console.log("UPDATED ANSWER", updatedAnswer)
-      const response = await updateUser(
-        updatedAnswer,
-        answer,
-        chosenSectionFirst,
-        chosenSection,
-        textArea,
-        textAreaNegative,
-        chooseBall
-      );
-      console.log('Odpowiedź zaktualizowana', updatedAnswer);
-  
-      if (response.status === 200 || response.status === 201) {
-        console.log('Dane formularza przesłane pomyślnie');
-      } else {
-        console.error('Nie udało się przesłać danych formularza');
-      }
-  
+
+      // Ustawiamy isSubmitted na true, aby następnie zakończyć cykl
+      this.setState({ isSubmitted: true });
+    } else {
+      // Przycisk "Zatwierdź" został kliknięty, kończymy cykl
       if (this.state.indexBoard === 3) {
         this.setState({ showThankYouMessage: true, showCards: true });
       }
-  
-      saveUpdate(
-        updatedAnswer,
-        answer,
-        chosenSectionFirst,
-        chosenSection,
-        textArea,
-        textAreaNegative,
-        chooseBall
-      );
-    } catch (error) {
-      console.error('Błąd przesyłania danych formularza:', error);
+
+
+      
     }
-  };
+  } catch (error) {
+    console.error('Błąd przesyłania danych formularza:', error);
+  }
+};
 
 
+handleSaveClick = async () => {
+  
+ 
+  const { saveUpdate  } = this.props;
+  
+  try {
+    // Retrieve the necessary form data from the component's state
+    const {
+      answer,
+      textArea,
+      chosenSectionFirst,
+      chosenSection,
+      textAreaNegative,
+      arrayNumbers,
+      choiceHandlerSection,
+    } = this.state;
+
+    // Manipulate or process the data as needed
+    const arrayAnswers=[]
+    const model = 'kula';
+    arrayAnswers.push([this.props.numberOBalls,this.state.arrayNumbers ])
+    // Create the updated answer object
+    const updatedAnswer = {
+      
+      _id: this.props.user._id,
+      age: this.props.user.age,
+      gender: this.props.user.gender,
+      sayYesNo: this.props.user.sayYesNo,
+      animationType: this.props.user.animationType,
+      model: [model],
+      object: chosenSection,
+      movement: chosenSectionFirst,
+      opinion: textArea,
+      badOpinion: textAreaNegative,
+      section: choiceHandlerSection,
+      numberOfBalls: [...arrayNumbers],
+      status: false,
+    };
+
+    // Perform the saving operation, e.g., send the updatedAnswer to the server
+    const response = await updateUser(
+      updatedAnswer,
+      answer,
+      chosenSectionFirst,
+      chosenSection,
+      textArea,
+      textAreaNegative,
+      choiceHandlerSection,
+      
+    );
+    saveUpdate(
+      updatedAnswer,
+      answer,
+      chosenSectionFirst,
+      chosenSection,
+      textArea,
+      textAreaNegative,
+      choiceHandlerSection,
+      
+    );
+    if (response) {
+      console.log('Dane formularza zostały przesłane do bazy danych.');
+    }
+    // Handle the response or perform any additional actions
+
+    console.log('Data saved successfully!');
+  } catch (error) {
+    console.error('Error while saving data:', error);
+  }
+};
+
+choiceHandlerSection = (event: { target: { value: any; checked: any } }) => {
+  const { value, checked } = event.target;
+
+  this.setState(() => {
+    if (checked) {
+      return {
+        choiceHandlerSection: [...this.state.choiceHandlerSection, value.toLowerCase()],
+      };
+    } else {
+      return {
+        choiceHandlerSection : this.state.choiceHandlerSection.filter((option: any) => option !== value.toLowerCase()),
+      };
+    }
+  });
+};
 
   choiceHandler = (event: { target: { value: any; checked: any } }) => {
     const { value, checked } = event.target;
 
-    this.setState((prevState) => {
+    this.setState(() => {
       if (checked) {
         return {
-          chosenSection: [...prevState.chosenSection, value.toLowerCase()],
+          chosenSection: [...this.state.chosenSection, value.toLowerCase()],
         };
       } else {
         return {
-          chosenSection: prevState.chosenSection.filter((option: any) => option !== value.toLowerCase()),
+          chosenSection: this.state.chosenSection.filter((option: any) => option !== value.toLowerCase()),
         };
       }
     });
@@ -142,14 +193,14 @@ console.log("number of", this.state.answer)
   choiceHandlerFirst = (event: { target: { value: any; checked: any } }) => {
     const { value, checked } = event.target;
 
-    this.setState((prevState) => {
+    this.setState(() => {
       if (checked) {
         return {
-          chosenSectionFirst: [...prevState.chosenSectionFirst, value.toLowerCase()],
+          chosenSectionFirst: [...this.state.chosenSectionFirst, value.toLowerCase()],
         };
       } else {
         return {
-          chosenSectionFirst: prevState.chosenSectionFirst.filter((option: any) => option !== value.toLowerCase()),
+          chosenSectionFirst: this.state.chosenSectionFirst.filter((option: any) => option !== value.toLowerCase()),
         };
       }
     });
@@ -158,7 +209,7 @@ console.log("number of", this.state.answer)
   render() {
     const { showCards, showThankYouMessage, showAnimationList, textArea, textAreaNegative, indexBoard } = this.state;
     const { question, showCard, showContainer, user } = this.props;
-
+console.log("ARRAY " , this.state.arrayNumbers)
     return (
       <AnimationListContainer style={{ display: showContainer ? 'grid' : 'none' }}>
         {!showCards && indexBoard <= 3 && (
@@ -187,8 +238,23 @@ console.log("number of", this.state.answer)
                   </LabelChoice>
                 ))}
               </Fieldset>
-              <Fieldset>
+              <FieldsetQ>
                 <legend>Zaznacz, w których kartach były dane obiekty kuli:</legend>
+                {sectionType.map((option, index) => (
+                  <LabelChoice key={index}>
+                    <input
+                      type="checkbox"
+                      name="sectionType"
+                      value={option.toLowerCase()}
+                      id={`sectionType-${index}`}
+                      onChange={this.choiceHandlerSection}
+                    />
+                    <label htmlFor={`sectionType-${index}`}>{option}</label>
+                  </LabelChoice>
+                ))}
+              </FieldsetQ>
+              <Fieldset>
+                <legend>Zaznacz, które animacje zwróciły bardziej twoją uwagę:</legend>
                 {ballType.map((option, index) => (
                   <LabelChoice key={index}>
                     <input
@@ -213,6 +279,7 @@ console.log("number of", this.state.answer)
                 />
               </FieldsetNum>
               <FieldsetIN>
+                <input type="button" value="Zapisz" onClick={this.handleSaveClick} />
                 <input type="submit" value="Zatwierdź" onClick={this.handleButtonClick} />
               </FieldsetIN>
             </Form>
@@ -228,7 +295,7 @@ console.log("number of", this.state.answer)
             saveUser={()=>{}} 
             saveAnimation={()=>{} } 
             saveUpdateAnimation={()=>{}}
-            numberOBalls={this.state.answer}           />
+            numberOBalls={this.state.arrayNumbers}           />
         )}
         {showThankYouMessage && <h2>Dziękujemy za wypełnienie ankiety!</h2>}
       </AnimationListContainer>

@@ -38,7 +38,7 @@ type AnimationDataType = {
   }
 
   export interface AnimationMotionProps {
-
+  // onRetrieveValues: (pos: number[], spd: number[], dist: string, mv: string, image: string) => void;
    updatePositions: (position: number[], speed: number[], move: string, distance: string, img: string) => void; 
    position: number[]
    speed: number[]

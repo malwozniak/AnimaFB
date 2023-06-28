@@ -248,7 +248,7 @@ class AddUser extends React.Component<Props, State> {
              saveUser={this.props.saveUser} 
              saveAnimation={this.props.saveAnimation} 
              saveUpdateAnimation={this.props.saveUpdateAnimation} 
-             numberOBalls={0}        />
+             numberOBalls={[]}        />
           )}
         </div>
       </>
