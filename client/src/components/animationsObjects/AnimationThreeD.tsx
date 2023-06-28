@@ -1,66 +1,71 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { useFrame } from '@react-three/fiber';
+import React, { useRef } from 'react';
+import { useFrame, useThree, useLoader } from '@react-three/fiber';
 import * as THREE from 'three';
 import { generateRandomAnimation } from '../../library/utils/functions';
-import { AnimationMotionProps } from '../types/Animation';
+import { AnimationMotionProps } from '../../library/library/allImports';
 
 let acceleration = 0.05;
 let bounce_distance = 2;
 let bottom_position_y = 0;
 let time_step = 0.1;
+// time_counter  jest obliczany jako czas, w którym kulka osiągnęła górną pozycję
+// to jest po prostu obliczane za pomocą wzoru s = (1/2)gt*t, co ma miejsce w przypadku upuszczenia piłki z górnej pozycji
+//od góry do dołu
 let time_counter = Math.sqrt((-bounce_distance * 2) / -acceleration);
+
+//od dołu do góry
+// let time_counter = Math.sqrt((bounce_distance * 2) / acceleration);
 let initial_speed = acceleration * time_counter;
+function SphereMove({ updatePositions }: AnimationMotionProps ) {
 
-export default function SphereMove({ updatePositions }: AnimationMotionProps) {
-  const mesh = useRef<THREE.Mesh | null>(null);
-  const [startTime, setStartTime] = useState<number | null>(null);
-  const duration = 2000; // Duration in milliseconds
+  const mesh = useRef<THREE.Mesh>(null!); // Use null as the initial value
 
-  useEffect(() => {
-    setStartTime(Date.now());
-  }, []);
+  const { scene } = useThree();
+
+  var num = generateRandomAnimation(1, 15);
+  let img =
+    `https://raw.githubusercontent.com/malwozniak/react-ts-1dq1it/main/textures/img` +
+    num +
+    `.jpg`;
+
+  const texture = useLoader(THREE.TextureLoader, img);
+
+  scene.background = texture;
 
   useFrame(() => {
     if (mesh.current) {
-      const elapsedTime = Date.now() - (startTime ?? 0);
-      const progress = Math.min(elapsedTime / duration, 1); // Calculate animation progress from 0 to 1
-
-      if (progress === 1) {
-        // Animation completed
-        return;
-      }
-
-      if (generateRandomAnimation(1, 15) % 2) {
+      if (num % 2) {
         if (mesh.current.position.x < bottom_position_y) {
           time_counter = 0;
+          updatePositions([mesh.current.position.x],[initial_speed],'linear x', String(bounce_distance), String(img) )
         }
-
         mesh.current.position.x =
           bottom_position_y +
           initial_speed * time_counter -
           0.5 * acceleration * time_counter * time_counter;
-
         time_counter += time_step;
+        updatePositions([mesh.current.position.x],[initial_speed],'linear x', String(bounce_distance), String(img) )
       } else {
         if (mesh.current.position.y < bottom_position_y) {
           time_counter = 0;
+          updatePositions([mesh.current.position.y],[initial_speed],'linear y', String(bounce_distance), String(img) )
         }
-
         mesh.current.position.y =
           bottom_position_y +
           initial_speed * time_counter -
           0.5 * acceleration * time_counter * time_counter;
-
         time_counter += time_step;
+        updatePositions([mesh.current.position.y],[initial_speed],'linear y',String(bounce_distance), String(img) )
       }
     }
   });
-
-  useEffect(() => {
-    updatePositions([], [initial_speed], 'linear', String(bounce_distance));
-  }, []);
-
+ 
   return (
+    <>
+          <mesh>
+        <planeGeometry args={[8, 8]} />
+        <meshStandardMaterial map={texture} attach="material" />
+      </mesh>
     <mesh ref={mesh}>
       <sphereGeometry attach="geometry" args={[1, 16, 16]} />
       <meshStandardMaterial
@@ -71,5 +76,10 @@ export default function SphereMove({ updatePositions }: AnimationMotionProps) {
         metalness={0.1}
       />
     </mesh>
+    </>
   );
 }
+
+export default SphereMove;
+
+

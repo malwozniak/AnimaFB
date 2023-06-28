@@ -13,10 +13,10 @@ router.use(express_1.default.static(path_1.default.join(__dirname, '../../../../
 router.get('/users', users_1.getUser);
 router.get('/users/:id', users_1.getUserById);
 router.post('/users', users_1.addUser);
-router.put('/users/:id', users_1.updateUser);
+router.post('/users/:id', users_1.updateUser);
 /**Animacje */
 router.get('/animations', users_1.getAnimation);
 router.get('/animations/:id', users_1.getAnimationById);
-router.post('/animations', users_1.updateAnimation);
-// router.put('/aniamtions/:id', updateAnimation)
+router.post('/animations', users_1.addAnimation);
+router.put('/animations/:id', users_1.updateAnimation);
 exports.default = router;

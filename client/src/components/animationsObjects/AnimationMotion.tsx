@@ -45,7 +45,7 @@ export default function AnimationMotion({ updatePositions }: AnimationMotionProp
     setSpeed(speed)
     setMove(move)
     setDistance(distance)
-    updatePositions( [x,y,0],[speed],move, distance); 
+    updatePositions( [x,y,0],[speed],move, distance, String(randomImageNumber)); 
   }, []);
 
   return (

@@ -3,12 +3,13 @@
  */
 
 import React, { Component } from "react";
-import { AnimationListBox, AnimationListRow, AnimationListRowFirst, BallShow, Canvas, Card, CardBorder, CardContainer, ChangeAcceptQuestions, GlobalStyle, IAnimation, RandomImage, RandomImage3D,  ballType, generateRandomAnimation, generateUniqueID, nameObjects, questions } from "../../library/library/allImports";
+import { AnimationListBox, AnimationListRow, AnimationListRowFirst, BallShow, Canvas, Card, CardBorder, CardContainer, ChangeAcceptQuestions, GlobalStyle, IAnimation,   generateRandomAnimation, generateUniqueID, nameObjects, questions } from "../../library/library/allImports";
 import { addAnimation } from "../../API/API";
 import SphereMove from "../AnimationsObjects/AnimationThreeD";
 import AnimationMotion from "../AnimationsObjects/AnimationMotion";
 import RandomMove from "../AnimationsObjects/move/RandomMove";
 import RandomMove3D from "../AnimationsObjects/move/RandomMove3D";
+import { AnimationListProps, AnimationListState } from "../types/AnimationList";
 
 
 // import AddAnimation from "./AddAnimation";
@@ -41,13 +42,14 @@ class AnimationList extends Component<
         props: undefined,
         key: null
       },
+      animationObject:[],
       position: [], 
       speed: [],
       move: '',
       distance: '',
       setNum: 0,
+      img: '',
       nameObject: '',
-      img:String(generateRandomAnimation(1,16)),
       created: false,
       imageNumber: 0,
       indexBoard: this.props.indexBoard +1,
@@ -58,34 +60,32 @@ class AnimationList extends Component<
       <Canvas camera={{ position: [0, 0, 5] }}>
       <ambientLight intensity={1} />
       <pointLight position={[40, 40, 40]} />
-      
-      <RandomImage3D num={this.state.img} />
+    
           <SphereMove updatePositions={this.handleUpdatePositions
-    }/>
+    } key={String(generateUniqueID())}/>
           </Canvas>,
        <Canvas camera={{ position: [0, 0, 5] }}>
       <ambientLight intensity={1} />
       <pointLight position={[40, 40, 40]} />
-      <RandomImage3D num={this.state.img} />
       <RandomMove3D updatePositions={this.handleUpdatePositions
-    }/>
+    } key={String(generateUniqueID())}/>
        </Canvas>,
      <Card>
         <AnimationMotion
     updatePositions={this.handleUpdatePositions
-    }/>
+    } key={String(generateUniqueID())}/>
         {/* <RandomImage num={this.state.img}/> */}
         </Card>
        ,      
        <Card>
         <RandomMove updatePositions={this.handleUpdatePositions
     }/>
-        <RandomImage num={this.state.img}/>
         </Card>
         
    
-
-];
+  
+  ];
+    
   }
 
 
@@ -105,7 +105,7 @@ class AnimationList extends Component<
       }));
 
 
-     if(this.state.timeElapsed == 0){
+     if(this.state.timeElapsed ==0 ){
       this.drawAnimationListData();
       
     
@@ -119,7 +119,7 @@ class AnimationList extends Component<
          // this.handleUpdatePositions(this.state.position, this.state.speed, this.state.move, this.state.distance)
      
             console.log(this.state.timeElapsed)
-        }, 6000)
+        }, 30000)
        } else{
 
         this.setState(() => ({
@@ -131,7 +131,7 @@ class AnimationList extends Component<
        }
      
   
-  }, 10000);
+  }, 20000);
         
   }
 
@@ -144,101 +144,133 @@ class AnimationList extends Component<
     });
   }
 
-  handleUpdatePositions = ( position: number[],  speed: number[], move: string, distance: string) => {
-      this.setState({
-        position: position,
-        speed: speed,
-        move: move,
-        distance: distance,
 
-    });
-    // this.drawAnimationListData()
-    // console.log("LALAL", z,y,img,x)
-  };
  
-
-async drawAnimationListData () {
-
-   
- const { position , speed, move, distance} = this.state;
- let { nameObject, setNum  } = this.state;
-//  
-const animationData: IAnimation[] = [];
-    for (let i = 0; i < 9; i++) {
-      setNum = generateRandomAnimation(0,this.components.length-1);
-      const uniqueObject = React.cloneElement(this.components[setNum], {
-        position: position,
-        speed: speed,
-        move: move,
-        distance: distance
-      });    
-    //imageNumber = generateRandomAnimation(0,16)
-
-    if(setNum  == 0 ){
-      nameObject = "SphereMove"
-      console.log("IMAGEwe",position)
-    }
-    else if(setNum == 1){
-      nameObject = "RandomImage3D"
-      console.log("IMAGEwe", speed)   }
-    else if(setNum == 2){
-      nameObject = "AnimationMotion"
-      console.log("IMAGEwe",position)
-    }
-    else {
-      nameObject = "RandomeBallMove"
-      console.log("IMAGEwe",position)
-    } 
-
-    
-// console.log(nameObject,"PO")      
-       
-          
-          
-        //this.handleUpdatePositions( uniqueObject.props.position, uniqueObject.props.speed, uniqueObject.props.move, uniqueObject.props.distance);
-          console.log("UniqueNAme",uniqueObject)
-      const animationObject = {
-        id: String(generateUniqueID()),
-        userId: this.props.user._id,
-        name: nameObjects[i],
-       object:  nameObject === "RandomMove" ||
-        nameObject === "AnimationMotion"
-          ? ballType[0]
-          : ballType[1],
-        position: position,
-        image: this.state.img,
-        section: String(i+1),
-        movement: move,
-        speed: speed,
-        distance: distance,
-        information: uniqueObject,
-        status: false,
-      };
-
-  console.log("NANA", animationData)
-     animationData.push(animationObject);
+  handleUpdatePositions = (
+    position: number[],
+    speed: number[],
+    move: string,
+    distance: string,
+    img: string
+  ) => {
+    const { animationObject } = this.state;
+    const updatedAnimationObject = {
+      ...animationObject,
+      position: position,
+      speed: speed,
+      move: move,
+      distance: [distance],
+      img: img
+    };
   
-    }
+    this.setState(
+      {
+        animationObject: updatedAnimationObject,
+      },
+      () => {
+        console.log("FUNKCJA POSITIONS UPDATE", updatedAnimationObject)
+    
+      // this.props.saveUpdateAnimation(updatedAnimationObject);
+      }
+    );
+  }
+   
+drawAnimationListData = async() =>{
 
    
-    const AnimationDataArray = [...animationData];
+  const { position , speed, move, distance, img} = this.state;
+  let { nameObject, setNum  } = this.state;
+ //  
+ const animationData: {
+   id: string;
+   userId: string;
+   name: string;
+   object: string;
+   position: number[]
+   image: string;
+   section: string;
+   movement: string[];
+   speed: number[];
+   distance: string[];
+   information: any;
+   status: boolean;
+ }[] = [];
+ 
+     for (let i = 0; i < 9; i++) {
+       setNum = generateRandomAnimation(0,this.components.length-1);
+       const uniqueObject = React.cloneElement(this.components[setNum], {
+         position: position,
+         speed: speed,
+         move: move,
+         distance: distance
+       });    
+ 
+     if(setNum  == 0 ){
+       nameObject = "SphereMove"
+       console.log("IMAGEwe",position)
+     }
+     else if(setNum == 1){
+       nameObject = "RandomMove"
+       console.log("IMAGEwe", speed)   }
+     else if(setNum == 2){
+       nameObject = "AnimationMotion"
+       console.log("IMAGEwe",position)
+     }
+     else {
+       nameObject = "RandomMove3D"
+       console.log("IMAGEwe",position)
+     } 
+ 
+     
+ // console.log(nameObject,"PO")      
+        
+           
+           
+         this.handleUpdatePositions( position, speed, move, distance, img);
+           console.log("UniqueNAme",uniqueObject)
+       const animationObject = {
+         id: String(generateUniqueID()),
+         userId: this.props.user._id,
+         name: nameObjects[i],
+        object:  nameObject,
+         position: position,
+         image: '',
+         section: String(i+1),
+         movement: [''],
+         speed: speed,
+         distance: [distance],
+         information: uniqueObject,
+         status: false,
+       };
+ 
+   console.log("NANA", animationData)
+       animationData.push(animationObject);
+   
+     
+ 
+     const AnimationDataArray = [...animationData];
+ 
+console.log("PRZED ZAPISEM", AnimationDataArray)
+     this.props.saveAnimation(AnimationDataArray);
+     console.log("PO ZAPISIE", AnimationDataArray)
     await this.handleResponse(AnimationDataArray);
-  
-    this.setState((state: any) => ({
-      ...state,
-      AnimationData: AnimationDataArray,
-      showCards: false,
-      showLabel: false,
-      loading: false,
-      created: true,
-    }));
-    
-  console.log("Tablica z animacjami", AnimationDataArray);
-
-
-    
-
-}
+   
+     this.setState((state: any) => ({
+       ...state,
+       AnimationData: AnimationDataArray,
+       showCards: false,
+       showLabel: false,
+       loading: false,
+       created: true,
+     }));
+     
+   console.log("Tablica z animacjami", AnimationDataArray);
+    }
+ 
+     
+ 
+ }
+ 
 
 
 
@@ -246,7 +278,7 @@ const animationData: IAnimation[] = [];
 
   async handleResponse(DataAnimation: IAnimation[]){
   try {
-   
+    
       const response = await addAnimation(DataAnimation);
       
       if (response.status === 200 || response.status === 201) {
@@ -334,6 +366,9 @@ const animationData: IAnimation[] = [];
            
                  {this.setState({ cardNumber: index + 1})}
                  {item.information}
+
+
+                
                     </Card>
   
                 </CardContainer>
@@ -350,7 +385,7 @@ const animationData: IAnimation[] = [];
           </div>
           {showChangeAcceptQuestion &&  (
 
-         <ChangeAcceptQuestions saveUpdate={()=>{}}  question={''} showCard={false} showContainer={true} indexBoard={this.state.indexBoard} saveUser={this.props.saveUser} saveAnimation={this.props.saveAnimation} user={user} />
+         <ChangeAcceptQuestions saveUpdate={()=>{}}  question={''} showCard={false} showContainer={true} indexBoard={this.state.indexBoard} saveUser={this.props.saveUser} saveAnimation={this.props.saveAnimation} saveUpdateAnimation={this.props.saveUpdateAnimation} user={user} />
         
           
        )}

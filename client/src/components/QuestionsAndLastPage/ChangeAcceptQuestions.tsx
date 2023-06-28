@@ -34,15 +34,32 @@ class ChangeAcceptQuestions extends Component<QuestionProps,QuestionListState> {
   };
 
 
-  handleButtonClick = async () => {
+  
+  handleButtonClick =  () => {
     try {
       this.setState({ showCards: true,  showAnimationList: true});
      
       const { saveUser } = this.props;
-      const { answer, textArea } = this.state;
+      const { answer, textArea, chosenSectionFirst, chosenSection} = this.state;
     this.setState((prevState) => ({
       indexBoard: prevState.indexBoard
-    }), () => {
+      
+    }
+    ), async () => {
+      const response = await updateUser(updatedAnswer)
+      console.log('Odpowiedź zaktualizowana', updatedAnswer )
+     
+       
+  
+      
+      if (response.status === 200 || response.status === 201) {
+        console.log('Dane formularza przesłane pomyślnie');
+        
+     
+      } else {
+        console.error('Nie udało się przesłać danych formularza');
+      }
+      
       if (this.state.indexBoard === 3) {
         this.setState({ showThankYouMessage: true, showCards: true });
         // console.log(this.state.indexBoard)
@@ -57,20 +74,16 @@ class ChangeAcceptQuestions extends Component<QuestionProps,QuestionListState> {
       sayYesNo: this.props.user.sayYesNo,
       animationType: this.props.user.animationType,
       model: ['kula'],
-      object: [...this.props.user.object], 
-      movement: [this.props.user.movement],
-      opinion:  [...this.props.user.opinion, textArea ],
-      section: [...this.props.user.section, this.state.chosenSection],
-      numberOfBalls: [...this.props.user.numberOfBalls],
+      object: [this.props.user.object], 
+      movement: [chosenSectionFirst],
+      opinion:  [ textArea ],
+      section: [chosenSection],
+      numberOfBalls: [answer],
       status: false,
 
     };
-    console.log('Odpowiedź zaktualizowana', updatedAnswer)
-
-    updateUser(updatedAnswer, [answer])
-     
-
-  
+    this.props.saveUpdate(updatedAnswer)
+   
   }catch (error) {
     console.error('Błąd przesyłania danych formularza:', error);
   }
@@ -113,6 +126,9 @@ class ChangeAcceptQuestions extends Component<QuestionProps,QuestionListState> {
       }
     });
   };
+
+
+  
  
   render() {
     const { showCards, showThankYouMessage, showAnimationList, textArea, indexBoard} = this.state;
@@ -126,7 +142,7 @@ class ChangeAcceptQuestions extends Component<QuestionProps,QuestionListState> {
         <AnimationListRowFirst  style={{ display: showCard ? "none" : "grid" }} >
 
         
-          <Form >
+          <Form>
             <FieldsetIN>
               <legend>Wypisz, co pojawiło się na zdjęciach:</legend>
              <TextArea placeholder='Tutaj wpisz swoje spostrzeżenia...' value={textArea} onChange={this.handleTextAreaAnswer} />
@@ -193,7 +209,7 @@ class ChangeAcceptQuestions extends Component<QuestionProps,QuestionListState> {
             {showAnimationList && indexBoard < 3 && (
               
          <AnimationList  
-            indexBoard={this.state.indexBoard} showCards={true} showContainer={true} user={user}  saveUser={this.props.saveUser} saveAnimation={this.props.saveAnimation} />
+            indexBoard={this.state.indexBoard} showCards={true} showContainer={true} user={user} saveUser={this.props.saveUser} saveAnimation={this.props.saveAnimation} saveUpdateAnimation={this.props.saveUpdateAnimation} />
        
        )}
         {showCards && showThankYouMessage 
@@ -206,7 +222,5 @@ class ChangeAcceptQuestions extends Component<QuestionProps,QuestionListState> {
 
 
 export default ChangeAcceptQuestions;
-
-
 
 

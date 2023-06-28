@@ -35,7 +35,7 @@ export const animationSchema = new Schema({
   },
   movement: 
   {
-    type: String,
+    type: Array,
   },
   speed: 
   {
@@ -43,7 +43,7 @@ export const animationSchema = new Schema({
   },
   distance: 
   {
-    type: String,
+    type: Array,
   },
   information:{
     type: Object

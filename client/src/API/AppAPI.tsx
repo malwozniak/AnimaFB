@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import AddUser from '../components/AddUser/AddUser'
-import { getUser, addUser, updateUser, getUserId, getAnimationId, getAnimation } from './API'
+import { getUser, addUser, updateUser, getUserId, getAnimationId, getAnimation, saveUpdateAnimation } from './API'
 import ChangeAcceptQuestions from '../components/QuestionsAndLastPage/ChangeAcceptQuestions'
 import { IAnimation } from '../components/types/Animation'
 // import AnimationList from './components/AnimationList'
@@ -43,9 +43,9 @@ const AppAPI: React.FC = () => {
       .catch((err) => console.log(err));
   };
 
-  const handleUpdateUser = (user: IUser, newNumberOfBalls: number[]): void => {
+  const handleUpdateUser = (user: IUser) => {
     try {
-      const response = updateUser(user, newNumberOfBalls);
+      const response = updateUser(user);
       console.log('User updated successfully:', response);
     } catch (error) {
       console.error('Error updating user:', error);
@@ -80,27 +80,28 @@ const AppAPI: React.FC = () => {
       console.error('Error saving animations:', error);
     }
   };
-
-  // const handleUpdateAnimation = (animation: IAnimation): void => {
-  //   updateAnimation(animation)
-  //   .then(({ status, data }) => {
-  //       if (status !== 200) {
-  //         throw new Error('Błąd! Animacja nie zaktualizowana!')
-  //       }
-  //       setAnimations(data.animations)
-  //     })
-  //     .catch((err) => console.log(err))
-  // }
+  const handleUpdateAnimation = async (objects: IAnimation[]): Promise<void> => {
+    try {
+      if (!Array.isArray(objects)) {
+        throw new Error('Objects is not an array');
+      }
+  
+      const response = saveUpdateAnimation(objects);
+      console.log('User updated successfully:', response);
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
+  };
 
 
 
   return (
     <>
-      <AddUser saveUser={handleSaveUser}  saveAnimation={handleSaveAnimation} />
+      <AddUser saveUser={handleSaveUser}  saveAnimation={handleSaveAnimation} saveUpdateAnimation={handleUpdateAnimation} />
       {/* <AddAnimation saveAnimation={handleSaveAnimation } /> */}
       {users.map((user: IUser) => (
         <>
-        <ChangeAcceptQuestions question={''} showCard={false} showContainer={false} saveUpdate={handleUpdateUser} user={user} indexBoard={0} saveUser={handleSaveUser} saveAnimation={handleSaveAnimation} />
+        <ChangeAcceptQuestions question={''} showCard={false} showContainer={false} saveUpdate={handleUpdateUser} user={user} indexBoard={0} saveUser={handleSaveUser} saveUpdateAnimation={handleUpdateAnimation} saveAnimation={handleSaveAnimation} />
        
        
      </>

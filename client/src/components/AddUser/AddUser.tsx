@@ -2,6 +2,7 @@ import React from 'react';
 import {  ChoiceGroup, Fieldset, Form,  LabelChoice, addUser, animationWhich, answerYesNo, gender, generateRandomAnimation, generateUniqueID } from '../../library/library/allImports';
 import AnimationList from '../AnimationList/AnimationList';
 
+
 class AddUser extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -239,7 +240,7 @@ class AddUser extends React.Component<Props, State> {
 
         <div style={{ display: showCards ? "none" : "grid" }}>
           {showCards === false && isSubmitted === true && (
-            <AnimationList indexBoard={0} showCards={true} showContainer={true} user={formData} saveUser={this.props.saveUser} saveAnimation={this.props.saveAnimation}          />
+            <AnimationList indexBoard={0} showCards={true} showContainer={true} user={formData} saveUser={this.props.saveUser} saveAnimation={this.props.saveAnimation} saveUpdateAnimation={this.props.saveUpdateAnimation}         />
           )}
         </div>
       </>

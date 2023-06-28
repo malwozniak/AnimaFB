@@ -58,28 +58,9 @@ const updateAnimation = (req, res) => __awaiter(void 0, void 0, void 0, function
 exports.updateAnimation = updateAnimation;
 const addAnimation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const body = req.body;
-        const animation = new animation_1.default({
-            id: body.id,
-            userId: body.userId,
-            name: body.name,
-            model: body.model,
-            object: body.object,
-            positionX: body.positionX,
-            positionY: body.positionY,
-            positionZ: body.positionZ,
-            image: body.image,
-            section: body.section,
-            movement: body.movement,
-            speed: body.speed,
-            distance: body.distance,
-            information: body.information,
-            status: false,
-        });
-        const newAnimation = yield animation.save();
-        const animations = yield animation_1.default.find();
-        // console.log('Odpowiedź dane użytkownika:', newUser); 
-        res.status(201).json({ message: 'Animacja dodana.', animmation: newAnimation, users: animations });
+        const animationsData = req.body;
+        const animations = yield animation_1.default.insertMany(animationsData);
+        res.status(201).json({ message: 'Animacje dodane.', animations });
     }
     catch (error) {
         res.status(500).json({ error: 'Nie udało się dodać animacji.' });

@@ -12,19 +12,10 @@ exports.animationSchema = new mongoose_1.Schema({
     name: {
         type: String,
     },
-    model: {
-        type: String,
-    },
     object: {
         type: String,
     },
-    positionX: {
-        type: Array,
-    },
-    positionY: {
-        type: Array,
-    },
-    positionZ: {
+    position: {
         type: Array,
     },
     image: {
@@ -34,13 +25,13 @@ exports.animationSchema = new mongoose_1.Schema({
         type: String,
     },
     movement: {
-        type: String,
+        type: Array,
     },
     speed: {
         type: Array,
     },
     distance: {
-        type: String,
+        type: Array,
     },
     information: {
         type: Object

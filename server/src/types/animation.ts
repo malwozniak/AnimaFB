@@ -1,16 +1,16 @@
 import { Document } from 'mongoose'
 
 export interface IAnimation extends Document {
-  id: number
+  id: string
   userId: string
   name: string
   object: string
   position: number[]
   image: string
   section: string
-  movement: string
+  movement: string[]
   speed: number[]
-  distance: string
+  distance: string[]
   information:  any
   status: boolean
 }

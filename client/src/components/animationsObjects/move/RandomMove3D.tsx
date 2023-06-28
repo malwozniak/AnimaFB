@@ -2,23 +2,25 @@ import * as THREE from 'three';
 import {  useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import React from 'react';
-import { AnimationMotionProps, Material } from '../../../library/library/allImports';
+import { AnimationMotionProps, Material, RandomImage3D, generateRandomAnimation } from '../../../library/library/allImports';
 
 
 
 export default function RandomMove3D({ updatePositions }: AnimationMotionProps ) {
- 
+  const num = String(generateRandomAnimation(1,16))
   const mesh = useRef<THREE.Mesh<THREE.BufferGeometry, Material | Material[]>>(null); 
   const x = Math.random() * 10 - 1;
   const y = Math.random() * 10 - 1;
   const z = Math.random() * 10 - 1;
 //Zdefiniuj losową pozycję dla kuli
- const randomPosition = () => {
-  return new THREE.Vector3(
-    x, // Randomowwa wartość pomiędzy -3 a 3
-    y,
-    z
-  );
+
+  const randomPosition = () => {
+    return new THREE.Vector3(
+      x,
+      y + Math.random() * 3 + 3, 
+      z
+    );
+  
 };
 
 //Zdefiniuj losową prędkość dla kuli
@@ -55,11 +57,13 @@ export default function RandomMove3D({ updatePositions }: AnimationMotionProps )
   // const randomPos = [position]
   console.log("Randomm Move 3D", position.x)
 
-updatePositions([x, y, z], [speed], "Random", "infinite");
+updatePositions([x, y, z], [speed], "Random", "infinite",  String(num));
 
   return (
     <mesh>
-    
+    <mesh>
+        <RandomImage3D num={num}/>
+      </mesh>
       <mesh ref={mesh}>
         <sphereGeometry attach="geometry" args={[1, 16, 16]} />
         <meshStandardMaterial

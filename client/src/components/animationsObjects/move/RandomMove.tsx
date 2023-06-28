@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getDistance, getRandomFloat, getRandomNumber } from '../../../library/utils/functions';
+import { RandomImage, generateRandomAnimation, getDistance, getRandomFloat, getRandomNumber } from '../../../library/utils/functions';
 import { AnimationMotionProps, Point } from '../../types/Animation';
 import { Ball } from '../../../library/constants/style';
-
+const img  = generateRandomAnimation(1,16)
 function RandomMove({ updatePositions }: AnimationMotionProps) {
+
   const [style, setStyle] = useState({ transform: 'translate(0, 0)' });
   const ballRef = useRef<HTMLDivElement>(null);
   const startPoint: Point = { x: 0, y: 0 };
@@ -13,7 +14,7 @@ function RandomMove({ updatePositions }: AnimationMotionProps) {
   };
   const distance: number = getDistance(startPoint, endPoint);
   const speed: number = getRandomFloat(0.0, 0.3, 2); // in pixels per second
-  const duration: number = (distance / speed) * 1000;
+  const duration: number = (distance) * 1000;
 
   useEffect(() => {
     let animationId: number | null = null; // ID of the animation frame
@@ -51,11 +52,12 @@ function RandomMove({ updatePositions }: AnimationMotionProps) {
   useEffect(() => {
     // console.log("SPEED", speed);
 
-    updatePositions([startPoint.x, startPoint.y, 0], [speed], 'linear', duration.toString());
+    updatePositions([startPoint.x, startPoint.y, 0], [speed], 'linear', duration.toString(),String(img) );
   }, [speed, duration, updatePositions, startPoint]);
 
   return (
     <>
+    <RandomImage num={img}/>
       <Ball ref={ballRef} style={style} />
     </>
   );

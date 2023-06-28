@@ -58,10 +58,13 @@ export const addUser = async (
 }
 
 
-export const updateUser = async (user: IUser, newNumberOfBalls: number[]): Promise<AxiosResponse<ApiDataType>> => {
+export const updateUser = async (user: IUser): Promise<AxiosResponse<ApiDataType>> => {
   try {
-    const bodyUpdate: Pick<IUser, 'numberOfBalls'> = {
-      numberOfBalls: newNumberOfBalls,
+    const bodyUpdate: Pick<IUser, 'numberOfBalls' | 'movement' | 'section' | 'opinion'> = {
+      numberOfBalls: [user.numberOfBalls],
+      movement: [user.movement],
+      section: [user.section],
+      opinion: [user.opinion]
     };
 
     console.log(`${baseUrl}/users/${user._id}`);
@@ -81,6 +84,9 @@ export const updateUser = async (user: IUser, newNumberOfBalls: number[]): Promi
     throw new Error(String(error));
   }
 };
+
+
+
 export const getAnimation = async (): Promise<AxiosResponse<IAnimation>> => {
   try {
     const animations = await axios.get(
@@ -101,6 +107,10 @@ export const getAnimationId = async (userId: string): Promise<AxiosResponse<IAni
     throw new Error(String(error));
   }
 };
+
+
+
+
 export const addAnimation = async (
   animationData: IAnimation[]
 ): Promise<AxiosResponse<AnimationDataType>> => {
@@ -136,27 +146,27 @@ export const addAnimation = async (
   }
 };
 
-
-// export const updateAnimation = async (animation :IAnimation) : Promise<AxiosResponse<AnimationDataType>> => {
-//   try{
-//     const bodyUpdate: Pick<IAnimation, 'positionX'> = {
-//       positionX: animation.positionX
-//     };
-//       // console.log(`${baseUrl}/animations/${animation.id}`)
-// try{
-//       const updatedAnimations: AxiosResponse<AnimationDataType> = await axios.put(
-
-//         `${baseUrl}/animations/${animation.id}`, bodyUpdate
-//       )
+export const saveUpdateAnimation = async (animationData: IAnimation[]): Promise<AxiosResponse<AnimationDataType>> => {
+  try {
+    const updatedAnimations: AxiosResponse<AnimationDataType>[] = await Promise.all(animationData.map(async (animation) => {
+      const { id, position, speed, movement, distance } = animation;
+      
+      const updatedAnimation: AxiosResponse<AnimationDataType> = await axios.put(
+        `${baseUrl}/animations/${id}`,
+        {
+          position,
+          speed,
+          movement,
+          distance
+        }
+      );
+      
+      return updatedAnimation;
+    }));
     
-//       // console.log("Zaktulizowane dane po dodaniu danych.", updatedAnimation)
-//       return updatedAnimations
-//     }catch(error){
-//         throw new Error(String(error))
-
-//       }
-     
-//   } catch (error){
-//         throw new Error(String(error))
-//       }
-// }
+    // Assuming you want to return the first updated animation
+    return updatedAnimations[0];
+  } catch (error) {
+    throw new Error(String(error));
+  }
+};

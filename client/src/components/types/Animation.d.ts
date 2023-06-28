@@ -6,9 +6,9 @@ interface IAnimation {
   position: number[]
   image: string
   section: string
-  movement: string
+  movement: string[]
   speed: number[]
-  distance: string
+  distance: string[]
   information:  any
   status: boolean
   createdAt?: string
@@ -39,7 +39,7 @@ type AnimationDataType = {
 
   export interface AnimationMotionProps {
 
-   updatePositions: (position: number[], speed: number[], move: string, distance: string) => void; 
+   updatePositions: (position: number[], speed: number[], move: string, distance: string, img: string) => void; 
   }
   export interface BallBouncingProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     ballSpeedValue: string

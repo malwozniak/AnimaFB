@@ -1,7 +1,9 @@
 
 type Props = {
     saveUser: (formData: IUser) => void
-    saveAnimation: (animationData: IAnimation) => void
+    saveAnimation: (animationData: IAnimation[]) => void
+    saveUpdateAnimation: (animationData: IAnimation[]) => void
+    
   };
   
   type State = {

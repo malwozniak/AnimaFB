@@ -1,3 +1,4 @@
+import { IAnimation } from "./Animation";
 
 
 type AnimationListProps = {
@@ -6,7 +7,9 @@ type AnimationListProps = {
     showContainer: boolean
     user: IUser
     saveUser: (user: IUser) => void
-    saveAnimation: (animationData: IAnimation) => void
+    saveAnimation: (animationData: IAnimation[]) => void
+    saveUpdateAnimation: (animationData: IAnimation[]) => void
+
     };
     
 type AnimationListState = {
@@ -31,5 +34,6 @@ type AnimationListState = {
       created: boolean
       indexBoard: number
       imageNumber: number
+      animationObject: IAnimation[]
     };
     

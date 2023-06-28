@@ -14,6 +14,10 @@ const getAnimation = async (_req: Request, res: Response): Promise<void> => {
     }
   };
   
+
+
+
+
   const getAnimationById = async (req: Request, res: Response): Promise<void> => {
     try {
       const { id } = req.params;
@@ -33,19 +37,18 @@ const getAnimation = async (_req: Request, res: Response): Promise<void> => {
 
 
   
-
-const updateAnimation = async (req: Request, res: Response): Promise<void> => {
+  const updateAnimation = async (req: Request, res: Response): Promise<void> => {
     try {
       const {
         params: {id}, body,} = req;
-      
+     
    
       const updatedAnimations: IAnimation | null = await Animation.findByIdAndUpdate(
-  
+ 
         { _id: id},
-        { $set: body } 
+        { $set: body }
       );
-  
+ 
       const allAnima: IAnimation[] = await Animation.find()
       res.status(200).json({
           message: 'Animacja zaktualizowana',
@@ -56,38 +59,20 @@ const updateAnimation = async (req: Request, res: Response): Promise<void> => {
       res.status(500).json({ error: 'Nie udało się zaktualizować animacji' });
     }
   };
+
+
   
   const addAnimation = async (req: Request, res: Response): Promise<void> => {
     try {
-      const body = req.body as Pick<
-        IAnimation,
-        'id' | 'userId' | 'name'  | 'object' | 'position' |
-         'image' | 'section'| 'movement' | 'speed' | 'distance' | 'information' | 'status'
+      const animationsData = req.body as IAnimation[];
   
-      >;
+      const animations: IAnimation[] = await Animation.insertMany(animationsData);
   
-      const animation: IAnimation = new Animation({
-        id: body.id,
-        userId: body.userId,
-        name: body.name,
-        object: body.object,
-        position: body.position,
-        image: body.image,
-        section: body.section,
-        movement: body.movement,
-        speed: body.speed,
-        distance: body.distance,
-        information: body.information,
-        status: false,
-      });
-  
-      const newAnimation: IAnimation = await animation.save();
-      const animations: IAnimation[] = await Animation.find();
-      // console.log('Odpowiedź dane użytkownika:', newUser); 
-  
-      res.status(201).json({ message: 'Animacja dodana.', animmation: newAnimation, users: animations });
+      res.status(201).json({ message: 'Animacje dodane.', animations });
     } catch (error) {
       res.status(500).json({ error: 'Nie udało się dodać animacji.' });
     }
   };
   export { getAnimation, addAnimation, updateAnimation, getAnimationById };
+
+  

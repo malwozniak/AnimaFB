@@ -4,8 +4,9 @@ type QuestionProps = {
     showCard: boolean
     showContainer: boolean
     saveUser: (user: IUser) => void
-    saveAnimation: (animationData: IAnimation) => void
-    saveUpdate: (user: IUser, newNumberOfBalls: number[]) => void
+    saveAnimation: (animationData: IAnimation[]) => void
+    saveUpdate: (user: IUser) => void
+    saveUpdateAnimation: (animationData: IAnimation[]) => void
     user: IUser
     indexBoard: number
     };
@@ -24,6 +25,5 @@ type QuestionProps = {
     chosenSection: string[]
     chosenSectionFirst: string[]
     indexBoard: number
-
     
   };
