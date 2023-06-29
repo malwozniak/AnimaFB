@@ -9,7 +9,7 @@ type AnimationListProps = {
     user: IUser
     saveUser: (user: IUser) => void
     saveAnimation: (animationData: IAnimation[]) => void
-    saveUpdateAnimation: (animationData: IAnimation[]) => void
+    saveUpdateAnimation: (addanimationData: IAddAnimation[]) => void
     onClick?: () => Promise<void>;
     };
     

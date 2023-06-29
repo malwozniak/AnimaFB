@@ -5,7 +5,7 @@ type QuestionProps = {
     showContainer: boolean
     saveUser: (user: IUser) => void 
     saveUpdate: (user: IUser,  newNumberOfBalls: number,newMovement: string[], newSection: string[], newOpinion: string, badOpinon: string, object: string[]) => void
-    saveUpdateAnimation: (animationData: IAnimation[]) => void
+    saveUpdateAnimation: (addanimationData: IAddAnimation[]) => void
     user: IUser
     indexBoard: number
     numberOBalls: number[]

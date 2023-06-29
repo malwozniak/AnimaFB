@@ -4,7 +4,7 @@
 
 import React, { Component } from "react";
 import { AnimationListBox, AnimationListRow, AnimationListRowFirst, BallShow, Canvas, Card, CardBorder, CardContainer, ChangeAcceptQuestions, GlobalStyle, IAnimation,   generateRandomAnimation, generateUniqueID, nameObjects, questions } from "../../library/library/allImports";
-import { addAnimation } from "../../API/API";
+import { addAddAnimation, addAnimation } from "../../API/API";
 import SphereMove from "../AnimationsObjects/AnimationThreeD";
 import AnimationMotion from "../AnimationsObjects/AnimationMotion";
 import RandomMove from "../AnimationsObjects/move/RandomMove";
@@ -79,13 +79,13 @@ componentDidMount() {
         this.setState((prevState) => ({
           timeElapsed: prevState.timeElapsed + 1,
         }));
-      }, 30000);
+      }, 3000);
     } else {
       this.setState({
         AnimationData: [],
       });
     }
-  }, 20000);
+  }, 2000);
 }
 
   showCardsWithoutChangingObjects(){
@@ -99,49 +99,55 @@ componentDidMount() {
 
 
  
-  handleUpdatePositions = (
+  handleUpdatePositions = async (
     position: number[],
     speed: number[],
     move: string,
     distance: string,
     img: string
   ) => {
-    const { animationObject } = this.state;
+    const animationData: {
+      id: string
+      user_id :string
+      name: string
+      image: string
+      position: number[]
+      movement: string[]
+      speed: number[]
+      distance: string[]
+    }[] = [];
     const updatedAnimationObject = {
-      ...animationObject,
+      id: String(generateUniqueID()),
+      user_id: this.props.user._id,
       position: position,
+      name: '',
       speed: speed,
-      move: move,
+      movement: [move],
       distance: [distance],
-      img: img
+      image: img
     };
-  
-    this.setState(
-      {
-        animationObject: updatedAnimationObject,
-      },
-      () => {
-    //    console.log("FUNKCJA POSITIONS UPDATE", updatedAnimationObject)
-    
+   
+
+    animationData.push(updatedAnimationObject);
+    const AnimationDataArrayUp = [...animationData];
+        this.props.saveUpdateAnimation(AnimationDataArrayUp);
+        await this.handleResponseAddAnimations(AnimationDataArrayUp);
+        console.log("FUNKCJA POSITIONS UPDATE", AnimationDataArrayUp)
+        
       // this.props.saveUpdateAnimation(updatedAnimationObject);
-      }
-    );
+      
+    
   }
    
   drawAnimationListData = async () => {
-    const {AnimationData,  position, speed, move, distance } = this.state;
-  if(AnimationData.length <9){
+    const {AnimationData,  position, speed, move, distance, img } = this.state;
+  if(AnimationData.length <1){
     const animationData: {
       id: string;
       userId: string;
       name: string;
       object: string;
-      position: number[];
-      image: string;
       section: string;
-      movement: string[];
-      speed: number[];
-      distance: string[];
       information: any;
       status: boolean;
     }[] = [];
@@ -160,7 +166,7 @@ componentDidMount() {
             <SphereMove
               updatePositions={this.handleUpdatePositions}
               key={String(generateUniqueID())}
-              position={position} img={""}
+              position={position} img={img}
               speed={speed}
               move={move}
               distance={distance}
@@ -176,7 +182,7 @@ componentDidMount() {
               position={position}
               speed={speed}
               move={move}
-              distance={distance} img={""}            />
+              distance={distance} img={img}            />
           </Card>
         );
       } else if (setNum === 2) {
@@ -188,7 +194,7 @@ componentDidMount() {
               position={position}
               speed={speed}
               move={move}
-              distance={distance} img={""}            />
+              distance={distance} img={img}            />
           </Card>
         );
       } else {
@@ -202,7 +208,7 @@ componentDidMount() {
               position={position}
               speed={speed}
               move={move}
-              distance={distance} img={""}            />
+              distance={distance} img={img}            />
           </Canvas>
         );
       }
@@ -214,12 +220,7 @@ componentDidMount() {
         userId: this.props.user._id,
         name: nameObjects[i],
         object: nameObject,
-        position: position,
-        image: "",
         section: String(i + 1),
-        movement: [""],
-        speed: speed,
-        distance: [distance],
         information: uniqueObject,
         status: false,
       };
@@ -227,18 +228,17 @@ componentDidMount() {
       animationData.push(animationObject);
   
       const AnimationDataArray = [...animationData];
-  
-      this.props.saveAnimation(AnimationDataArray);
-      await this.handleResponse(AnimationDataArray);
-  
-      this.setState((state: any) => ({
-        ...state,
-        AnimationData: AnimationDataArray,
-        showCards: false,
-        showLabel: false,
-        loading: false,
-        created: true,
-      }));
+
+this.props.saveAnimation(AnimationDataArray);
+await this.handleResponse(AnimationDataArray);
+this.setState((state: any) => ({
+  ...state,
+  AnimationData: animationData,
+  showCards: false,
+  showLabel: false,
+  loading: false,
+  created: true,
+}));
       
     console.log("Tablica z animacjami", animationData);
     }
@@ -250,7 +250,22 @@ componentDidMount() {
   };
 
 
-
+  async handleResponseAddAnimations(DataAnimation: IAddAnimation[]){
+    try {
+      
+        const response = await addAddAnimation(DataAnimation);
+        
+        if (response.status === 200 || response.status === 201) {
+          console.log('Dane formularza przesłane pomyślnie');
+        } else {
+          console.error('Nie udało się przesłać danych formularza');
+        }
+      
+    } catch (error) {
+      console.error('Błąd przesyłania danych formularza:', error);
+    }
+    
+  }
 
   async handleResponse(DataAnimation: IAnimation[]){
   try {

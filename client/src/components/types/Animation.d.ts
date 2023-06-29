@@ -3,18 +3,14 @@ interface IAnimation {
   userId: IUser | string
   name: string
   object: string
-  position: number[]
-  image: string
   section: string
-  movement: string[]
-  speed: number[]
-  distance: string[]
   information:  any
   status: boolean
   createdAt?: string
   updatedAt?: string
   
   }
+
 
   export interface AnimationType {
     name: string

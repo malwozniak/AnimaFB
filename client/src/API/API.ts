@@ -134,13 +134,8 @@ export const addAnimation = async (
       id: animation.id,
       userId: animation.userId,
       name: animation.name,
-      position: animation.position,
       object: animation.object,
-      image: animation.image,
       section: animation.section,
-      movement: animation.movement,
-      speed: animation.speed,
-      distance: animation.distance,
       information: animation.information,
       status: false,
     }));
@@ -159,27 +154,56 @@ export const addAnimation = async (
   }
 };
 
-export const saveUpdateAnimation = async (animationData: IAnimation[]): Promise<AxiosResponse<AnimationDataType>> => {
+export const addAddAnimation = async (
+  animationData: IAddAnimation[]
+): Promise<AxiosResponse<AnimationDataType>> => {
   try {
-    const updatedAnimations: AxiosResponse<AnimationDataType>[] = await Promise.all(animationData.map(async (animation) => {
-      const { id, position, speed, movement, distance } = animation;
-      
-      const updatedAnimation: AxiosResponse<AnimationDataType> = await axios.put(
-        `${baseUrl}/animations/${id}`,
-        {
-          position,
-          speed,
-          movement,
-          distance
-        }
-      );
-      
-      return updatedAnimation;
+    console.log('AnimationData:', animationData); 
+
+    const addanimations: Omit<IAddAnimation, 'key'>[] = animationData.map(animation => ({
+      id: animation.id,
+      user_id: animation.user_id,
+      name: animation.name,
+      position: animation.position,
+      image: animation.image,
+      movement: animation.movement,
+      speed: animation.speed,
+      distance: animation.distance,
+      status: false,
     }));
-    
-    // Assuming you want to return the first updated animation
-    return updatedAnimations[0];
+
+    console.log('Animations:', addanimations);
+
+    const saveaddAnimations: AxiosResponse<AnimationDataType> = await axios.post(
+      `${baseUrl}/addanimations`,
+      addanimations
+    );
+
+    console.log('Odpowiedź animacje:', saveaddAnimations);
+    return saveaddAnimations;
   } catch (error) {
     throw new Error(String(error));
   }
 };
+
+// export const saveUpdateAnimation = async (animationData: IAnimation[]): Promise<AxiosResponse<AnimationDataType>> => {
+//   try {
+//     const updatedAnimations: AxiosResponse<AnimationDataType>[] = await Promise.all(animationData.map(async () => {
+    
+      
+//       const updatedAnimation: AxiosResponse<AnimationDataType> = await axios.put(
+//         `${baseUrl}/animations/`,
+//         {
+         
+//         }
+//       );
+      
+//       return updatedAnimation;
+//     }));
+    
+//     // Assuming you want to return the first updated animation
+//     return updatedAnimations[0];
+//   } catch (error) {
+//     throw new Error(String(error));
+//   }
+// };

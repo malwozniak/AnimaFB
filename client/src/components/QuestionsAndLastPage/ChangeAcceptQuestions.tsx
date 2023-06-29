@@ -217,10 +217,12 @@ console.log("ARRAY " , this.state.arrayNumbers)
             <Form>
               <FieldsetIN>
                 <legend>Wypisz, która animacja była według ciebie najlepsza i uzasadnij dlaczego:</legend>
+                
                 <TextArea placeholder="Tutaj wpisz swoje spostrzeżenia..." value={textArea} onChange={this.handleTextAreaAnswer} />
               </FieldsetIN>
               <FieldsetIN>
                 <legend>Wypisz, która animacja była według ciebie najgorsza i uzasadnij dlaczego:</legend>
+          
                 <TextArea placeholder="Tutaj wpisz swoje spostrzeżenia..." value={textAreaNegative} onChange={this.handleTextAreaAnswerNeg} />
               </FieldsetIN>
               <Fieldset>
@@ -239,7 +241,7 @@ console.log("ARRAY " , this.state.arrayNumbers)
                 ))}
               </Fieldset>
               <FieldsetQ>
-                <legend>Zaznacz, w których kartach były dane obiekty kuli:</legend>
+                <legend>Zaznacz, w których kartach była wcześniej wybrana kulka:</legend>
                 {sectionType.map((option, index) => (
                   <LabelChoice key={index}>
                     <input
@@ -259,17 +261,17 @@ console.log("ARRAY " , this.state.arrayNumbers)
                   <LabelChoice key={index}>
                     <input
                       type="checkbox"
-                      name="sectionType"
+                      name="ballType"
                       value={option.toLowerCase()}
-                      id={`sectionType-${index}`}
+                      id={`ballType-${index}`}
                       onChange={this.choiceHandler}
                     />
-                    <label htmlFor={`sectionType-${index}`}>{option}</label>
+                    <label htmlFor={`ballType-${index}`}>{option}</label>
                   </LabelChoice>
                 ))}
               </Fieldset>
               <FieldsetNum>
-                <label>{`${question}`} Wprowadź poniżej liczbę policzonych kulek:</label>
+                <label>{`${question}`} Wprowadź poniżej liczbę częstości występowania w kartach wybranej, wcześniej kulki :</label>
                 <input
                   type="number"
                   placeholder="0"
@@ -278,6 +280,7 @@ console.log("ARRAY " , this.state.arrayNumbers)
                   onChange={this.handleAnswerChange}
                 />
               </FieldsetNum>
+             
               <FieldsetIN>
                 <input type="button" value="Zapisz" onClick={this.handleSaveClick} />
                 <input type="submit" value="Zatwierdź" onClick={this.handleButtonClick} />

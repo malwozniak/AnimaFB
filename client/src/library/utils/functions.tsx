@@ -42,7 +42,7 @@ export function RandomImage(props: { num: any; }) {
     width: `${100}%`,
     height: `${100}%`,
     display: 'inline-block',
-    backgroundImage: `url(https://raw.githubusercontent.com/malwozniak/react-ts-1dq1it/main/textures/img${props.num}.jpg)`,
+    backgroundImage: `url(https://raw.githubusercontent.com/malwozniak/AnimaFB/63d86ec3692be415a1a169dbe1f842fc2384b888/client/src/library/textures/img${props.num}.jpg)`,
     transition: 'background-image 1s ease-in-out',
     backgroundSize: `${100}%`,
   };
@@ -53,7 +53,7 @@ export function RandomImage(props: { num: any; }) {
 
 /**Generuje losowe obrazy dla obiektów 3D */
 export function RandomImage3D(props: { num: string; }) {
-  const img = `https://raw.githubusercontent.com/malwozniak/react-ts-1dq1it/main/textures/img${props.num}.jpg`;
+  const img = `https://raw.githubusercontent.com/malwozniak/AnimaFB/63d86ec3692be415a1a169dbe1f842fc2384b888/client/src/library/textures/img${props.num}.jpg`;
   const { scene } = useThree();
 
   const texture = useLoader(THREE.TextureLoader, img);

@@ -11,7 +11,7 @@ export default function AnimationMotion({ updatePositions }: AnimationMotionProp
   const [, setMove] = useState('');
   const [, setDistance] = useState('');
   const randomIndex = generateRandomAnimation(0, 3);
-  const randomImageNumber = generateRandomAnimation(1, 16);
+  const randomImageNumber = generateRandomAnimation(1, 100);
   const x = ballXYZ[randomIndex % 2 === 0 ? 0 : 10];
   const y = ballXYZ[randomIndex % 2 === 0 ? 10 : 0];
   const speed = ballSpeed[generateRandomAnimation(0,1)];

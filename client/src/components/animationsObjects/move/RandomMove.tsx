@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { RandomImage, generateRandomAnimation, getDistance, getRandomFloat, getRandomNumber } from '../../../library/utils/functions';
 import { AnimationMotionProps, Point } from '../../types/Animation';
 import { Ball } from '../../../library/constants/style';
-const img  = generateRandomAnimation(1,16)
+const img  = generateRandomAnimation(1,100)
 function RandomMove({ updatePositions }: AnimationMotionProps) {
 
   const [style, setStyle] = useState({ transform: 'translate(0, 0)'}); 
@@ -22,10 +22,10 @@ function RandomMove({ updatePositions }: AnimationMotionProps) {
     const moveBall = () => {
       const x: number = getRandomNumber(-2, 2);
       const y: number = getRandomNumber(-2, 2);
-      setStyle({ transform: `translate(${x}rem, ${y}rem)` });
+      setStyle({ transform: `translate(${x}rem, ${y}rem) ` });
 
        animationId = requestAnimationFrame(() => {
-    setTimeout(moveBall, 1000); // Opóźnienie wynoszące 1000 milisekund (1 sekunda)
+    setTimeout(moveBall, 500); // Opóźnienie wynoszące 1000 milisekund (1 sekunda)
   });
     };
 
@@ -34,7 +34,7 @@ function RandomMove({ updatePositions }: AnimationMotionProps) {
       if (animationId === null) {
         setTimeout(() => {
           animationId = requestAnimationFrame(moveBall);
-        }, 2000); // Opóźnienie wynoszące 2 sekundy przed rozpoczęciem ruchu
+        }, 10); // Opóźnienie wynoszące 2 sekundy przed rozpoczęciem ruchu
       }
     };
     // ...
@@ -51,7 +51,7 @@ function RandomMove({ updatePositions }: AnimationMotionProps) {
     return () => {
       setTimeout(() => {
         stopMoving();
-      }, 2000);
+      }, 10);
     };
   }, []);
 

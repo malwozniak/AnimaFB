@@ -2,7 +2,7 @@
 type Props = {
     saveUser: (formData: IUser) => void
     saveAnimation: (animationData: IAnimation[]) => void
-    saveUpdateAnimation: (animationData: IAnimation[]) => void
+    saveUpdateAnimation: (addanimationData: IAddAnimation[]) => void
     
   };
   

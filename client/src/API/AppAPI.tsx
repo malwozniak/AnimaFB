@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import AddUser from '../components/AddUser/AddUser'
-import { getUser, addUser, updateUser, getUserId, getAnimationId, getAnimation, saveUpdateAnimation } from './API'
+import { getUser, addUser, updateUser, getUserId, getAnimationId, getAnimation } from './API'
 import ChangeAcceptQuestions from '../components/QuestionsAndLastPage/ChangeAcceptQuestions'
 import { IAnimation } from '../components/types/Animation'
 // import AnimationList from './components/AnimationList'
@@ -72,7 +72,6 @@ const AppAPI: React.FC = () => {
         gsap.to(object, { /* animation properties */ })
       );
   
-      // Await all animations to complete
       await Promise.all(animations);
   
       console.log('Animations saved successfully!');
@@ -80,28 +79,44 @@ const AppAPI: React.FC = () => {
       console.error('Error saving animations:', error);
     }
   };
-  const handleUpdateAnimation = async (objects: IAnimation[]): Promise<void> => {
+  const handleSaveAnimationAdd = async (addanimationData: IAddAnimation[])  => {
     try {
-      if (!Array.isArray(objects)) {
-        throw new Error('Objects is not an array');
-      }
+      const addanimations = addanimationData.map((addanimation) =>
+        gsap.to(addanimation, { /* animation properties */ })
+      );
   
-      const response = saveUpdateAnimation(objects);
-      console.log('User updated successfully:', response);
+      await Promise.all(addanimations);
+  
+      console.log('ADD animations saved successfully!');
     } catch (error) {
-      console.error('Error updating user:', error);
+      console.error('Error saving add animations:', error);
     }
   };
 
 
 
+  // const handleUpdateAnimation = async (objects: IAnimation[]): Promise<void> => {
+  //   try {
+  //     if (!Array.isArray(objects)) {
+  //       throw new Error('Objects is not an array');
+  //     }
+  
+  //     const response = saveUpdateAnimation(objects);
+  //     console.log('User updated successfully:', response);
+  //   } catch (error) {
+  //     console.error('Error updating user:', error);
+  //   }
+  // };
+
+
+
   return (
     <>
-      <AddUser saveUser={handleSaveUser}  saveAnimation={handleSaveAnimation} saveUpdateAnimation={handleUpdateAnimation} />
+      <AddUser saveUser={handleSaveUser}  saveAnimation={handleSaveAnimation} saveUpdateAnimation={handleSaveAnimationAdd} />
       {/* <AddAnimation saveAnimation={handleSaveAnimation } /> */}
       {users.map((user: IUser) => (
         <>
-        <ChangeAcceptQuestions question={''} showCard={false} showContainer={false} saveUpdate={handleUpdateUser} user={user} indexBoard={0} saveUser={handleSaveUser} saveUpdateAnimation={handleUpdateAnimation} numberOBalls={[]}  />
+        <ChangeAcceptQuestions question={''} showCard={false} showContainer={false} saveUpdate={handleUpdateUser} user={user} indexBoard={0} saveUser={handleSaveUser} saveUpdateAnimation={handleSaveAnimationAdd} numberOBalls={[]}  />
        
        
      </>

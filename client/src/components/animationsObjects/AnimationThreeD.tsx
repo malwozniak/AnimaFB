@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
-import { useFrame, useThree, useLoader } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import { generateRandomAnimation } from '../../library/utils/functions';
+import { RandomImage3D, generateRandomAnimation } from '../../library/utils/functions';
 import { AnimationMotionProps } from '../../library/library/allImports';
 
 let acceleration = 0.05;
@@ -18,44 +18,37 @@ let time_counter = Math.sqrt((-bounce_distance * 2) / -acceleration);
 let initial_speed = acceleration * time_counter;
 function SphereMove({ updatePositions }: AnimationMotionProps ) {
 
-  const mesh = useRef<THREE.Mesh>(null!); // Use null as the initial value
+  const mesh = useRef<THREE.Mesh>(null!); 
 
-  const { scene } = useThree();
 
-  var num = generateRandomAnimation(1, 15);
-  let img =
-    `https://raw.githubusercontent.com/malwozniak/react-ts-1dq1it/main/textures/img` +
-    num +
-    `.jpg`;
 
-  const texture = useLoader(THREE.TextureLoader, img);
+  var num = generateRandomAnimation(1, 100);
 
-  scene.background = texture;
 
   useFrame(() => {
     if (mesh.current) {
       if (num % 2) {
         if (mesh.current.position.x < bottom_position_y) {
           time_counter = 0;
-          updatePositions([mesh.current.position.x],[initial_speed],'linear x', String(bounce_distance), String(img) )
+          updatePositions([mesh.current.position.x],[initial_speed],'linear x', String(bounce_distance), String(num) )
         }
         mesh.current.position.x =
           bottom_position_y +
           initial_speed * time_counter -
           0.5 * acceleration * time_counter * time_counter;
         time_counter += time_step;
-        updatePositions([mesh.current.position.x],[initial_speed],'linear x', String(bounce_distance), String(img) )
+        updatePositions([mesh.current.position.x],[initial_speed],'linear x', String(bounce_distance), String(num) )
       } else {
         if (mesh.current.position.y < bottom_position_y) {
           time_counter = 0;
-          updatePositions([mesh.current.position.y],[initial_speed],'linear y', String(bounce_distance), String(img) )
+          updatePositions([mesh.current.position.y],[initial_speed],'linear y', String(bounce_distance), String(num) )
         }
         mesh.current.position.y =
           bottom_position_y +
           initial_speed * time_counter -
           0.5 * acceleration * time_counter * time_counter;
         time_counter += time_step;
-        updatePositions([mesh.current.position.y],[initial_speed],'linear y',String(bounce_distance), String(img) )
+        updatePositions([mesh.current.position.y],[initial_speed],'linear y',String(bounce_distance), String(num) )
       
       
       
@@ -66,8 +59,7 @@ function SphereMove({ updatePositions }: AnimationMotionProps ) {
   return (
     <>
           <mesh>
-        <planeGeometry args={[8, 8]} />
-        <meshStandardMaterial map={texture} attach="material" />
+            <RandomImage3D num={String(num)}/>
       </mesh>
     <mesh ref={mesh}>
       <sphereGeometry attach="geometry" args={[1, 16, 16]} />
