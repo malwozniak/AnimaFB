@@ -233,8 +233,8 @@ class AddUser extends React.Component<Props, State> {
               {validationErrors.animationType && <span className='error'>{validationErrors.animationType}</span>}
 
             </Fieldset>
-            {/* <input disabled={!formData.age || !formData.gender || !formData.sayYesNo || formData.animationType.length === 0} onClick={this.handleClick} type="submit" value="Zatwierdź" /> */}
-            <input onClick={this.handleClick} type="submit" value="Zatwierdź" />
+            <input disabled={!formData.age || !formData.gender || !formData.sayYesNo || formData.animationType.length === 0} onClick={this.handleClick} type="submit" value="Zatwierdź" />
+            {/* <input onClick={this.handleClick} type="submit" value="Zatwierdź" /> */}
 
           </Form>
         )}

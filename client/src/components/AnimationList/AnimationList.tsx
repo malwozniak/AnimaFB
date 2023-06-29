@@ -12,6 +12,7 @@ import RandomMove3D from "../AnimationsObjects/move/RandomMove3D";
 import { AnimationListProps, AnimationListState } from "../types/AnimationList";
 
 
+
 // import AddAnimation from "./AddAnimation";
 
 
@@ -79,13 +80,13 @@ componentDidMount() {
         this.setState((prevState) => ({
           timeElapsed: prevState.timeElapsed + 1,
         }));
-      }, 3000);
+      }, 30000);
     } else {
       this.setState({
         AnimationData: [],
       });
     }
-  }, 2000);
+  }, 30000);
 }
 
   showCardsWithoutChangingObjects(){
@@ -108,8 +109,7 @@ componentDidMount() {
   ) => {
     const animationData: {
       id: string
-      user_id :string
-      name: string
+      user_id : string
       image: string
       position: number[]
       movement: string[]
@@ -120,7 +120,6 @@ componentDidMount() {
       id: String(generateUniqueID()),
       user_id: this.props.user._id,
       position: position,
-      name: '',
       speed: speed,
       movement: [move],
       distance: [distance],

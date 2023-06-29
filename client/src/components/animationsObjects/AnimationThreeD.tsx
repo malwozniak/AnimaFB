@@ -22,7 +22,7 @@ function SphereMove({ updatePositions }: AnimationMotionProps ) {
 
 
 
-  var num = generateRandomAnimation(1, 100);
+  var num = generateRandomAnimation(1, 10);
 
 
   useFrame(() => {

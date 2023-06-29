@@ -5,7 +5,7 @@ import React from 'react';
 import { AnimationMotionProps, Material, RandomImage3D, generateRandomAnimation } from '../../../library/library/allImports';
 
 export default function RandomMove3D({ updatePositions }: AnimationMotionProps) {
-  const num = String(generateRandomAnimation(1, 16));
+  const num = String(generateRandomAnimation(1, 10));
   const mesh = useRef<THREE.Mesh<THREE.BufferGeometry, Material | Material[]>>(null);
 
   const randomPosition = () => {

@@ -163,7 +163,6 @@ export const addAddAnimation = async (
     const addanimations: Omit<IAddAnimation, 'key'>[] = animationData.map(animation => ({
       id: animation.id,
       user_id: animation.user_id,
-      name: animation.name,
       position: animation.position,
       image: animation.image,
       movement: animation.movement,
