@@ -5,12 +5,7 @@ export interface IAnimation extends Document {
   userId: string
   name: string
   object: string
-  position: number[]
-  image: string
   section: string
-  movement: string[]
-  speed: number[]
-  distance: string[]
   information:  any
   status: boolean
 }

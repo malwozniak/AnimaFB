@@ -1,6 +1,7 @@
 import { Response, Request } from 'express';
 import User from '../../models/users';
 import { IUser } from '../../types/user';
+import { moveSyntheticComments } from 'typescript';
 
 
 
@@ -39,12 +40,22 @@ const updateUser = async (req: Request, res: Response): Promise<void> => {
         params: {id}, body,} = req;
       
    
-      const updatedUser: IUser | null = await User.findByIdAndUpdate(
-  
-        { _id: id},
-        { $set: body } 
-      );
-  
+     
+    const updatedUser: IUser | null = await User.findByIdAndUpdate(
+      { _id: id },
+      {
+        $addToSet: {
+          numberOfBalls: body.numberOfBalls,
+          opinion: body.opinion,
+          object: body.object,
+          section: body.section,
+          badOpinion: body.badOpinion,
+          movement: body.movement,
+        },
+      },
+      { upsert: true }
+    );
+
       const allUsers: IUser[] = await User.find()
       res.status(200).json({
           message: 'Użytkownik zaktualizowany',
@@ -67,22 +78,22 @@ const updateUser = async (req: Request, res: Response): Promise<void> => {
   
       // Validation
       if (body.age <= 0 || body.age > 150) {
-        res.status(400).json({ error: 'Age must be between 1 and 100' });
+        res.status(400).json({ error: 'Wiek musi być przedziale od 1 do 100' });
         return;
       }
   
       if (!body.gender) {
-        res.status(400).json({ error: 'Please provide a gender' });
+        res.status(400).json({ error: 'Proszę wybrać płeć' });
         return;
       }
   
       if (!body.sayYesNo) {
-        res.status(400).json({ error: 'Please select an option' });
+        res.status(400).json({ error: 'Proszę wybrać opcję' });
         return;
       }
   
       if (!body.animationType || body.animationType.length === 0) {
-        res.status(400).json({ error: 'Please select at least one animation type' });
+        res.status(400).json({ error: 'Proszę zaznacz przynajmniej jedną z animacji' });
         return;
       }
   
